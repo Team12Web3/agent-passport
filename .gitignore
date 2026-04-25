@@ -1,0 +1,13 @@
+.env
+.env.*
+!.env.example
+
+contracts/.env
+apps/target-site/.env.local
+apps/agent-demo/.env
+
+node_modules
+.next
+artifacts
+cache
+typechain-types

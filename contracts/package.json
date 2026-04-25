@@ -1,0 +1,20 @@
+{
+  "name": "contracts",
+  "private": true,
+  "scripts": {
+    "compile": "hardhat compile",
+    "test": "hardhat test",
+    "deploy:fuji": "hardhat run scripts/deploy.ts --network fuji",
+    "mint:fuji": "hardhat run scripts/mintPassport.ts --network fuji",
+    "revoke:fuji": "hardhat run scripts/revokePassport.ts --network fuji"
+  },
+  "dependencies": {
+    "@openzeppelin/contracts": "^5.1.0"
+  },
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^5.0.0",
+    "dotenv": "^16.4.5",
+    "hardhat": "^2.22.15",
+    "typescript": "^5.6.3"
+  }
+}
