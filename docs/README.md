@@ -37,6 +37,6 @@ Pick the one that matches your role. Each card has deliverables, files you own, 
 
 1. **Don't add features that aren't in the demo script.** If you can't justify it with "judges will see this," cut it.
 2. **API contracts are frozen at hour 1.** Person 1 owns the file. Anyone can request a change in Discord/Slack; Person 1 approves and updates the doc.
-3. **No ERC-4337. No ZK proofs. No staking.** These are out of scope. If someone suggests adding them at 2am, point them at this line.
+3. **No ERC-4337. Focus protocol work on the four trust primitives only:** EAS-backed passport headers, staking/slashing, session-key authorization, and intent proofs.
 4. **Use the safe demo URL.** Pick a static page (Wikipedia, books.toscrape.com). Do not pick Air NZ, Amazon, or anything with anti-bot protection.
 5. **The demo flow is sacred.** Every PR that touches the run page or the trust protocol must be tested end-to-end before merging.

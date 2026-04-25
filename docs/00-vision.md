@@ -29,11 +29,12 @@ A web app where you log in (email or wallet), spin up an AI agent in a wizard, a
 
 ### Layer 2 — The protocol (what websites see)
 
-Every outbound HTTP request from an agent carries three custom headers — passport ID, signature, timestamp. Any website that adopts our protocol can verify in 30 lines of middleware that:
+Every outbound HTTP request from an agent carries a trust-header bundle. Any website that adopts our protocol can verify in roughly 30 lines of middleware that:
 
-- This agent is registered on-chain
-- It's actively owned by a real user
-- Its history is auditable
+- `X-Agent-Passport-ID` resolves to an EAS credential and tells the site which developer, model stack, and labels are attached to the agent
+- `X-Agent-Signature` plus `X-Agent-Timestamp` proves identity, freshness, and agreement to the current Terms of Service
+- `X-Agent-Session-Proof` proves the runtime key was authorized on-chain by the owner's main wallet
+- Extended `X-Agent-Intent-Hash` can prove the current action is derived from the user's original intent
 
 In return, the website opens a "green channel": no CAPTCHA, clean data, possibly a paid API tier.
 

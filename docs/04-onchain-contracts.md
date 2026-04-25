@@ -81,6 +81,18 @@ constructor(address _platform) {
 }
 ```
 
+### Protocol extensions for trusted-agent headers
+
+For the trust protocol, the `passportId` can resolve not just to the wallet binding above, but also to a metadata document or attestation pointer that includes:
+
+- an EAS credential UID
+- developer identity
+- model platform, such as Claude 3.5
+- labels such as `non-crawler`
+- the current Terms of Service hash
+
+That is what powers `X-Agent-Passport-ID` as an attribute-proof header.
+
 ---
 
 ## `ActionLog.sol`
@@ -136,6 +148,52 @@ constructor(address _passport, address _feeToken) {
 ```
 
 After deploy, call `AgentPassport.setActionLog(address)` (a one-shot setter) so `bumpTrust` can be invoked.
+
+---
+
+## Staking / slashing companion flow
+
+To prevent malicious agents, the protocol can pair the passport with a simple stake vault:
+
+```solidity
+function depositStake(uint256 passportId) external payable;
+function slashStake(uint256 passportId, uint256 amount, bytes calldata evidence) external;
+```
+
+The website can submit signed request evidence when it detects obvious abuse such as a DDoS pattern. A demo-friendly default is `0.1 ETH` staked per passport ID. Once the evidence is verified, that stake can be slashed.
+
+This is what gives `X-Agent-Signature` economic consequences rather than just identity value.
+
+---
+
+## Session-key authorization companion flow
+
+To prove "this is your agent," the protocol can pair the passport with an on-chain session-key registry:
+
+```solidity
+function authorizeSessionKey(uint256 passportId, address sessionKey, uint64 expiresAt) external;
+function revokeSessionKey(uint256 passportId, address sessionKey) external;
+function isAuthorizedSessionKey(uint256 passportId, address sessionKey) external view returns (bool);
+```
+
+When the middleware verifies `X-Agent-Signature`, it can recover the signer and then confirm that the signer is a valid session key authorized by the owner's main wallet.
+
+---
+
+## ZK intent-proof companion flow
+
+To ensure operations are trusted, the protocol can attach an intent hash to the user's original command and verify that the current action derives from it:
+
+```solidity
+function verifyIntentProof(
+    uint256 passportId,
+    bytes32 intentHash,
+    bytes32 actionHash,
+    bytes calldata proof
+) external view returns (bool);
+```
+
+The demo can stub the proof backend if needed, but the header surface should still support the extended `X-Agent-Intent-Hash` flow.
 
 ---
 

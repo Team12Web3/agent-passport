@@ -186,17 +186,22 @@ Submit an `ActionLog` tx for a run that already happened. Used internally by the
 
 **Required headers (sent by agent):**
 ```
-X-Agent-Passport-ID: <decimal string>
-X-Agent-Signature:   0x<hex>
-X-Agent-Timestamp:   <unix seconds, decimal>
+X-Agent-Passport-ID:   <decimal string>
+X-Agent-Signature:     0x<hex>
+X-Agent-Timestamp:     <unix seconds, decimal>
+X-Agent-Session-Proof: 0x<hex or encoded payload>
+X-Agent-Intent-Hash:   0x<hex>
 ```
 
 **Verification (server-side):**
-1. All three headers present? Else `403 captcha_required`.
+1. All required headers present? Else `403 captcha_required`.
 2. `|now - timestamp| <= 60`? Else `403 stale_timestamp`.
-3. Recover signer from signature over `keccak256(passportId || "|" || url || "|" || timestamp)`.
-4. Read `AgentPassport.getPassport(passportId)` from Fuji.
-5. `recovered === passport.agentWallet && passport.active`? Else `403 untrusted_agent`.
+3. Resolve `X-Agent-Passport-ID` to the passport record plus its EAS attestation (or cached attestation data).
+4. Recover signer from `keccak256(passportId || "|" || url || "|" || timestamp || "|" || termsHash || "|" || intentHash)`.
+5. Verify the signer is a valid session key authorized on-chain by the passport owner.
+6. Verify the signature implies acceptance of the current Terms of Service.
+7. Optionally verify that the supplied intent proof shows the current action is derived from `X-Agent-Intent-Hash`.
+8. If the agent later abuses the site, persist the same signed payload as slashable evidence.
 
 **Success response** `200`
 ```ts
@@ -204,20 +209,61 @@ X-Agent-Timestamp:   <unix seconds, decimal>
   title: string,
   content: string,                                 // long-form text the agent can summarize
   items: Array<{ name: string, price: string }>,   // pretend product list
-  trustScore: number                               // echoed from passport
+  trustScore: number,                              // echoed from passport
+  attributes: {
+    developer: string,
+    modelPlatform: string,
+    labels: string[]
+  }
 }
 ```
 
 **Failure response** `403`
 ```ts
 {
-  error: "captcha_required" | "stale_timestamp" | "bad_signature" | "untrusted_agent",
+  error:
+    | "captcha_required"
+    | "stale_timestamp"
+    | "bad_signature"
+    | "invalid_session_key"
+    | "invalid_intent_proof"
+    | "untrusted_agent",
   message: string,
   captchaPlaceholder: true       // tells our UI to show the fake CAPTCHA overlay
 }
 ```
 
 **Owner:** Person 1 (route), Person 2 (verification utility used by the route).
+
+---
+
+## `POST /api/trust/report-abuse`
+
+Website-side helper for submitting signed request evidence into a staking/slashing flow.
+
+**Auth:** none in the demo; production would gate this
+
+**Request**
+```ts
+{
+  passportId: string,
+  signature: `0x${string}`,
+  timestamp: string,
+  intentHash: `0x${string}`,
+  evidenceUri: string,
+  reason: "ddos" | "policy_violation"
+}
+```
+
+**Response** `200`
+```ts
+{
+  accepted: boolean,
+  slashAmountEth?: string
+}
+```
+
+**Owner:** Person 1.
 
 ---
 
