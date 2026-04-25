@@ -111,7 +111,7 @@ The iframe overlays red: **403 — captcha_required**. Terminal logs `BLOCKED`.
 
 Animation: red → "Verifying passport..." → green pulse. Iframe morphs into clean JSON.
 
-> "With the passport — three signed headers — the website verifies us in 30 lines of middleware, and opens a green channel."
+> "With the passport, the website reads the agent's on-chain identity, checks the signed Terms of Service commitment, verifies the authorized session key, and can even validate that the action still follows the user's original intent."
 
 > "*Trust by signature, not by CAPTCHA.*"
 
@@ -136,7 +136,7 @@ Animation: red → "Verifying passport..." → green pulse. Iframe morphs into c
 ## Handling questions
 
 **"What if the agent goes rogue?"**
-> "The owner can deactivate the passport on-chain instantly. The trust score also drops on bad behavior — every accepting site sees that score in real-time."
+> "The owner can deactivate the passport on-chain instantly, revoke the session key, and a site can submit signed request evidence into a slashing flow."
 
 **"Why on-chain at all?"**
 > "Verifiability without trust in our backend. A regulator or third-party auditor can check any agent's history directly on Avalanche. We could disappear and the trail still stands."
@@ -145,7 +145,7 @@ Animation: red → "Verifying passport..." → green pulse. Iframe morphs into c
 > "API keys identify a developer. Passports identify the *agent*. The agent owns its own wallet, has its own reputation, and produces a public audit log. It's a different unit of accountability."
 
 **"How would real websites adopt this?"**
-> "Our reference middleware is 30 lines. We're going to open-source it. Sites that want agent traffic — search, commerce, data APIs — have every incentive to add it. CAPTCHAs are a losing fight."
+> "Our reference middleware is about 30 lines. It resolves the passport ID, verifies the signature and session proof, checks the attested attributes, and can validate the intent hash before opening a green channel."
 
 **"Did you really do all this in 26 hours?"**
 > "Yes. The Snowtrace timestamps prove it." *(Smile.)*

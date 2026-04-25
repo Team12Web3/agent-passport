@@ -178,21 +178,28 @@ Full specs in [04-onchain-contracts.md](./04-onchain-contracts.md).
 
 ## Trust protocol
 
-Three custom headers on every outbound agent request:
+Five headers matter on every outbound agent request:
 
 ```
-X-Agent-Passport-ID: 42
-X-Agent-Signature:   0xabc123...        (ECDSA over keccak(passportId || url || timestamp))
-X-Agent-Timestamp:   1729980000          (unix seconds, ±60s window)
+X-Agent-Passport-ID:    42
+X-Agent-Signature:      0xabc123...
+X-Agent-Timestamp:      1729980000
+X-Agent-Session-Proof:  0xsessionproof...
+X-Agent-Intent-Hash:    0xintenthash...
 ```
 
 **Verification (any website can implement in ~30 lines):**
 
-1. All three headers present? Else 403.
+1. All required headers present? Else 403.
 2. Timestamp within ±60 seconds of now? Else 403 stale.
-3. Recover signer from signature over `keccak256(passportId || url || timestamp)`.
-4. Read `AgentPassport.getPassport(passportId)` from Fuji.
-5. Recovered address === `passport.agentWallet` AND `passport.active`? Pass.
+3. Resolve `X-Agent-Passport-ID` to the on-chain passport record and its EAS credential (or a cache of that credential).
+4. Read the attested attributes: developer, platform/model, and labels such as `non-crawler`.
+5. Recover signer from `X-Agent-Signature` over `keccak256(passportId || url || timestamp || termsHash || intentHash)`.
+6. Verify the signature was made by a valid session key that the owner's main wallet authorized on-chain.
+7. Verify the request is tied to the current Terms of Service.
+8. Optionally verify a ZK proof that the current action is derived from `X-Agent-Intent-Hash`.
+
+If a site later detects obvious abuse, the same signed payload can be submitted as evidence to a staking/slashing flow tied to that passport ID.
 
 Our reference implementation lives at `/api/trust/demo-site` and is the basis for the demo's kill-shot.
 
@@ -201,8 +208,8 @@ Our reference implementation lives at `/api/trust/demo-site` and is the basis fo
 | Cut                                  | Why                                                      |
 |--------------------------------------|----------------------------------------------------------|
 | ERC-4337 smart wallets               | 1–2 day integration; demo gain ≈ 0                       |
-| ZK proofs                            | Demo benefit ≈ 0; story complexity huge                  |
-| Staking + slashing                   | Adds a contract, a UI, a flow, no demo wow               |
+| Production-grade ZK circuits         | Keep the intent-proof interface; heavy proving work can wait |
+| Full dispute-resolution UI for slashing | The smart-contract path matters more than appeals UX for the demo |
 | Per-action on-chain transactions     | 8 actions × 2s confirms = 16s of dead air on stage       |
 | Real-world scrape target             | Anti-bot, JS-heavy, geo-gated → fails on stage            |
 | "Real" website adoption              | Cannot demo in 26h → ship our own reference site instead  |

@@ -19,6 +19,15 @@ Built for **Web3NZ Hackathon** — 26 hours, 5 people, three prize tracks.
 
 ---
 
+## Trust protocol
+
+Our protocol is built around four trust signals that a website can verify in lightweight middleware:
+
+- `X-Agent-Passport-ID`: points to an EAS (Ethereum Attestation Service) credential so the site can resolve attributes such as developer, model platform, and labels like `non-crawler`.
+- `X-Agent-Signature` + `X-Agent-Timestamp`: proves identity and agreement to the current Terms of Service, and gives the site signed evidence it can use for a staking/slashing flow if abuse happens.
+- `X-Agent-Session-Proof`: proves the request is being made by a session key that the owner's main wallet authorized on-chain.
+- Extended `X-Agent-Intent-Hash`: commits to the user's original instruction and can carry a ZK proof that the current action is derived from that intent.
+
 ## Repo layout
 
 ```

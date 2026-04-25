@@ -98,7 +98,7 @@ If you hear any of these in the first 4 hours, redirect:
 
 - "What if we also added..." — no.
 - "I think we should rethink..." — no.
-- "ZK / staking / ERC-4337 / smart wallet would be cool" — no.
+- "Let's add full ERC-4337 or production-grade proving infra tonight" — no.
 - "Let's switch to <library>" — no.
 
 The plan is the plan. Follow it. Win.
