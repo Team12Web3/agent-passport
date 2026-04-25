@@ -57,5 +57,7 @@ export type UserRow = {
   thirdweb_id: string;
   email: string | null;
   wallet_address: string | null;
+  username: string | null;
+  onboarded_at: string | null;
   created_at: string;
 };
