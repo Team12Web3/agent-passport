@@ -123,13 +123,11 @@ Animation: red → "Verifying passport..." → green pulse. Iframe morphs into c
 
 > "Built in 26 hours, on Avalanche."
 
-> "Every agent action is a real transaction on Fuji — that's our submission for the Avalanche track."
+> "Every agent action is a real transaction on Fuji — verifiable by anyone, on Snowtrace. That's our submission for the Avalanche track."
 
-> "Each agent has a portable, owner-bound digital identity — Lumin's track."
+> "Each agent has a portable, owner-bound identity, revocable on-chain by its owner in a single transaction. That's the Lumin track."
 
-> "And the same on-chain log doubles as an invoice ledger with stablecoin payments per action — Payments and Invoicing."
-
-> "One mechanism. Three prizes. Thank you."
+> "Identity and control, in one mechanism. Thank you."
 
 ---
 

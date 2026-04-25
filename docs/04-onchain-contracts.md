@@ -114,7 +114,7 @@ function logAction(
     uint256 passportId,
     bytes32 taskHash,        // keccak256(prompt || url)
     bytes32 actionsRoot,     // keccak256(JSON.stringify(actions))
-    uint256 feeAmount,       // in USDC (6-decimal)
+    uint256 feeAmount,       // operation cost in USDC (6-decimal) — see note below
     address beneficiary
 ) external;
 // Verifies msg.sender == passport.agentWallet AND passport.active.
@@ -148,6 +148,10 @@ constructor(address _passport, address _feeToken) {
 ```
 
 After deploy, call `AgentPassport.setActionLog(address)` (a one-shot setter) so `bumpTrust` can be invoked.
+
+### A note on `feeAmount` framing
+
+In the contract this field is named `feeAmount` for historical reasons, but in the pitch we describe it as the agent's **operation cost** per action — the small USDC amount the agent pays out of its own wallet to perform the work. It is *not* an invoicing/billing primitive (no customer accounts, no recurring billing, no AR ledger), and we should not pitch it that way. Calling it "operation cost" keeps us honest: the agent has skin in the game, and the on-chain receipt happens to live in the same `ActionLogged` event.
 
 ---
 

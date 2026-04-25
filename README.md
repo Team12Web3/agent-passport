@@ -3,7 +3,7 @@
 > **Trust by signature, not by CAPTCHA.**
 > A platform where AI agents get verifiable on-chain identities, their own crypto wallets, and tamper-proof audit trails.
 
-Built for **Web3NZ Hackathon** — 26 hours, 5 people, three prize tracks.
+Built for **Web3NZ Hackathon** — 26 hours, 5 people, two prize tracks.
 
 ---
 

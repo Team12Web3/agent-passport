@@ -40,15 +40,14 @@ In return, the website opens a "green channel": no CAPTCHA, clean data, possibly
 
 We ship a **reference implementation** of a trusting site as part of the demo, so judges can see the whole loop work.
 
-## Why this wins three prize tracks
+## Why this wins two prize tracks
 
 | Track                           | What we deliver                                              |
 |---------------------------------|--------------------------------------------------------------|
 | Avalanche C-Chain ($1,000)      | Real Fuji transactions for every agent task. Live Snowtrace. |
-| Lumin Digital Identity ($500)   | Portable, owner-bound identity for non-human actors.         |
-| Payments & Invoicing ($500)     | Action log doubles as on-chain invoice trail with stablecoin transfers. |
+| Lumin Digital Identity ($500)   | Portable, owner-bound identity for non-human actors — revocable on-chain by the owner. |
 
-One mechanism, three narratives. The same `ActionLogged` event powers all of them.
+One mechanism, two narratives. The same `ActionLogged` event powers both: it's the receipt for the Avalanche track, and the auditable trail behind the Lumin identity.
 
 ## North star
 
