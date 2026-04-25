@@ -108,7 +108,7 @@ export default function AgentRunPage({ params }: Props) {
     ) : undefined;
 
   return (
-    <main className="min-h-screen bg-zinc-950 px-6 pb-20 pt-8 text-white">
+    <main className="min-h-screen px-6 pb-20 pt-8 text-slate-100">
       <div className="mx-auto max-w-7xl">
 
         {/* ── Top bar ─────────────────────────────────────────────────────── */}
@@ -116,7 +116,7 @@ export default function AgentRunPage({ params }: Props) {
           <div>
             <Link
               href="/dashboard"
-              className="mb-3 flex items-center gap-1.5 text-xs text-zinc-500 transition hover:text-zinc-300"
+              className="mb-3 flex items-center gap-1.5 text-xs text-slate-400 transition hover:text-slate-200"
             >
               <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
@@ -125,10 +125,10 @@ export default function AgentRunPage({ params }: Props) {
               </svg>
               Dashboard
             </Link>
-            <h1 className="text-2xl font-bold tracking-tight text-white">
+            <h1 className="text-2xl font-bold tracking-tight text-slate-100">
               {agent?.name ?? "Loading agent…"}
             </h1>
-            <p className="mt-0.5 text-xs text-zinc-500">Agent ID: {id}</p>
+            <p className="mt-0.5 text-xs text-slate-500">Agent ID: {id}</p>
           </div>
 
           <div className="mt-1 flex items-center gap-3">
@@ -136,10 +136,10 @@ export default function AgentRunPage({ params }: Props) {
             {agent?.walletAddress && (
               <button
                 onClick={copyWallet}
-                className="flex items-center gap-2 rounded-full border border-zinc-700 bg-zinc-900 px-4 py-1.5 text-xs text-zinc-300 transition hover:border-zinc-500 hover:text-white"
+                className="flex items-center gap-2 rounded-full border border-slate-700 bg-slate-900/70 px-4 py-1.5 text-xs text-slate-300 backdrop-blur transition hover:border-slate-500 hover:text-slate-100"
                 title="Click to copy wallet address"
               >
-                <svg className="h-3 w-3 text-zinc-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg className="h-3 w-3 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
                     d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"
                   />
@@ -155,7 +155,7 @@ export default function AgentRunPage({ params }: Props) {
                 href={`https://testnet.snowtrace.io/address/${agent.walletAddress}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-1.5 rounded-full border border-zinc-700 bg-zinc-900 px-4 py-1.5 text-xs text-zinc-300 transition hover:border-zinc-500 hover:text-white"
+                className="flex items-center gap-1.5 rounded-full border border-slate-700 bg-slate-900/70 px-4 py-1.5 text-xs text-slate-300 backdrop-blur transition hover:border-slate-500 hover:text-slate-100"
               >
                 Snowtrace ↗
               </a>
@@ -164,7 +164,7 @@ export default function AgentRunPage({ params }: Props) {
             {status !== "idle" && (
               <button
                 onClick={reset}
-                className="text-xs text-zinc-500 underline hover:text-zinc-300"
+                className="text-xs text-slate-400 underline hover:text-slate-200"
               >
                 Reset
               </button>

@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import Link from "next/link";
 import type { Passport } from "@/lib/agentPassport";
 import { shortenAddress, clamp } from "@/lib/utils";
 
@@ -29,14 +30,17 @@ export function AgentCard({ agentId, passport, trusted, progressPercent, sourceL
   const progress = clamp(progressPercent, 0, 100);
 
   return (
-    <button
-      onClick={() => setOpen((v) => !v)}
+    <div
       className={[
-        "w-full text-left rounded-xl border bg-slate-950/70 hover:bg-slate-900/80 transition",
+        "w-full rounded-xl border bg-slate-950/70 transition",
         "p-4 md:p-5 backdrop-blur",
         "border-slate-800/80 shadow-[0_10px_30px_rgba(2,6,23,0.45)]",
         statusTone
       ].join(" ")}
+    >
+    <button
+      onClick={() => setOpen((v) => !v)}
+      className="block w-full text-left"
       aria-expanded={open}
     >
       <div className="flex items-start justify-between gap-3">
@@ -106,5 +110,16 @@ export function AgentCard({ agentId, passport, trusted, progressPercent, sourceL
         </div>
       )}
     </button>
+
+      <div className="mt-4 flex items-center justify-end">
+        <Link
+          href={`/agents/${encodeURIComponent(agentId)}/run`}
+          className="inline-flex items-center gap-1.5 rounded-lg border border-slate-700 bg-slate-900/70 px-3 py-1.5 text-xs font-medium text-slate-200 transition hover:border-slate-500 hover:bg-slate-800/70"
+        >
+          Run task
+          <span aria-hidden>→</span>
+        </Link>
+      </div>
+    </div>
   );
 }

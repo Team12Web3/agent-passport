@@ -41,12 +41,12 @@ export function RunControls({
   const disabled = isRunning || !urlValid || prompt.trim().length === 0;
 
   return (
-    <div className="rounded-xl border border-zinc-800 bg-zinc-900 p-6">
+    <div className="rounded-xl border border-slate-800/80 bg-slate-950/70 p-6 backdrop-blur shadow-[0_10px_30px_rgba(2,6,23,0.45)]">
       {/* URL */}
       <div className="mb-4">
-        <label className="mb-1.5 flex items-center gap-2 text-sm font-medium text-zinc-300">
+        <label className="mb-1.5 flex items-center gap-2 text-sm font-medium text-slate-300">
           <svg
-            className="h-4 w-4 text-zinc-400"
+            className="h-4 w-4 text-slate-400"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -65,8 +65,8 @@ export function RunControls({
           value={url}
           onChange={(e) => handleUrlChange(e.target.value)}
           placeholder="https://example.com"
-          className={`w-full rounded-lg border bg-black px-4 py-3 text-sm text-white placeholder-zinc-600 outline-none transition focus:border-zinc-500 ${
-            urlError ? "border-red-600" : "border-zinc-700"
+          className={`w-full rounded-lg border bg-black px-4 py-3 text-sm text-white placeholder-slate-600 outline-none transition focus:border-slate-500 ${
+            urlError ? "border-red-600" : "border-slate-700"
           }`}
         />
         {urlError && (
@@ -76,11 +76,11 @@ export function RunControls({
 
       {/* Prompt */}
       <div className="mb-5">
-        <label className="mb-1.5 flex items-center justify-between text-sm font-medium text-zinc-300">
+        <label className="mb-1.5 flex items-center justify-between text-sm font-medium text-slate-300">
           <span>Prompt</span>
           <span
             className={`text-xs ${
-              prompt.length > MAX_PROMPT ? "text-red-400" : "text-zinc-500"
+              prompt.length > MAX_PROMPT ? "text-red-400" : "text-slate-500"
             }`}
           >
             {prompt.length}/{MAX_PROMPT}
@@ -91,7 +91,7 @@ export function RunControls({
           onChange={(e) => onPromptChange(e.target.value.slice(0, MAX_PROMPT))}
           rows={3}
           placeholder="What should the agent do on this page?"
-          className="w-full resize-none rounded-lg border border-zinc-700 bg-black px-4 py-3 text-sm text-white placeholder-zinc-600 outline-none transition focus:border-zinc-500"
+          className="w-full resize-none rounded-lg border border-slate-700 bg-black px-4 py-3 text-sm text-white placeholder-slate-600 outline-none transition focus:border-slate-500"
         />
       </div>
 
@@ -154,7 +154,7 @@ export function RunControls({
         <button
           onClick={onRunWithoutPassport}
           disabled={disabled}
-          className="flex items-center justify-center gap-2 rounded-lg border border-zinc-700 bg-transparent px-5 py-3 text-sm font-medium text-zinc-300 transition hover:border-zinc-500 hover:text-white disabled:cursor-not-allowed disabled:opacity-40"
+          className="flex items-center justify-center gap-2 rounded-lg border border-slate-700 bg-transparent px-5 py-3 text-sm font-medium text-slate-300 transition hover:border-slate-500 hover:text-white disabled:cursor-not-allowed disabled:opacity-40"
         >
           <svg
             className="h-4 w-4"

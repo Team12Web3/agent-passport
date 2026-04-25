@@ -50,7 +50,7 @@ export default function LoginPage() {
   }, [account?.address, router, walletStatus]);
 
   return (
-    <main className="min-h-screen bg-zinc-950 text-zinc-100">
+    <main className="min-h-screen text-slate-100">
       <div className="mx-auto flex min-h-screen w-full max-w-md flex-col justify-center px-5 py-10">
         <div className="mb-6">
           <h1 className="text-2xl font-semibold tracking-tight">Agent Passport</h1>
