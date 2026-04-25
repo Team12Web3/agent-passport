@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 import type { Passport } from "@/lib/agentPassport";
 import { shortenAddress, clamp } from "@/lib/utils";
+import { avatarInitials, avatarStyle } from "@/lib/avatar";
 
 type Props = {
   agentId: string;
@@ -15,12 +16,6 @@ type Props = {
 export function AgentCard({ agentId, passport, trusted, progressPercent, sourceLabel }: Props) {
   const [open, setOpen] = useState(false);
 
-  const statusLabel = passport.active ? "Active" : "Revoked";
-  const statusTone = passport.active ? "border-emerald-400/30" : "border-rose-400/30";
-
-  const trustLabel = trusted ? "Trusted" : "Untrusted";
-  const trustTone = trusted ? "text-emerald-300" : "text-rose-300";
-
   const scoreNumber = useMemo(() => {
     const n = Number(passport.score);
     return Number.isFinite(n) ? n : 0;
@@ -28,84 +23,109 @@ export function AgentCard({ agentId, passport, trusted, progressPercent, sourceL
 
   const progress = clamp(progressPercent, 0, 100);
 
+  const statusTone = passport.active
+    ? trusted
+      ? { dot: "bg-emerald-400", text: "text-emerald-300", bar: "bg-emerald-400/90" }
+      : { dot: "bg-amber-400", text: "text-amber-300", bar: "bg-amber-400/85" }
+    : { dot: "bg-rose-400", text: "text-rose-300", bar: "bg-rose-400/85" };
+  const statusText = passport.active ? (trusted ? "Trusted" : "Building") : "Revoked";
+
+  const seed = passport.agentWallet || passport.owner || agentId;
+  const avatar = avatarStyle(seed);
+  const initials = avatarInitials(passport.agentWallet || agentId);
+
+  const ownerShort = shortenAddress(passport.owner || "0x0", 5, 4);
+  const agentShort = passport.agentWallet ? shortenAddress(passport.agentWallet, 5, 4) : "—";
+
   return (
     <button
       onClick={() => setOpen((v) => !v)}
-      className={[
-        "w-full text-left rounded-xl border bg-slate-950/70 hover:bg-slate-900/80 transition",
-        "p-4 md:p-5 backdrop-blur",
-        "border-slate-800/80 shadow-[0_10px_30px_rgba(2,6,23,0.45)]",
-        statusTone
-      ].join(" ")}
       aria-expanded={open}
+      className="group card card-hover w-full min-w-0 max-w-full overflow-hidden text-left p-4 focus-ring"
     >
-      <div className="flex items-start justify-between gap-3">
-        <div className="min-w-0">
-          <div className="text-sm text-slate-400">Agent ID</div>
-          <div className="font-mono text-base md:text-lg truncate">{agentId}</div>
+      {/* Header: avatar + name (truncates) + compact score */}
+      <div className="flex items-center gap-3">
+        <div
+          className="h-9 w-9 shrink-0 rounded-lg flex items-center justify-center text-[11px] font-semibold text-white/95 font-mono"
+          style={avatar}
+        >
+          {initials}
+        </div>
+
+        <div className="min-w-0 flex-1">
+          <div className="truncate text-[14px] font-medium text-fg leading-tight">{agentId}</div>
+          <div className="mt-1 flex items-center gap-1.5 text-[10.5px] uppercase tracking-[0.12em] text-subtle">
+            <span className={["h-1.5 w-1.5 rounded-full", statusTone.dot].join(" ")} aria-hidden />
+            <span className={statusTone.text}>{statusText}</span>
+            <span className="text-faint">·</span>
+            <span className="font-mono normal-case tracking-normal text-faint truncate">{sourceLabel}</span>
+          </div>
         </div>
 
         <div className="shrink-0 text-right">
-          <div className={"text-sm font-semibold " + trustTone}>{trustLabel}</div>
-          <div className="text-xs text-slate-500">{sourceLabel}</div>
+          <div className="font-mono text-[18px] leading-none tabular-nums text-fg">{scoreNumber}</div>
+          <div className="mt-1 text-[9.5px] uppercase tracking-[0.14em] text-faint leading-none">Trust</div>
         </div>
       </div>
 
-      <div className="mt-4 grid grid-cols-2 gap-3">
-        <div className="rounded-lg border border-slate-800 bg-slate-900/50 p-3">
-          <div className="text-xs text-slate-400">Owner</div>
-          <div className="font-mono text-sm">{shortenAddress(passport.owner || "0x0")}</div>
-        </div>
-        <div className="rounded-lg border border-slate-800 bg-slate-900/50 p-3">
-          <div className="text-xs text-slate-400">Score</div>
-          <div className="text-sm font-semibold">{scoreNumber}</div>
-        </div>
-        <div className="rounded-lg border border-slate-800 bg-slate-900/50 p-3">
-          <div className="text-xs text-slate-400">Status</div>
-          <div className="text-sm font-semibold">{statusLabel}</div>
-        </div>
-        <div className="rounded-lg border border-slate-800 bg-slate-900/50 p-3">
-          <div className="text-xs text-slate-400">Progress</div>
-          <div className="text-sm font-semibold">{progress}%</div>
-        </div>
-      </div>
-
+      {/* Activity bar — single line, full width */}
       <div className="mt-4">
-        <div className="h-2 w-full rounded-full bg-slate-800 overflow-hidden">
+        <div className="flex items-center justify-between text-[10.5px] uppercase tracking-[0.12em] text-faint">
+          <span>Activity</span>
+          <span className="font-mono tabular-nums normal-case tracking-normal text-muted">{progress}%</span>
+        </div>
+        <div className="mt-1.5 h-[3px] w-full overflow-hidden rounded-full bg-white/[0.06]">
           <div
-            className={"h-full rounded-full " + (trusted ? "bg-emerald-500" : "bg-rose-500")}
+            className={["h-full rounded-full transition-all duration-500", statusTone.bar].join(" ")}
             style={{ width: `${progress}%` }}
           />
         </div>
       </div>
 
+      {/* Addresses — vertical key/value list, fits any card width */}
+      <dl className="mt-4 space-y-1 text-[11.5px]">
+        <AddressRow label="Owner" value={ownerShort} />
+        <AddressRow label="Agent" value={agentShort} />
+      </dl>
+
       {open && (
-        <div className="mt-4 rounded-lg border border-slate-800 bg-slate-950/70 p-3">
-          <div className="text-xs text-slate-400">Passport details</div>
-          <div className="mt-2 grid gap-1 text-sm">
-            <div className="flex justify-between gap-4">
-              <span className="text-slate-400">owner</span>
-              <span className="font-mono">{passport.owner || "0x0000000000000000000000000000000000000000"}</span>
-            </div>
-            <div className="flex justify-between gap-4">
-              <span className="text-slate-400">agentId</span>
-              <span className="font-mono">{passport.agentId || agentId}</span>
-            </div>
-            <div className="flex justify-between gap-4">
-              <span className="text-slate-400">score</span>
-              <span className="font-mono">{scoreNumber}</span>
-            </div>
-            <div className="flex justify-between gap-4">
-              <span className="text-slate-400">active</span>
-              <span className="font-mono">{String(passport.active)}</span>
-            </div>
-          </div>
-          <div className="mt-3 text-xs text-slate-500">
-            Tip: set <span className="font-mono">NEXT_PUBLIC_AGENT_PASSPORT_ADDRESS</span> to use on-chain data.
-          </div>
+        <div className="mt-3 min-w-0 overflow-hidden rounded-lg border border-white/[0.06] bg-black/30 p-3 text-[11.5px]">
+          <dl className="space-y-1.5">
+            <DetailRow label="passport.id" value={passport.agentId} />
+            <DetailRow label="owner" value={passport.owner || "—"} />
+            <DetailRow label="agentWallet" value={passport.agentWallet || "—"} />
+            <DetailRow label="score" value={`${scoreNumber}`} />
+            <DetailRow label="active" value={String(passport.active)} />
+            {passport.metadataURI && <DetailRow label="metadata" value={passport.metadataURI} wrap />}
+          </dl>
         </div>
       )}
     </button>
   );
 }
 
+function AddressRow({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="flex min-w-0 items-baseline gap-3">
+      <dt className="w-12 shrink-0 text-faint">{label}</dt>
+      <dd className="min-w-0 flex-1 truncate font-mono tabular-nums text-muted text-right">{value}</dd>
+    </div>
+  );
+}
+
+function DetailRow({ label, value, wrap = false }: { label: string; value: string; wrap?: boolean }) {
+  return (
+    <div className="flex min-w-0 items-baseline gap-3">
+      <dt className="shrink-0 text-faint">{label}</dt>
+      <dd
+        className={[
+          "min-w-0 flex-1 text-right font-mono text-muted",
+          wrap ? "break-all whitespace-pre-wrap" : "truncate"
+        ].join(" ")}
+        title={value}
+      >
+        {value}
+      </dd>
+    </div>
+  );
+}
