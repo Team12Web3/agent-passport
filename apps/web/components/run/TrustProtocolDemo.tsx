@@ -24,7 +24,7 @@ function FakeCaptcha() {
       {emojis.map((e, i) => (
         <div
           key={i}
-          className="flex h-14 w-14 select-none items-center justify-center rounded bg-zinc-700 text-lg"
+          className="flex h-14 w-14 select-none items-center justify-center rounded bg-slate-700 text-lg"
         >
           {e}
         </div>
@@ -55,12 +55,12 @@ function BlockedOverlay({ shaking }: { shaking: boolean }) {
 function VerifiedOverlay({ phase }: { phase: "verifying" | "verified" }) {
   if (phase === "verifying") {
     return (
-      <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 bg-zinc-900/95">
+      <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 bg-slate-900/95">
         <svg className="h-6 w-6 animate-spin text-green-400" fill="none" viewBox="0 0 24 24">
           <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
           <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" />
         </svg>
-        <p className="text-sm text-zinc-300">Verifying passport on Avalanche…</p>
+        <p className="text-sm text-slate-300">Verifying passport on Avalanche…</p>
       </div>
     );
   }
@@ -73,10 +73,10 @@ function VerifiedOverlay({ phase }: { phase: "verifying" | "verified" }) {
         {CLEAN_ITEMS.map((item, i) => (
           <li
             key={i}
-            className="flex items-center justify-between rounded border border-green-100 bg-green-50 px-3 py-2 text-xs text-zinc-700"
+            className="flex items-center justify-between rounded border border-green-100 bg-green-50 px-3 py-2 text-xs text-slate-700"
           >
             <span className="font-medium">{item.name}</span>
-            <span className="text-zinc-500">{item.desc}</span>
+            <span className="text-slate-500">{item.desc}</span>
           </li>
         ))}
       </ul>
@@ -168,23 +168,23 @@ export function TrustProtocolDemo({ agentId }: { agentId: string }) {
     setRunning(false);
   }
 
-  const withoutBorder = withoutPhase === "blocked" ? "border-red-600"  : "border-zinc-700";
-  const withBorder    = withPhase    === "verified" ? "border-green-500": "border-zinc-700";
+  const withoutBorder = withoutPhase === "blocked" ? "border-red-600"  : "border-slate-700";
+  const withBorder    = withPhase    === "verified" ? "border-green-500": "border-slate-700";
 
   return (
-    <div className="mt-8 rounded-xl border border-zinc-800 bg-zinc-900 p-6">
+    <div className="mt-8 rounded-xl border border-slate-800/80 bg-slate-950/70 p-6 backdrop-blur shadow-[0_10px_30px_rgba(2,6,23,0.45)]">
       {/* Header */}
       <div className="mb-5 flex items-start justify-between">
         <div>
           <h2 className="text-lg font-bold text-white">Trust Protocol</h2>
-          <p className="mt-1 text-sm text-zinc-400">
+          <p className="mt-1 text-sm text-slate-400">
             See what happens when an agent runs with vs. without a passport.
           </p>
         </div>
         {(withoutPhase !== "idle" || withPhase !== "idle") && (
           <button
             onClick={reset}
-            className="text-xs text-zinc-500 underline hover:text-zinc-300"
+            className="text-xs text-slate-500 underline hover:text-slate-300"
           >
             Reset
           </button>
@@ -195,16 +195,16 @@ export function TrustProtocolDemo({ agentId }: { agentId: string }) {
       <div className="grid grid-cols-2 gap-4">
         {/* ── WITHOUT passport ── */}
         <div
-          className={`overflow-hidden rounded-xl border bg-black transition-colors duration-300 ${withoutBorder}`}
+          className={`overflow-hidden rounded-xl border bg-slate-950 transition-colors duration-300 ${withoutBorder}`}
         >
-          <div className="flex items-center gap-2 border-b border-zinc-800 bg-zinc-900 px-4 py-2.5">
+          <div className="flex items-center gap-2 border-b border-slate-800 bg-slate-900 px-4 py-2.5">
             {/* Shield-off icon */}
             <svg className="h-4 w-4 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
                 d="M20.618 5.984A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
               />
             </svg>
-            <span className="text-sm font-semibold text-zinc-200">Without Passport</span>
+            <span className="text-sm font-semibold text-slate-200">Without Passport</span>
             {withoutPhase === "blocked" && (
               <span className="ml-auto rounded-full bg-red-900 px-2 py-0.5 text-xs font-bold text-red-300">
                 BLOCKED
@@ -213,15 +213,15 @@ export function TrustProtocolDemo({ agentId }: { agentId: string }) {
           </div>
 
           {/* Mini browser area */}
-          <div className="relative h-[200px] bg-zinc-800">
+          <div className="relative h-[200px] bg-slate-800">
             {withoutPhase === "idle" && (
-              <div className="flex h-full items-center justify-center text-xs text-zinc-600">
+              <div className="flex h-full items-center justify-center text-xs text-slate-600">
                 Click &ldquo;Run comparison&rdquo; to start
               </div>
             )}
             {withoutPhase === "running" && (
               <div className="flex h-full items-center justify-center">
-                <svg className="h-5 w-5 animate-spin text-zinc-400" fill="none" viewBox="0 0 24 24">
+                <svg className="h-5 w-5 animate-spin text-slate-400" fill="none" viewBox="0 0 24 24">
                   <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                   <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" />
                 </svg>
@@ -231,23 +231,23 @@ export function TrustProtocolDemo({ agentId }: { agentId: string }) {
           </div>
 
           {/* Mini terminal */}
-          <div className="border-t border-zinc-800">
+          <div className="border-t border-slate-800">
             <AgentTerminal events={withoutEvents} status={withoutStatus} compact />
           </div>
         </div>
 
         {/* ── WITH passport ── */}
         <div
-          className={`overflow-hidden rounded-xl border bg-black transition-colors duration-500 ${withBorder}`}
+          className={`overflow-hidden rounded-xl border bg-slate-950 transition-colors duration-500 ${withBorder}`}
         >
-          <div className="flex items-center gap-2 border-b border-zinc-800 bg-zinc-900 px-4 py-2.5">
+          <div className="flex items-center gap-2 border-b border-slate-800 bg-slate-900 px-4 py-2.5">
             {/* Shield-check icon */}
             <svg className="h-4 w-4 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
                 d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
               />
             </svg>
-            <span className="text-sm font-semibold text-zinc-200">With Passport</span>
+            <span className="text-sm font-semibold text-slate-200">With Passport</span>
             {withPhase === "verified" && (
               <span className="ml-auto rounded-full bg-green-900 px-2 py-0.5 text-xs font-bold text-green-300">
                 VERIFIED ✓
@@ -256,15 +256,15 @@ export function TrustProtocolDemo({ agentId }: { agentId: string }) {
           </div>
 
           {/* Mini browser area */}
-          <div className="relative h-[200px] bg-zinc-800">
+          <div className="relative h-[200px] bg-slate-800">
             {withPhase === "idle" && (
-              <div className="flex h-full items-center justify-center text-xs text-zinc-600">
+              <div className="flex h-full items-center justify-center text-xs text-slate-600">
                 Starts 1.5 s after &ldquo;Without&rdquo; run
               </div>
             )}
             {withPhase === "running" && (
               <div className="flex h-full items-center justify-center">
-                <svg className="h-5 w-5 animate-spin text-zinc-400" fill="none" viewBox="0 0 24 24">
+                <svg className="h-5 w-5 animate-spin text-slate-400" fill="none" viewBox="0 0 24 24">
                   <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                   <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" />
                 </svg>
@@ -276,7 +276,7 @@ export function TrustProtocolDemo({ agentId }: { agentId: string }) {
           </div>
 
           {/* Mini terminal */}
-          <div className="border-t border-zinc-800">
+          <div className="border-t border-slate-800">
             <AgentTerminal events={withEvents} status={withStatus} compact />
           </div>
         </div>
