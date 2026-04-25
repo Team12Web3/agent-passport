@@ -56,6 +56,35 @@ forge test
 forge script script/Deploy.s.sol --rpc-url $FUJI_RPC --broadcast
 ```
 
+## Production checklist (hackathon MVP)
+
+> Scoped to "demo-ready", not "enterprise-ready". See [docs/05-environment-setup.md](./docs/05-environment-setup.md) and [docs/07-demo-script.md](./docs/07-demo-script.md).
+
+**Secrets & env**
+- [ ] `.env.local` populated from `.env.example`; no secrets committed (`git grep -n "sk-\|0x[a-fA-F0-9]\{64\}"` is clean)
+- [ ] Vercel env vars set for `production` and `preview` (Anthropic, Thirdweb, Supabase, Firecrawl, Fuji RPC)
+- [ ] Server-only keys are **not** prefixed with `NEXT_PUBLIC_`
+
+**Smart contracts**
+- [ ] `forge test` green
+- [ ] Deployed to Avalanche Fuji; addresses pinned in `apps/web/lib/contracts/addresses.ts` (or equivalent)
+- [ ] Deployer wallet funded with enough Fuji AVAX for the demo flow + 2 retries
+
+**Web app**
+- [ ] `pnpm build` succeeds with no type errors
+- [ ] Wallet connect → passport mint → signed request happy path works end-to-end on a fresh browser profile
+- [ ] 404 / wallet-disconnected / wrong-chain states render something other than a stack trace
+
+**Demo readiness**
+- [ ] One pre-seeded passport + agent wallet exists so the demo doesn't depend on live mint timing
+- [ ] Backup recording of the full flow in case Fuji RPC or Anthropic flakes mid-pitch
+- [ ] <!-- TODO(team): list the 2–3 demo-specific items that would actually sink the pitch if they broke (e.g. "EAS schema UID matches what the verifier middleware expects") -->
+
+**Known limitations (intentional, not bugs)**
+- [ ] <!-- TODO(team): list what's deliberately out of scope so judges know it's a choice — e.g. "no rate limiting on /api/agent/*", "session keys don't auto-expire", "slashing flow is stubbed", "single-region Supabase" -->
+
+---
+
 ## Stack
 
 Next.js 14 · Tailwind · shadcn/ui · Thirdweb · Vercel AI SDK · Anthropic Claude · Firecrawl · Supabase · Foundry · Avalanche Fuji · Vercel.

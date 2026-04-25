@@ -34,7 +34,11 @@ NEXT_PUBLIC_TW_CLIENT_ID=
 SUPABASE_URL=
 SUPABASE_SERVICE_ROLE_KEY=
 
-ANTHROPIC_API_KEY=
+OPENAI_API_KEY=
+# Optional model overrides (defaults: gpt-4o-mini for cheap, gpt-5-mini for complex)
+OPENAI_MODEL_CHEAP=
+OPENAI_MODEL_COMPLEX=
+
 FIRECRAWL_API_KEY=
 
 PLATFORM_PRIVATE_KEY=${platformPk}

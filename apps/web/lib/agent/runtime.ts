@@ -5,8 +5,8 @@ import {
   toBytes,
   type Hex,
 } from "viem";
-import { anthropic } from "@ai-sdk/anthropic";
 import { streamText } from "ai";
+import { cheapModel } from "./llm";
 import { getPublicClient } from "../chain/client";
 import { ActionLog, AgentPassport, USDC, assertContractsDeployed } from "../chain/contracts";
 import { getSupabase, type AgentRow } from "../db/supabase";
@@ -149,7 +149,7 @@ export async function runAgentTask(
     // consumption is required to drive the stream
   }
   const summary = await fullText;
-  pushAction("anthropic", { prompt: args.prompt }, { summary });
+  pushAction("llm", { prompt: args.prompt }, { summary });
 
   // 5. Hash + submit ActionLog tx from agent's signer
   const taskHash    = keccak256(toBytes(`${args.prompt}|${args.url}`));
@@ -271,7 +271,7 @@ async function streamLLM(opts: {
   onDelta: (chunk: string) => void;
 }) {
   const result = await streamText({
-    model: anthropic("claude-haiku-4-5-20251001"),
+    model: cheapModel(),
     system:
       "You are an analyst. Answer the user's prompt based on the page content provided. Be concise — 4–6 sentences. Cite specific items where useful.",
     messages: [
