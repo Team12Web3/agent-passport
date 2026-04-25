@@ -1,0 +1,236 @@
+# 04 — On-chain Contracts
+
+Both contracts deploy to **Avalanche Fuji** (chainId 43113). Solidity ^0.8.20. Foundry.
+
+After deploy, addresses + ABIs go into `packages/contracts/deployments.json` and are imported by the Next.js app.
+
+---
+
+## `AgentPassport.sol`
+
+Append-only registry binding agents to owners and wallets. Mints are gated to a single platform address (us) to keep agent creation gas-free for users during the hackathon.
+
+### Storage
+
+```solidity
+struct Passport {
+    address owner;            // user's wallet (from Thirdweb)
+    address agentWallet;      // agent's EOA (server-managed)
+    string  metadataURI;      // optional ipfs:// or https:// — we'll use a JSON blob URL
+    bool    active;
+    uint64  createdAt;
+    uint16  trustScore;       // starts at 50, ticks up on successful actions
+}
+
+mapping(uint256 => Passport) public passports;
+mapping(address => uint256[]) public agentsByOwner;     // owner → passport ids
+mapping(address => uint256)   public passportByWallet;  // agentWallet → passport id (0 = none)
+uint256 public nextId = 1;
+
+address public platform;       // immutable after constructor
+```
+
+### External functions
+
+```solidity
+function mintPassport(
+    address owner,
+    address agentWallet,
+    string calldata metadataURI
+) external returns (uint256 id);
+// onlyPlatform.
+// Reverts if agentWallet is already registered.
+// Sets active=true, trustScore=50, createdAt=block.timestamp.
+// Emits PassportMinted(id, owner, agentWallet).
+
+function setActive(uint256 id, bool active) external;
+// onlyPlatform OR owner of the passport.
+// Emits PassportStatusChanged(id, active).
+
+function bumpTrust(uint256 id, uint16 delta) external;
+// onlyActionLog (set as a known address).
+// Caps at 100.
+
+function getPassport(uint256 id) external view returns (Passport memory);
+
+function passportsOf(address owner) external view returns (uint256[] memory);
+```
+
+### Events
+
+```solidity
+event PassportMinted(uint256 indexed id, address indexed owner, address indexed agentWallet);
+event PassportStatusChanged(uint256 indexed id, bool active);
+event TrustScoreChanged(uint256 indexed id, uint16 newScore);
+```
+
+### Modifiers
+
+```solidity
+modifier onlyPlatform() {
+    require(msg.sender == platform, "not platform");
+    _;
+}
+```
+
+### Constructor
+
+```solidity
+constructor(address _platform) {
+    platform = _platform;
+}
+```
+
+---
+
+## `ActionLog.sol`
+
+Append-only audit log of agent actions. One tx per agent task (not per individual action). The actions list is hashed off-chain and stored as a single root for verifiability.
+
+### Storage
+
+```solidity
+IAgentPassport public immutable passportContract;
+IERC20         public immutable feeToken;     // Fuji USDC
+uint256        public actionCount;            // global counter
+```
+
+### External functions
+
+```solidity
+function logAction(
+    uint256 passportId,
+    bytes32 taskHash,        // keccak256(prompt || url)
+    bytes32 actionsRoot,     // keccak256(JSON.stringify(actions))
+    uint256 feeAmount,       // in USDC (6-decimal)
+    address beneficiary
+) external;
+// Verifies msg.sender == passport.agentWallet AND passport.active.
+// If feeAmount > 0: pulls feeToken from msg.sender to beneficiary
+//   (agent must have approved this contract beforehand).
+// Optionally calls passportContract.bumpTrust(passportId, 1).
+// Emits ActionLogged(...).
+```
+
+### Events
+
+```solidity
+event ActionLogged(
+    uint256 indexed passportId,
+    address indexed agentWallet,
+    bytes32 taskHash,
+    bytes32 actionsRoot,
+    uint256 feeAmount,
+    address beneficiary,
+    uint256 blockTimestamp
+);
+```
+
+### Constructor
+
+```solidity
+constructor(address _passport, address _feeToken) {
+    passportContract = IAgentPassport(_passport);
+    feeToken         = IERC20(_feeToken);
+}
+```
+
+After deploy, call `AgentPassport.setActionLog(address)` (a one-shot setter) so `bumpTrust` can be invoked.
+
+---
+
+## Deploy script — `Deploy.s.sol`
+
+```solidity
+// script/Deploy.s.sol
+contract Deploy is Script {
+    function run() external {
+        uint256 pk = vm.envUint("PLATFORM_PRIVATE_KEY");
+        address platform = vm.addr(pk);
+        address usdc = vm.envAddress("USDC_ADDRESS");
+
+        vm.startBroadcast(pk);
+        AgentPassport passport = new AgentPassport(platform);
+        ActionLog log = new ActionLog(address(passport), usdc);
+        passport.setActionLog(address(log));
+        vm.stopBroadcast();
+
+        console.log("AgentPassport:", address(passport));
+        console.log("ActionLog:    ", address(log));
+    }
+}
+```
+
+After running, write `deployments.json`:
+
+```json
+{
+  "network": "fuji",
+  "chainId": 43113,
+  "AgentPassport": {
+    "address": "0x...",
+    "abi": [...]
+  },
+  "ActionLog": {
+    "address": "0x...",
+    "abi": [...]
+  },
+  "USDC": {
+    "address": "0x5425890298aed601595a70AB815c96711a31Bc65"
+  }
+}
+```
+
+---
+
+## Tests (must pass before deploying)
+
+`AgentPassport.t.sol`:
+- ✅ `mintPassport` succeeds when called by platform
+- ✅ `mintPassport` reverts when called by non-platform
+- ✅ `mintPassport` reverts on duplicate `agentWallet`
+- ✅ `setActive` succeeds for platform and owner; reverts for others
+- ✅ `passportsOf` returns correct list
+- ✅ `bumpTrust` only callable from ActionLog address; caps at 100
+
+`ActionLog.t.sol`:
+- ✅ `logAction` succeeds when caller is the registered agentWallet
+- ✅ `logAction` reverts when caller is not the agentWallet
+- ✅ `logAction` reverts when passport is inactive
+- ✅ `logAction` with `feeAmount > 0` transfers USDC correctly
+- ✅ `logAction` with `feeAmount == 0` skips transfer
+- ✅ `ActionLogged` event has correct fields
+
+Run: `forge test -vv`
+
+---
+
+## Gas / cost notes
+
+- Mint passport: ~80k gas (~0.0002 AVAX on Fuji).
+- Log action: ~60k gas + ERC20 transfer if fee > 0 (~0.00015 AVAX).
+- Each agent gets pre-funded with 0.05 AVAX (enough for ~300 log actions).
+
+## Why no upgradeability
+
+These are hackathon contracts. Immutable + fast deploys. If we find a bug, we redeploy and update `deployments.json`. The DB references `passportId` only, so it survives a fresh deploy as long as we re-mint.
+
+## Reading from the frontend (viem)
+
+```ts
+import deployments from "@/../packages/contracts/deployments.json";
+import { createPublicClient, http } from "viem";
+import { avalancheFuji } from "viem/chains";
+
+const client = createPublicClient({
+  chain: avalancheFuji,
+  transport: http(process.env.NEXT_PUBLIC_FUJI_RPC),
+});
+
+const passport = await client.readContract({
+  address: deployments.AgentPassport.address,
+  abi: deployments.AgentPassport.abi,
+  functionName: "getPassport",
+  args: [42n],
+});
+```
