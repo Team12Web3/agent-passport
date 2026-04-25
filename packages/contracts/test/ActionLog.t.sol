@@ -7,8 +7,20 @@ import {ActionLog} from "../src/ActionLog.sol";
 import {MockUSDC} from "./MockUSDC.sol";
 
 contract ActionLogTest is Test {
+    // Mirror of ActionLog.ActionLogged so vm.expectEmit can match it without
+    // a contract-qualified reference (Solidity 0.8.20 doesn't resolve those).
+    event ActionLogged(
+        uint256 indexed passportId,
+        address indexed agentWallet,
+        bytes32 taskHash,
+        bytes32 actionsRoot,
+        uint256 feeAmount,
+        address beneficiary,
+        uint256 blockTimestamp
+    );
+
     AgentPassport passport;
-    ActionLog log;
+    ActionLog logContract;
     MockUSDC usdc;
 
     address platform = address(0xA11CE);
@@ -27,10 +39,10 @@ contract ActionLogTest is Test {
         passport = new AgentPassport(platform);
 
         usdc = new MockUSDC();
-        log  = new ActionLog(address(passport), address(usdc));
+        logContract  = new ActionLog(address(passport), address(usdc));
 
         vm.prank(platform);
-        passport.setActionLog(address(log));
+        passport.setActionLog(address(logContract));
 
         vm.prank(platform);
         passport.mintPassport(user, agentW, "x");
@@ -38,20 +50,20 @@ contract ActionLogTest is Test {
         usdc.mint(agentW, 1_000_000); // 1 USDC
 
         vm.prank(agentW);
-        usdc.approve(address(log), type(uint256).max);
+        usdc.approve(address(logContract), type(uint256).max);
     }
 
     function test_LogAction_Succeeds_AsAgentWallet() public {
         vm.prank(agentW);
-        log.logAction(1, taskHash, actionsRoot, 0, beneficiary);
-        assertEq(log.actionCount(), 1);
+        logContract.logAction(1, taskHash, actionsRoot, 0, beneficiary);
+        assertEq(logContract.actionCount(), 1);
         assertEq(passport.getPassport(1).trustScore, 51);
     }
 
     function test_LogAction_RevertsWhenNotAgentWallet() public {
         vm.prank(user);
         vm.expectRevert(ActionLog.WrongAgent.selector);
-        log.logAction(1, taskHash, actionsRoot, 0, beneficiary);
+        logContract.logAction(1, taskHash, actionsRoot, 0, beneficiary);
     }
 
     function test_LogAction_RevertsWhenInactive() public {
@@ -60,13 +72,13 @@ contract ActionLogTest is Test {
 
         vm.prank(agentW);
         vm.expectRevert(ActionLog.PassportInactive.selector);
-        log.logAction(1, taskHash, actionsRoot, 0, beneficiary);
+        logContract.logAction(1, taskHash, actionsRoot, 0, beneficiary);
     }
 
     function test_LogAction_TransfersFee() public {
         uint256 fee = 100_000; // 0.10 USDC
         vm.prank(agentW);
-        log.logAction(1, taskHash, actionsRoot, fee, beneficiary);
+        logContract.logAction(1, taskHash, actionsRoot, fee, beneficiary);
 
         assertEq(usdc.balanceOf(beneficiary), fee);
         assertEq(usdc.balanceOf(agentW), 1_000_000 - fee);
@@ -74,14 +86,14 @@ contract ActionLogTest is Test {
 
     function test_LogAction_ZeroFee_SkipsTransfer() public {
         vm.prank(agentW);
-        log.logAction(1, taskHash, actionsRoot, 0, beneficiary);
+        logContract.logAction(1, taskHash, actionsRoot, 0, beneficiary);
         assertEq(usdc.balanceOf(beneficiary), 0);
         assertEq(usdc.balanceOf(agentW), 1_000_000);
     }
 
     function test_ActionLogged_EventFields() public {
-        vm.expectEmit(true, true, false, true, address(log));
-        emit ActionLog.ActionLogged(
+        vm.expectEmit(true, true, false, true, address(logContract));
+        emit ActionLogged(
             1,
             agentW,
             taskHash,
@@ -92,6 +104,6 @@ contract ActionLogTest is Test {
         );
 
         vm.prank(agentW);
-        log.logAction(1, taskHash, actionsRoot, 100_000, beneficiary);
+        logContract.logAction(1, taskHash, actionsRoot, 100_000, beneficiary);
     }
 }

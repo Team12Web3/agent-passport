@@ -77,6 +77,16 @@ export async function runAgentTask(
 
   emit({ type: "started", runId, passportId: a.passport_id });
 
+  // Read the on-chain passport once so we can echo the trust score in the
+  // `verified` event after a successful trust-bearing scrape.
+  const passport = (await getPublicClient().readContract({
+    address: AgentPassport.address,
+    abi: AgentPassport.abi as never,
+    functionName: "getPassport",
+    args: [BigInt(a.passport_id)],
+  })) as { trustScore: number | bigint };
+  const trustScore = Number(passport.trustScore);
+
   const actions: Action[] = [];
   let stepCounter = 0;
   const pushAction = (tool: string, input: unknown, output: unknown) => {
@@ -118,6 +128,10 @@ export async function runAgentTask(
     raw = await scrapeJina(args.url, trustHeaders);
     emit({ type: "scraped", chars: raw.length, source: "jina" });
     pushAction("jina", { url: args.url }, { chars: raw.length });
+  }
+
+  if (args.withPassport) {
+    emit({ type: "verified", passportId: a.passport_id, trustScore });
   }
 
   // 3. Clean
