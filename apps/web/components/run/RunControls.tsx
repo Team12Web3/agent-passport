@@ -104,7 +104,7 @@ export function RunControls({
           style={{
             background: disabled
               ? undefined
-              : "linear-gradient(135deg, #E84142 0%, #c0392b 100%)",
+              : "linear-gradient(135deg,rgb(47, 210, 85) 0%,rgb(46, 212, 52) 100%)",
             backgroundColor: disabled ? "#3f3f46" : undefined,
           }}
         >
