@@ -1,104 +1,83 @@
-# Agent Passport
+# Agent Passport Dashboard
 
-> **Trust by signature, not by CAPTCHA.**
-> A platform where AI agents get verifiable on-chain identities, their own crypto wallets, and tamper-proof audit trails.
+Minimal hackathon MVP for **Agent Passport**:
 
-Built for **Web3NZ Hackathon** — 26 hours, 5 people, three prize tracks.
+- Solidity smart contract: `AgentPassport.sol`
+- Next.js dashboard: monitor agents, trust status, and task progress
+- thirdweb connect (email in-app wallet + MetaMask) for a single clean auth + signing layer
+- Create Agent tab to create passports on-chain (or local demo fallback)
 
----
+## Tech Stack
 
-## Quick links
+- Next.js (App Router)
+- React
+- TailwindCSS
+- ethers.js
+- thirdweb (wallet connect + tx signing)
+- Avalanche Fuji RPC
 
-- 📖 [**Start here → /docs**](./docs/README.md)
-- 🎯 [Product vision](./docs/00-vision.md)
-- 🏗️ [Architecture](./docs/01-architecture.md)
-- 🧑‍💻 [Per-person task cards](./docs/tasks)
-- 📜 [API contracts](./docs/03-api-contracts.md)
-- ⛓️ [Smart contracts](./docs/04-onchain-contracts.md)
-- 🎬 [Demo script](./docs/07-demo-script.md)
+## Features
 
----
+- `/auth` connect screen (thirdweb `ConnectEmbed`)
+- `/dashboard` page with dark admin-style UI
+- Agent cards showing:
+  - Agent ID
+  - Owner wallet (shortened)
+  - Reputation score
+  - Status (`Active` / `Revoked`)
+  - Trust state (`Trusted` / `Untrusted`)
+  - Task progress bar (mocked for demo)
+- Expandable card details per agent
+- **Create Agent** tab:
+  - Calls `createPassport(agentId)` on Fuji via thirdweb (`prepareContractCall` + `useSendTransaction`)
+  - If contract address is not configured, adds local demo agent
+- On-chain reads via `ethers`:
+  - `getPassport(agentId)`
+  - `verifyAgent(agentId, minScore)`
+- Automatic mock fallback when RPC/contract calls fail
 
-## Trust protocol
+## Smart Contract
 
-Our protocol is built around four trust signals that a website can verify in lightweight middleware:
+`AgentPassport.sol` includes:
 
-- `X-Agent-Passport-ID`: points to an EAS (Ethereum Attestation Service) credential so the site can resolve attributes such as developer, model platform, and labels like `non-crawler`.
-- `X-Agent-Signature` + `X-Agent-Timestamp`: proves identity and agreement to the current Terms of Service, and gives the site signed evidence it can use for a staking/slashing flow if abuse happens.
-- `X-Agent-Session-Proof`: proves the request is being made by a session key that the owner's main wallet authorized on-chain.
-- Extended `X-Agent-Intent-Hash`: commits to the user's original instruction and can carry a ZK proof that the current action is derived from that intent.
+- `createPassport(string agentId)`
+- `verifyAgent(string agentId, uint256 minScore)`
+- `updateScore(string agentId, uint256 newScore)` (owner only)
+- `getPassport(string agentId)`
 
-## Repo layout
-
-```
-agent-passport/
-├── apps/
-│   └── web/              # Next.js 14 app (frontend + API routes)
-├── packages/
-│   └── contracts/        # Foundry project (Solidity)
-└── docs/                 # All planning, specs, and task cards
-```
-
-## Run locally
-
-```bash
-pnpm install
-cp .env.example .env.local        # fill in keys (see docs/05-environment-setup.md)
-pnpm dev                           # apps/web on http://localhost:3000
-```
-
-Contracts:
+## Getting Started
 
 ```bash
-cd packages/contracts
-forge install
-forge test
-forge script script/Deploy.s.sol --rpc-url $FUJI_RPC --broadcast
+npm install
+npm run dev
 ```
 
-## Production checklist (hackathon MVP)
+Open:
 
-> Scoped to "demo-ready", not "enterprise-ready". See [docs/05-environment-setup.md](./docs/05-environment-setup.md) and [docs/07-demo-script.md](./docs/07-demo-script.md).
+- `http://localhost:3000/auth` (connect)
+- `http://localhost:3000/dashboard` (after connecting)
 
-**Secrets & env**
-- [ ] `.env.local` populated from `.env.example`; no secrets committed (`git grep -n "sk-\|0x[a-fA-F0-9]\{64\}"` is clean)
-- [ ] Vercel env vars set for `production` and `preview` (Anthropic, Thirdweb, Supabase, Firecrawl, Fuji RPC)
-- [ ] Server-only keys are **not** prefixed with `NEXT_PUBLIC_`
+## Environment
 
-**Smart contracts**
-- [ ] `forge test` green
-- [ ] Deployed to Avalanche Fuji; addresses pinned in `apps/web/lib/contracts/addresses.ts` (or equivalent)
-- [ ] Deployer wallet funded with enough Fuji AVAX for the demo flow + 2 retries
+Create `.env.local`:
 
-**Web app**
-- [ ] `pnpm build` succeeds with no type errors
-- [ ] Wallet connect → passport mint → signed request happy path works end-to-end on a fresh browser profile
-- [ ] 404 / wallet-disconnected / wrong-chain states render something other than a stack trace
+```bash
+NEXT_PUBLIC_AGENT_PASSPORT_ADDRESS=0xYourDeployedContractAddress
+NEXT_PUBLIC_THIRDWEB_CLIENT_ID=YourThirdwebClientId
+```
 
-**Demo readiness**
-- [ ] One pre-seeded passport + agent wallet exists so the demo doesn't depend on live mint timing
-- [ ] Backup recording of the full flow in case Fuji RPC or Anthropic flakes mid-pitch
-- [ ] <!-- TODO(team): list the 2–3 demo-specific items that would actually sink the pitch if they broke (e.g. "EAS schema UID matches what the verifier middleware expects") -->
+- `NEXT_PUBLIC_THIRDWEB_CLIENT_ID` is required for `/auth` + wallet-backed actions
+- If `NEXT_PUBLIC_AGENT_PASSPORT_ADDRESS` is set, dashboard reads from Avalanche Fuji + contract
+- If `NEXT_PUBLIC_AGENT_PASSPORT_ADDRESS` is not set, dashboard uses mock/demo mode for passport cards (wallet connect still works)
 
-**Known limitations (intentional, not bugs)**
-- [ ] <!-- TODO(team): list what's deliberately out of scope so judges know it's a choice — e.g. "no rate limiting on /api/agent/*", "session keys don't auto-expire", "slashing flow is stubbed", "single-region Supabase" -->
+## Network
 
----
+- Avalanche Fuji RPC:
+  - `https://api.avax-test.network/ext/bc/C/rpc`
 
-## Stack
+## Notes for Demo
 
-Next.js 14 · Tailwind · shadcn/ui · Thirdweb · Vercel AI SDK · Anthropic Claude · Firecrawl · Supabase · Foundry · Avalanche Fuji · Vercel.
+- Trust threshold is currently `500`
+- Agent list is mock-seeded plus any newly created local/on-chain agents
+- Progress values are deterministic mock percentages for demo reliability
 
-## Team
-
-| # | Role                                | Owner |
-|---|-------------------------------------|-------|
-| 1 | Backend & Contracts                 |       |
-| 2 | Auth & Agent Wallets                |       |
-| 3 | Agent Execution UI                  |       |
-| 4 | Dashboard & Agent Management        |       |
-| 5 | Frontend Shell, Polish, Demo Prep   |       |
-
----
-
-Built at Web3NZ Hackathon 2026.

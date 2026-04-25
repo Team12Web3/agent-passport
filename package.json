@@ -1,13 +1,27 @@
 {
-  "name": "agent-passport",
-  "private": true,
+  "name": "hackathon2",
+  "version": "1.0.0",
+  "description": "",
   "scripts": {
-    "dev": "pnpm --filter web dev",
-    "build": "pnpm --filter web build",
-    "start": "pnpm --filter web start",
-    "contracts:build": "cd packages/contracts && forge build",
-    "contracts:test": "cd packages/contracts && forge test",
-    "contracts:deploy": "cd packages/contracts && forge script script/Deploy.s.sol --rpc-url $NEXT_PUBLIC_FUJI_RPC --broadcast"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
   },
-  "packageManager": "pnpm@9.0.0"
+  "license": "ISC",
+  "dependencies": {
+    "ethers": "^6.16.0",
+    "next": "^16.2.4",
+    "react": "^19.2.5",
+    "react-dom": "^19.2.5",
+    "thirdweb": "^5.119.4"
+  },
+  "devDependencies": {
+    "@types/node": "^25.6.0",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "autoprefixer": "^10.5.0",
+    "postcss": "^8.5.10",
+    "tailwindcss": "^3.4.17",
+    "typescript": "^6.0.3"
+  }
 }
