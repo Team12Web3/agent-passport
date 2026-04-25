@@ -28,12 +28,15 @@ export async function POST(req: NextRequest) {
       },
       { onConflict: "thirdweb_id" },
     )
-    .select("*")
+    .select("id, thirdweb_id, email, wallet_address, username, onboarded_at, created_at")
     .single();
 
   if (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 
-  return NextResponse.json({ user: data });
+  return NextResponse.json({
+    user: data,
+    needsOnboarding: !data.onboarded_at,
+  });
 }
