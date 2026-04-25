@@ -1,11 +1,26 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
-import { ethers } from "ethers";
+import { useEffect, useMemo, useState, type FormEvent } from "react";
+import { useRouter } from "next/navigation";
+import { getContract, prepareContractCall, type ThirdwebClient } from "thirdweb";
+import { avalancheFuji } from "thirdweb/chains";
+import {
+  useActiveAccount,
+  useActiveWallet,
+  useActiveWalletChain,
+  useActiveWalletConnectionStatus,
+  useDisconnect,
+  useProfiles,
+  useSendTransaction,
+  useSwitchActiveWalletChain,
+  useWalletBalance
+} from "thirdweb/react";
 import type { Passport } from "@/lib/agentPassport";
 import { fetchPassport, fetchVerifyAgent } from "@/lib/agentPassport";
 import { MOCK_AGENT_IDS, mockOwner, mockProgressPercent, mockScore } from "@/lib/mockAgents";
 import { AgentCard } from "@/components/AgentCard";
+import { shortenAddress } from "@/lib/utils";
+import { getThirdwebClient } from "@/lib/thirdwebClient";
 
 type AgentRow = {
   agentId: string;
@@ -27,20 +42,47 @@ function mockPassport(agentId: string): Passport {
 }
 
 export default function DashboardPage() {
+  const client = getThirdwebClient();
+
+  if (!client) {
+    return (
+      <main className="min-h-screen bg-[#050b1a]">
+        <div className="mx-auto max-w-6xl px-5 py-10 text-amber-200">
+          Missing <span className="font-mono">NEXT_PUBLIC_THIRDWEB_CLIENT_ID</span>. Add it to <span className="font-mono">.env.local</span> and restart{" "}
+          <span className="font-mono">npm run dev</span>.
+        </div>
+      </main>
+    );
+  }
+
+  return <DashboardShell client={client} />;
+}
+
+function DashboardShell({ client }: { client: ThirdwebClient }) {
+  const router = useRouter();
+  const account = useActiveAccount();
+  const wallet = useActiveWallet();
+  const chain = useActiveWalletChain();
+  const walletStatus = useActiveWalletConnectionStatus();
+  const { disconnect } = useDisconnect();
+  const switchChain = useSwitchActiveWalletChain();
+  const { mutateAsync: sendTx } = useSendTransaction({ payModal: false });
+  const profilesQuery = useProfiles({ client });
+  const walletBalanceQuery = useWalletBalance({
+    client,
+    address: account?.address,
+    chain: chain ?? avalancheFuji
+  });
+
   const contractAddress = process.env.NEXT_PUBLIC_AGENT_PASSPORT_ADDRESS || "";
 
-  const baseAgentIds = useMemo(() => {
-    // MVP: mock list is fine (replace with indexing later).
-    return MOCK_AGENT_IDS;
-  }, []);
+  const baseAgentIds = useMemo(() => MOCK_AGENT_IDS, []);
   const [createdAgentIds, setCreatedAgentIds] = useState<string[]>([]);
-  const agentIds = useMemo(() => {
-    return Array.from(new Set([...createdAgentIds, ...baseAgentIds]));
-  }, [baseAgentIds, createdAgentIds]);
+  const agentIds = useMemo(() => Array.from(new Set([...createdAgentIds, ...baseAgentIds])), [baseAgentIds, createdAgentIds]);
 
   const [rows, setRows] = useState<AgentRow[] | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [activeTab, setActiveTab] = useState<"monitor" | "create">("monitor");
+  const [activeTab, setActiveTab] = useState<"monitor" | "create" | "profile">("monitor");
   const [newAgentId, setNewAgentId] = useState("");
   const [createState, setCreateState] = useState<{ loading: boolean; message: string | null; ok: boolean }>({
     loading: false,
@@ -48,7 +90,36 @@ export default function DashboardPage() {
     ok: false
   });
 
+  const linkedEmail = useMemo(() => {
+    const profiles = profilesQuery.data;
+    if (!profiles?.length) return null;
+    const emailProfile = profiles.find((p) => p.type === "email");
+    if (!emailProfile) return null;
+
+    const details = (emailProfile as { details?: unknown }).details;
+    if (details && typeof details === "object" && details !== null && "email" in details) {
+      const email = (details as { email?: unknown }).email;
+      return typeof email === "string" && email.length > 0 ? email : null;
+    }
+
+    return null;
+  }, [profilesQuery.data]);
+
   useEffect(() => {
+    if (walletStatus === "disconnected") {
+      router.replace("/auth");
+      return;
+    }
+
+    // Avoid flashing `/auth` during initial auto-connect / reconnect windows.
+    if (walletStatus === "connected" && !account?.address) {
+      router.replace("/auth");
+    }
+  }, [account?.address, router, walletStatus]);
+
+  useEffect(() => {
+    if (!account?.address) return;
+
     let cancelled = false;
 
     async function run() {
@@ -91,7 +162,7 @@ export default function DashboardPage() {
         );
 
         if (!cancelled) setRows(fetched);
-      } catch (e) {
+      } catch {
         const mockRows = agentIds.map((agentId) => {
           const passport = mockPassport(agentId);
           const trusted = Number(passport.score) >= MIN_TRUST_SCORE;
@@ -114,9 +185,9 @@ export default function DashboardPage() {
     return () => {
       cancelled = true;
     };
-  }, [agentIds, contractAddress]);
+  }, [agentIds, contractAddress, account?.address]);
 
-  async function handleCreateAgent(e: React.FormEvent<HTMLFormElement>) {
+  async function handleCreateAgent(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
     const agentId = newAgentId.trim();
@@ -138,41 +209,84 @@ export default function DashboardPage() {
       return;
     }
 
-    if (typeof window === "undefined" || !(window as { ethereum?: unknown }).ethereum) {
-      setCreateState({
-        loading: false,
-        message: "No wallet found. Install MetaMask (or similar) to create on-chain.",
-        ok: false
-      });
+    if (!account?.address) {
+      setCreateState({ loading: false, message: "Connect a wallet first.", ok: false });
       return;
     }
 
     try {
       setCreateState({ loading: true, message: "Submitting transaction...", ok: true });
 
-      const browserProvider = new ethers.BrowserProvider((window as { ethereum: ethers.Eip1193Provider }).ethereum);
-      const signer = await browserProvider.getSigner();
-      const contract = new ethers.Contract(
-        contractAddress,
-        ["function createPassport(string agentId) external"],
-        signer
-      );
+      if (chain?.id !== avalancheFuji.id) {
+        try {
+          await switchChain(avalancheFuji);
+        } catch {
+          throw new Error("Could not switch network to Avalanche Fuji (43113). Please switch in your wallet and try again.");
+        }
+      }
 
-      const tx = await contract.createPassport(agentId);
-      await tx.wait();
+      const contract = getContract({
+        address: contractAddress,
+        chain: avalancheFuji,
+        client
+      });
+
+      const tx = prepareContractCall({
+        contract,
+        method: "function createPassport(string agentId)",
+        params: [agentId]
+      });
+
+      const receipt = await sendTx(tx);
 
       setCreatedAgentIds((prev) => (prev.includes(agentId) ? prev : [agentId, ...prev]));
-      setCreateState({ loading: false, message: "Agent passport created successfully.", ok: true });
-      setNewAgentId("");
-      setActiveTab("monitor");
-    } catch {
       setCreateState({
         loading: false,
-        message: "Transaction failed or rejected. Please try again.",
+        message: `Passport created. Tx: ${receipt.transactionHash}`,
+        ok: true
+      });
+      setNewAgentId("");
+      setActiveTab("monitor");
+    } catch (e) {
+      const msg = e instanceof Error ? e.message : "Transaction failed, was rejected, or you may need Fuji AVAX for gas.";
+      setCreateState({
+        loading: false,
+        message: msg,
         ok: false
       });
     }
   }
+
+  function handleLogout() {
+    if (wallet) disconnect(wallet);
+    router.replace("/auth");
+  }
+
+  if (walletStatus === "connecting" || walletStatus === "unknown") {
+    return (
+      <main className="min-h-screen bg-[#050b1a]">
+        <div className="mx-auto max-w-6xl px-5 py-10 text-slate-400">Connecting wallet...</div>
+      </main>
+    );
+  }
+
+  if (walletStatus === "connected" && !account?.address) {
+    return (
+      <main className="min-h-screen bg-[#050b1a]">
+        <div className="mx-auto max-w-6xl px-5 py-10 text-slate-400">Preparing account...</div>
+      </main>
+    );
+  }
+
+  if (!account?.address) {
+    return (
+      <main className="min-h-screen bg-[#050b1a]">
+        <div className="mx-auto max-w-6xl px-5 py-10 text-slate-400">Redirecting to connect...</div>
+      </main>
+    );
+  }
+
+  const walletAddress = account.address;
 
   return (
     <main className="min-h-screen">
@@ -180,20 +294,39 @@ export default function DashboardPage() {
         <div className="flex items-end justify-between gap-6">
           <div>
             <h1 className="text-2xl md:text-3xl font-semibold tracking-tight">Agent Passport Dashboard</h1>
-            <p className="mt-2 text-sm text-zinc-400">Monitor AI agents, reputation, and task activity</p>
+            <p className="mt-2 text-sm text-slate-400">Monitor AI agents, reputation, and task activity</p>
           </div>
 
-          <div className="hidden md:block text-right">
-            <div className="text-xs text-zinc-500">Trust threshold</div>
-            <div className="font-mono text-sm text-zinc-200">{MIN_TRUST_SCORE}+</div>
+          <div className="text-right">
+            <div className="hidden md:block">
+              <div className="text-xs text-slate-500">Trust threshold</div>
+              <div className="font-mono text-sm text-slate-200">{MIN_TRUST_SCORE}+</div>
+            </div>
+            <button
+              onClick={() => setActiveTab("profile")}
+              className={[
+                "mt-2 w-full rounded-lg border px-3 py-1.5 text-xs transition",
+                activeTab === "profile"
+                  ? "border-slate-500 bg-slate-100 text-slate-900"
+                  : "border-slate-700 text-slate-300 hover:bg-slate-900/60"
+              ].join(" ")}
+            >
+              Profile
+            </button>
+            <button
+              onClick={handleLogout}
+              className="mt-2 w-full rounded-lg border border-slate-700 px-3 py-1.5 text-xs text-slate-300 hover:bg-slate-900/60"
+            >
+              Disconnect
+            </button>
           </div>
         </div>
 
         <div className="mt-6 flex flex-wrap items-center gap-2">
-          <span className="text-xs rounded-full border border-zinc-800 bg-zinc-900/40 px-3 py-1 text-zinc-300">
+          <span className="text-xs rounded-full border border-slate-800 bg-slate-900/50 px-3 py-1 text-slate-300">
             Network: Avalanche Fuji
           </span>
-          <span className="text-xs rounded-full border border-zinc-800 bg-zinc-900/40 px-3 py-1 text-zinc-300">
+          <span className="text-xs rounded-full border border-slate-800 bg-slate-900/50 px-3 py-1 text-slate-300">
             Contract:{" "}
             <span className="font-mono">
               {contractAddress ? contractAddress : "NEXT_PUBLIC_AGENT_PASSPORT_ADDRESS (not set)"}
@@ -207,12 +340,12 @@ export default function DashboardPage() {
         </div>
 
         <div className="mt-8">
-          <div className="inline-flex rounded-lg border border-zinc-800 bg-zinc-900/40 p-1">
+          <div className="inline-flex rounded-lg border border-slate-800 bg-slate-900/60 p-1">
             <button
               onClick={() => setActiveTab("monitor")}
               className={[
                 "px-4 py-2 text-sm rounded-md transition",
-                activeTab === "monitor" ? "bg-zinc-100 text-zinc-900" : "text-zinc-300 hover:text-white"
+                activeTab === "monitor" ? "bg-slate-100 text-slate-900" : "text-slate-300 hover:text-white"
               ].join(" ")}
             >
               Monitor Agents
@@ -221,7 +354,7 @@ export default function DashboardPage() {
               onClick={() => setActiveTab("create")}
               className={[
                 "px-4 py-2 text-sm rounded-md transition",
-                activeTab === "create" ? "bg-zinc-100 text-zinc-900" : "text-zinc-300 hover:text-white"
+                activeTab === "create" ? "bg-slate-100 text-slate-900" : "text-slate-300 hover:text-white"
               ].join(" ")}
             >
               Create Agent
@@ -234,16 +367,16 @@ export default function DashboardPage() {
                 Array.from({ length: 6 }).map((_, i) => (
                   <div
                     key={i}
-                    className="rounded-xl border border-zinc-800 bg-zinc-900/30 p-5 animate-pulse"
+                    className="rounded-xl border border-slate-800 bg-slate-900/45 p-5 animate-pulse"
                   >
-                    <div className="h-4 w-40 bg-zinc-800 rounded" />
+                    <div className="h-4 w-40 bg-slate-800 rounded" />
                     <div className="mt-4 grid grid-cols-2 gap-3">
-                      <div className="h-14 bg-zinc-800/60 rounded-lg" />
-                      <div className="h-14 bg-zinc-800/60 rounded-lg" />
-                      <div className="h-14 bg-zinc-800/60 rounded-lg" />
-                      <div className="h-14 bg-zinc-800/60 rounded-lg" />
+                      <div className="h-14 bg-slate-800/60 rounded-lg" />
+                      <div className="h-14 bg-slate-800/60 rounded-lg" />
+                      <div className="h-14 bg-slate-800/60 rounded-lg" />
+                      <div className="h-14 bg-slate-800/60 rounded-lg" />
                     </div>
-                    <div className="mt-4 h-2 bg-zinc-800 rounded-full" />
+                    <div className="mt-4 h-2 bg-slate-800 rounded-full" />
                   </div>
                 ))}
 
@@ -261,15 +394,15 @@ export default function DashboardPage() {
           )}
 
           {activeTab === "create" && (
-            <div className="mt-4 max-w-xl rounded-xl border border-zinc-800 bg-zinc-900/30 p-5">
+            <div className="mt-4 max-w-xl rounded-xl border border-slate-800 bg-slate-900/50 p-5">
               <h2 className="text-lg font-semibold">Create Agent Passport</h2>
-              <p className="mt-1 text-sm text-zinc-400">
-                Create a new agent passport on-chain. In demo mode (no contract address), this adds a local mock agent.
+              <p className="mt-1 text-sm text-slate-400">
+                Creates a passport on Fuji using your connected thirdweb wallet (email wallet or MetaMask).
               </p>
 
               <form className="mt-4 space-y-4" onSubmit={handleCreateAgent}>
                 <div>
-                  <label htmlFor="agentId" className="mb-2 block text-sm text-zinc-300">
+                  <label htmlFor="agentId" className="mb-2 block text-sm text-slate-300">
                     Agent ID
                   </label>
                   <input
@@ -277,7 +410,7 @@ export default function DashboardPage() {
                     value={newAgentId}
                     onChange={(e) => setNewAgentId(e.target.value)}
                     placeholder="agent-omega"
-                    className="w-full rounded-lg border border-zinc-700 bg-zinc-950 px-3 py-2 text-zinc-100 outline-none ring-0 focus:border-zinc-500"
+                    className="w-full rounded-lg border border-slate-700 bg-slate-950/80 px-3 py-2 text-slate-100 outline-none ring-0 focus:border-blue-500"
                   />
                 </div>
 
@@ -304,9 +437,48 @@ export default function DashboardPage() {
               )}
             </div>
           )}
+
+          {activeTab === "profile" && (
+            <div className="mt-4 max-w-xl rounded-xl border border-slate-800 bg-slate-900/50 p-5">
+              <h2 className="text-lg font-semibold">Profile</h2>
+              <p className="mt-1 text-sm text-slate-400">Your connected thirdweb wallet session.</p>
+
+              <div className="mt-4 grid gap-3">
+                <div className="rounded-lg border border-slate-800 bg-slate-900/60 p-3">
+                  <div className="text-xs text-slate-400">You</div>
+                  <div className="text-sm font-medium">Connected wallet owner</div>
+                </div>
+                <div className="rounded-lg border border-slate-800 bg-slate-900/60 p-3">
+                  <div className="text-xs text-slate-400">Wallet address</div>
+                  <div className="text-sm font-mono">{shortenAddress(walletAddress)}</div>
+                  <div className="mt-1 text-xs text-slate-500 break-all">{walletAddress}</div>
+                </div>
+                <div className="rounded-lg border border-slate-800 bg-slate-900/60 p-3">
+                  <div className="text-xs text-slate-400">Linked email (in-app wallet)</div>
+                  <div className="text-sm font-medium">{linkedEmail || "Not linked / not an in-app wallet"}</div>
+                </div>
+                <div className="rounded-lg border border-slate-800 bg-slate-900/60 p-3">
+                  <div className="text-xs text-slate-400">Active chain</div>
+                  <div className="text-sm font-medium">
+                    {chain ? `${chain.name || "Unknown"} (${chain.id})` : "Unknown"}
+                  </div>
+                </div>
+                <div className="rounded-lg border border-slate-800 bg-slate-900/60 p-3">
+                  <div className="text-xs text-slate-400">Wallet balance</div>
+                  <div className="text-sm font-medium">
+                    {walletBalanceQuery.isLoading
+                      ? "Loading..."
+                      : walletBalanceQuery.data
+                        ? `${walletBalanceQuery.data.displayValue} ${walletBalanceQuery.data.symbol}`
+                        : "Unavailable"}
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          )}
         </div>
       </div>
     </main>
   );
 }
-

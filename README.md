@@ -4,6 +4,7 @@ Minimal hackathon MVP for **Agent Passport**:
 
 - Solidity smart contract: `AgentPassport.sol`
 - Next.js dashboard: monitor agents, trust status, and task progress
+- thirdweb connect (email in-app wallet + MetaMask) for a single clean auth + signing layer
 - Create Agent tab to create passports on-chain (or local demo fallback)
 
 ## Tech Stack
@@ -12,10 +13,12 @@ Minimal hackathon MVP for **Agent Passport**:
 - React
 - TailwindCSS
 - ethers.js
+- thirdweb (wallet connect + tx signing)
 - Avalanche Fuji RPC
 
 ## Features
 
+- `/auth` connect screen (thirdweb `ConnectEmbed`)
 - `/dashboard` page with dark admin-style UI
 - Agent cards showing:
   - Agent ID
@@ -26,7 +29,7 @@ Minimal hackathon MVP for **Agent Passport**:
   - Task progress bar (mocked for demo)
 - Expandable card details per agent
 - **Create Agent** tab:
-  - Calls `createPassport(agentId)` using wallet signer
+  - Calls `createPassport(agentId)` on Fuji via thirdweb (`prepareContractCall` + `useSendTransaction`)
   - If contract address is not configured, adds local demo agent
 - On-chain reads via `ethers`:
   - `getPassport(agentId)`
@@ -51,7 +54,8 @@ npm run dev
 
 Open:
 
-- `http://localhost:3000/dashboard`
+- `http://localhost:3000/auth` (connect)
+- `http://localhost:3000/dashboard` (after connecting)
 
 ## Environment
 
@@ -59,10 +63,12 @@ Create `.env.local`:
 
 ```bash
 NEXT_PUBLIC_AGENT_PASSPORT_ADDRESS=0xYourDeployedContractAddress
+NEXT_PUBLIC_THIRDWEB_CLIENT_ID=YourThirdwebClientId
 ```
 
-- If set, dashboard reads from Avalanche Fuji + contract
-- If not set, dashboard uses mock/demo mode
+- `NEXT_PUBLIC_THIRDWEB_CLIENT_ID` is required for `/auth` + wallet-backed actions
+- If `NEXT_PUBLIC_AGENT_PASSPORT_ADDRESS` is set, dashboard reads from Avalanche Fuji + contract
+- If `NEXT_PUBLIC_AGENT_PASSPORT_ADDRESS` is not set, dashboard uses mock/demo mode for passport cards (wallet connect still works)
 
 ## Network
 

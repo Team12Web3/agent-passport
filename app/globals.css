@@ -8,6 +8,10 @@ body {
 }
 
 body {
-  @apply bg-zinc-950 text-zinc-100;
+  background:
+    radial-gradient(1200px 600px at 10% -10%, rgba(37, 99, 235, 0.25), transparent 55%),
+    radial-gradient(900px 500px at 100% 0%, rgba(14, 116, 144, 0.2), transparent 50%),
+    #050b1a;
+  @apply text-slate-100;
 }
 
