@@ -168,8 +168,10 @@ function ResultCard({ result }: { result: AgentResult | null }) {
     return null;
   }
 
+  const txHash = result.txHash;
+
   async function copyTxHash() {
-    await navigator.clipboard.writeText(result.txHash);
+    await navigator.clipboard.writeText(txHash);
     setCopied(true);
 
     setTimeout(() => {

@@ -216,7 +216,7 @@ export function TrustProtocolDemo({ agentId }: { agentId: string }) {
           <div className="relative h-[200px] bg-zinc-800">
             {withoutPhase === "idle" && (
               <div className="flex h-full items-center justify-center text-xs text-zinc-600">
-                Click "Run comparison" to start
+                Click &ldquo;Run comparison&rdquo; to start
               </div>
             )}
             {withoutPhase === "running" && (
@@ -259,7 +259,7 @@ export function TrustProtocolDemo({ agentId }: { agentId: string }) {
           <div className="relative h-[200px] bg-zinc-800">
             {withPhase === "idle" && (
               <div className="flex h-full items-center justify-center text-xs text-zinc-600">
-                Starts 1.5 s after "Without" run
+                Starts 1.5 s after &ldquo;Without&rdquo; run
               </div>
             )}
             {withPhase === "running" && (

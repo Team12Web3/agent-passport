@@ -17,6 +17,16 @@ Built for **Web3NZ Hackathon** — 26 hours, 5 people, three prize tracks.
 - ⛓️ [Smart contracts](./docs/04-onchain-contracts.md)
 - 🎬 [Demo script](./docs/07-demo-script.md)
 
+## Deployed contracts (Avalanche Fuji · chainId 43113)
+
+| Contract | Address | Snowtrace |
+|---|---|---|
+| `AgentPassport` | `0x8b4f6f0bf3f28135c179e3Ed303a94554b2fB70c` | [view ↗](https://testnet.snowtrace.io/address/0x8b4f6f0bf3f28135c179e3Ed303a94554b2fB70c) |
+| `ActionLog`     | `0x34E74C0b367476ee95528709663A5297cd9aaa7C` | [view ↗](https://testnet.snowtrace.io/address/0x34E74C0b367476ee95528709663A5297cd9aaa7C) |
+| `USDC` (Circle testnet) | `0x5425890298aed601595a70AB815c96711a31Bc65` | [view ↗](https://testnet.snowtrace.io/address/0x5425890298aed601595a70AB815c96711a31Bc65) |
+
+ABIs and addresses are pinned in [`packages/contracts/deployments.json`](./packages/contracts/deployments.json) — the single source of truth consumed by `apps/web/lib/chain/contracts.ts`.
+
 ---
 
 ## Trust protocol
@@ -39,21 +49,89 @@ agent-passport/
 └── docs/                 # All planning, specs, and task cards
 ```
 
-## Run locally
+## Prerequisites
+
+Install these once on your machine before cloning:
+
+| Tool | Version | Install |
+|---|---|---|
+| Node.js | ≥ 20 | https://nodejs.org or `nvm install 20` |
+| pnpm | 9.x | `npm i -g pnpm@9` (or `corepack enable`) |
+| Foundry (`forge`, `cast`, `anvil`) | latest | `curl -L https://foundry.paradigm.xyz \| bash && foundryup` |
+| `psql` (Postgres client, for Supabase migrations) | 14+ | macOS: `brew install libpq && brew link --force libpq` |
+| Git | any | https://git-scm.com |
+
+You'll also need accounts / keys for: **Supabase**, **Thirdweb** (client ID), **OpenAI** (or Anthropic, depending on your branch), **Firecrawl**, and a small amount of **Fuji AVAX** in the auto-generated platform wallet (free from https://faucet.avax.network/, pick *Fuji C-Chain*).
+
+---
+
+## Getting started
+
+### 1. Clone & install
 
 ```bash
-pnpm install
-cp .env.example .env.local        # fill in keys (see docs/05-environment-setup.md)
-pnpm dev                           # apps/web on http://localhost:3000
+git clone https://github.com/Team12Web3/agent-passport.git
+cd agent-passport
+pnpm setup           # installs deps, generates env files, installs + builds contracts
 ```
 
-Contracts:
+`pnpm setup` runs `apps/web/scripts/genenv.mjs`, which:
+
+- Generates a fresh **platform wallet** (private key + address) and a random **AGENT_KEY_SECRET**.
+- Writes `apps/web/.env.local` and `packages/contracts/.env` (both `chmod 600`).
+- Refuses to overwrite existing files — if you already have envs, delete them first or skip this step.
+
+The script will print the generated `PLATFORM_ADDRESS` — **copy it**, you'll need to fund it in step 3.
+
+### 2. Fill in third-party keys
+
+Open `apps/web/.env.local` and fill in the blanks:
 
 ```bash
-cd packages/contracts
-forge install
-forge test
-forge script script/Deploy.s.sol --rpc-url $FUJI_RPC --broadcast
+NEXT_PUBLIC_TW_CLIENT_ID=        # https://thirdweb.com/dashboard → Settings → API Keys
+SUPABASE_URL=                    # Supabase → Project Settings → API
+SUPABASE_SERVICE_ROLE_KEY=       # Supabase → Project Settings → API (service_role, NOT anon)
+SUPABASE_DB_URL=                 # Supabase → Project Settings → Database → Connection string (URI)
+OPENAI_API_KEY=                  # https://platform.openai.com/api-keys
+FIRECRAWL_API_KEY=               # https://www.firecrawl.dev/app
+SNOWTRACE_API_KEY=               # optional, for contract verification
+```
+
+> `SUPABASE_DB_URL` is **not** seeded by `genenv.mjs` — the migration script will fail without it.
+
+### 3. Fund the platform wallet
+
+The address printed by step 1 needs Fuji AVAX before contracts can deploy:
+
+1. Go to https://faucet.avax.network/, choose **Fuji C-Chain**, paste the address.
+2. Confirm with: `cast balance <PLATFORM_ADDRESS> --rpc-url https://api.avax-test.network/ext/bc/C/rpc`
+
+### 4. Deploy contracts
+
+```bash
+pnpm contracts:test          # sanity check — should be green
+pnpm contracts:deploy        # deploys AgentPassport + ActionLog to Fuji
+pnpm contracts:sync          # writes addresses into apps/web (run automatically by deploy)
+```
+
+### 5. Run database migrations
+
+```bash
+pnpm db:migrate              # applies all SQL in supabase/migrations/ via psql
+```
+
+### 6. Start the Next.js app
+
+```bash
+pnpm dev                     # http://localhost:3000
+```
+
+### One-shot backend redeploy
+
+If you change a contract or migration:
+
+```bash
+pnpm deploy:backend          # = contracts:test + contracts:deploy + db:migrate
 ```
 
 ## Production checklist (hackathon MVP)
@@ -78,10 +156,22 @@ forge script script/Deploy.s.sol --rpc-url $FUJI_RPC --broadcast
 **Demo readiness**
 - [ ] One pre-seeded passport + agent wallet exists so the demo doesn't depend on live mint timing
 - [ ] Backup recording of the full flow in case Fuji RPC or Anthropic flakes mid-pitch
-- [ ] <!-- TODO(team): list the 2–3 demo-specific items that would actually sink the pitch if they broke (e.g. "EAS schema UID matches what the verifier middleware expects") -->
+- [ ] `packages/contracts/deployments.json` addresses match what the web app actually reads (single source of truth — drift here = silent failure on stage)
+- [ ] 3 pre-funded backup agents exist in the demo Supabase row (fallback if live mint fails — called out in `docs/06-integration-plan.md`)
+- [ ] `/api/trust/demo-site` round-trip rehearsed: same browser, same passport, returns 403 without headers and clean JSON with them
+- [ ] Snowtrace tab is bookmarked at our deployed `AgentPassport` address and the most recent `ActionLogged` event is visible (the 1:00 narration depends on it)
+- [ ] Demo URL (Wikipedia / books.toscrape) re-tested within the last 2h — Firecrawl + Jina fallback both succeed
+- [ ] Thirdweb OTP routes to a phone someone on stage is holding
 
 **Known limitations (intentional, not bugs)**
-- [ ] <!-- TODO(team): list what's deliberately out of scope so judges know it's a choice — e.g. "no rate limiting on /api/agent/*", "session keys don't auto-expire", "slashing flow is stubbed", "single-region Supabase" -->
+- Agent wallets are plain server-managed EOAs, not ERC-4337 smart accounts (deferred — see architecture doc)
+- Agent private keys are AES-256-GCM encrypted in Supabase, not in a KMS/HSM
+- `X-Agent-Intent-Hash` is committed but the ZK proof is interface-only — no real proving circuit yet
+- Slashing / dispute flow exists as a contract path; no UI for appeals
+- No rate limiting or auth on `/api/run` and `/api/trust/demo-site` (single-tenant demo)
+- Trust-protocol verifier is our own reference middleware at `/api/trust/demo-site`, not a third-party site
+- Single-region Supabase, no backups; no observability beyond Vercel logs
+- Session keys don't auto-expire; revocation is manual via `setActive(id, false)`
 
 ---
 
