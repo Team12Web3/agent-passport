@@ -10,7 +10,7 @@ type Props = {
 };
 
 const stateStyles: Record<RunStatus, string> = {
-  idle: "border-zinc-700 bg-zinc-900 text-zinc-400",
+  idle: "border-slate-800/80 bg-slate-950/70 backdrop-blur text-slate-400",
   running: "border-blue-700 bg-blue-950/40 text-blue-300",
   done: "border-green-700 bg-green-950/40 text-green-300",
   error: "border-red-700 bg-red-950/40 text-red-300",
@@ -18,7 +18,7 @@ const stateStyles: Record<RunStatus, string> = {
 };
 
 const dotStyles: Record<RunStatus, string> = {
-  idle: "bg-zinc-500",
+  idle: "bg-slate-500",
   running: "bg-blue-400 animate-pulse",
   done: "bg-green-400 animate-pulse",
   error: "bg-red-500",
@@ -57,32 +57,32 @@ export function PassportStatusBar({ passportId, trustScore, txHash, status }: Pr
         </div>
 
         {/* Passport ID */}
-        <div className="flex items-center gap-1.5 text-zinc-400">
+        <div className="flex items-center gap-1.5 text-slate-400">
           <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
               d="M15 9h3.75M15 12h3.75M15 15h3.75M4.5 19.5h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5zm6-10.125a1.875 1.875 0 11-3.75 0 1.875 1.875 0 013.75 0zm1.294 6.336a6.721 6.721 0 01-3.17.789 6.721 6.721 0 01-3.168-.789 3.376 3.376 0 016.338 0z"
             />
           </svg>
           <span>Passport</span>
-          <span className="text-zinc-300">#{passportId ?? "—"}</span>
+          <span className="text-slate-300">#{passportId ?? "—"}</span>
         </div>
 
         {/* Trust score */}
-        <div className="flex items-center gap-1.5 text-zinc-400">
+        <div className="flex items-center gap-1.5 text-slate-400">
           <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
               d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
             />
           </svg>
           <span>Trust</span>
-          <span className="text-zinc-300">{trustScore ?? "—"}</span>
+          <span className="text-slate-300">{trustScore ?? "—"}</span>
         </div>
 
         {/* Tx hash */}
         {txHash ? (
           <button
             onClick={copyHash}
-            className="flex items-center gap-1.5 text-zinc-400 transition hover:text-zinc-200"
+            className="flex items-center gap-1.5 text-slate-400 transition hover:text-slate-200"
             title="Click to copy tx hash"
           >
             <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -91,13 +91,13 @@ export function PassportStatusBar({ passportId, trustScore, txHash, status }: Pr
               />
             </svg>
             <span>Tx</span>
-            <span className="text-zinc-300">
+            <span className="text-slate-300">
               {txHash.slice(0, 6)}…{txHash.slice(-4)}
             </span>
             {copied && <span className="text-green-400">✓</span>}
           </button>
         ) : (
-          <div className="flex items-center gap-1.5 text-zinc-600">
+          <div className="flex items-center gap-1.5 text-slate-600">
             <span>Tx —</span>
           </div>
         )}
@@ -105,7 +105,7 @@ export function PassportStatusBar({ passportId, trustScore, txHash, status }: Pr
         {/* Spacer */}
         <div className="flex-1" />
 
-        <span className="text-zinc-600">Agent Passport · Avalanche Fuji</span>
+        <span className="text-slate-600">Agent Passport · Avalanche Fuji</span>
       </div>
     </div>
   );

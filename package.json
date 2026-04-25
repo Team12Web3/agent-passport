@@ -4,28 +4,28 @@
   "scripts": {
     "setup": "pnpm install && pnpm setup:env && pnpm contracts:install && pnpm contracts:build",
     "setup:env": "node apps/web/scripts/genenv.mjs",
-
-    "dev": "pnpm --filter web dev",
-    "build": "pnpm --filter web build",
+    "dev": "turbo run dev",
+    "build": "turbo run build",
     "start": "pnpm --filter web start",
+
+    "lint": "turbo run lint",
+    "typecheck": "turbo run typecheck",
     "fund": "tsx scripts/fund.ts",
-    "typecheck": "pnpm --filter web typecheck",
 
     "db:migrate": "bash supabase/migrate.sh",
-
     "contracts:install": "cd packages/contracts && forge install",
     "contracts:build": "cd packages/contracts && forge build",
     "contracts:test": "cd packages/contracts && forge test -vv",
     "contracts:deploy": "bash packages/contracts/scripts/deploy.sh",
     "contracts:sync": "node packages/contracts/scripts/sync-deployments.mjs",
-
     "deploy:backend": "pnpm contracts:test && pnpm contracts:deploy && pnpm db:migrate"
   },
-  "packageManager": "pnpm@9.0.0",
   "dependencies": {
     "viem": "^2.48.4"
   },
   "devDependencies": {
-    "tsx": "^4.21.0"
-  }
+    "tsx": "^4.21.0",
+    "turbo": "^2.9.6"
+  },
+  "packageManager": "pnpm@9.0.0"
 }

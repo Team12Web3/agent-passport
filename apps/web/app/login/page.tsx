@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { ConnectEmbed, useActiveAccount, useActiveWalletConnectionStatus } from "thirdweb/react";
 import { avalancheFuji } from "thirdweb/chains";
 import { getThirdwebClient } from "@/lib/thirdwebClient";
@@ -13,16 +13,67 @@ export default function LoginPage() {
   const walletStatus = useActiveWalletConnectionStatus();
   const client = getThirdwebClient();
 
+  // Gate the auto-redirect on backend session status, not just wallet status.
+  // AutoConnect can restore the wallet from localStorage without a JWT cookie;
+  // redirecting on wallet-connected alone sends users to /dashboard with no
+  // session, which then 401s on every authenticated API call.
   useEffect(() => {
-    if (walletStatus === "connected" && account?.address) router.replace("/dashboard");
+    if (walletStatus !== "connected" || !account?.address) return;
+    let cancelled = false;
+    fetch("/api/auth/status", { cache: "no-store" })
+      .then((r) => (r.ok ? r.json() : { loggedIn: false }))
+      .then((d: { loggedIn?: boolean }) => {
+        if (!cancelled && d.loggedIn) router.replace("/dashboard");
+      })
+      .catch(() => {});
+    return () => {
+      cancelled = true;
+    };
   }, [account?.address, router, walletStatus]);
 
+  const auth = useMemo(
+    () => ({
+      getLoginPayload: async ({ address }: { address: string }) => {
+        const res = await fetch(`/api/auth/payload?address=${encodeURIComponent(address)}`);
+        if (!res.ok) throw new Error("Failed to generate login payload");
+        return res.json();
+      },
+      doLogin: async (params: unknown) => {
+        const loginRes = await fetch("/api/auth/login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(params),
+        });
+        if (!loginRes.ok) throw new Error("Failed to login");
+
+        const syncRes = await fetch("/api/auth/sync", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email: null }),
+        });
+        if (!syncRes.ok) throw new Error("Failed to sync user profile");
+
+        router.replace("/dashboard");
+      },
+      isLoggedIn: async () => {
+        const res = await fetch("/api/auth/status", { cache: "no-store" });
+        if (!res.ok) return false;
+        const data = (await res.json()) as { loggedIn?: boolean };
+        return !!data.loggedIn;
+      },
+      doLogout: async () => {
+        await fetch("/api/auth/logout", { method: "POST" });
+      },
+    }),
+    [router],
+  );
+
   return (
-    <main className="min-h-screen bg-zinc-950 text-zinc-100">
+    <main className="min-h-screen text-slate-100">
       <div className="mx-auto flex min-h-screen w-full max-w-md flex-col justify-center px-5 py-10">
         <div className="mb-6">
           <h1 className="text-2xl font-semibold tracking-tight">Agent Passport</h1>
-          <p className="mt-2 text-sm text-zinc-400">Connect with email or MetaMask to open your dashboard.</p>
+          <p className="mt-2 text-sm text-slate-400">Connect with email or MetaMask to open your dashboard.</p>
         </div>
 
         {!client ? (
@@ -37,6 +88,7 @@ export default function LoginPage() {
             client={client}
             wallets={supportedWallets}
             chains={[avalancheFuji]}
+            auth={auth}
             appMetadata={{
               name: "Agent Passport",
               url: typeof window !== "undefined" ? window.location.origin : "",

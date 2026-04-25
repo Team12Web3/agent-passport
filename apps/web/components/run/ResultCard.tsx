@@ -31,9 +31,9 @@ export function ResultCard({ result }: Props) {
     : result.summary;
 
   return (
-    <div className="mt-6 overflow-hidden rounded-xl border border-zinc-700 bg-zinc-900">
+    <div className="mt-6 overflow-hidden rounded-xl border border-slate-800/80 bg-slate-950/70 backdrop-blur shadow-[0_10px_30px_rgba(2,6,23,0.45)]">
       {/* Header */}
-      <div className="flex items-center gap-3 border-b border-zinc-700 bg-zinc-800 px-5 py-3">
+      <div className="flex items-center gap-3 border-b border-slate-800 bg-slate-900/60 px-5 py-3">
         <span className="flex h-6 w-6 items-center justify-center rounded-full bg-green-500 text-xs font-bold text-black">
           ✓
         </span>
@@ -43,17 +43,17 @@ export function ResultCard({ result }: Props) {
       <div className="p-5">
         {/* Summary */}
         <div className="mb-5">
-          <p className="mb-1.5 text-xs uppercase tracking-wider text-zinc-500">
+          <p className="mb-1.5 text-xs uppercase tracking-wider text-slate-500">
             Summary
           </p>
-          <p className="whitespace-pre-wrap text-sm leading-relaxed text-zinc-200">
+          <p className="whitespace-pre-wrap text-sm leading-relaxed text-slate-200">
             {displaySummary}
             {isTruncated && "…"}
           </p>
           {summaryLines.length > 6 && (
             <button
               onClick={() => setExpanded((v) => !v)}
-              className="mt-2 text-xs text-zinc-400 underline hover:text-white"
+              className="mt-2 text-xs text-slate-400 underline hover:text-white"
             >
               {expanded ? "Show less" : "Show more"}
             </button>
@@ -63,13 +63,13 @@ export function ResultCard({ result }: Props) {
         {/* Stats row */}
         <div className="mb-5 grid grid-cols-3 gap-3">
           <div className="rounded-lg bg-black p-3 text-center">
-            <p className="text-xs text-zinc-500">Actions</p>
+            <p className="text-xs text-slate-500">Actions</p>
             <p className="mt-1 text-xl font-bold text-white">
               {result.actionsCount}
             </p>
           </div>
           <div className="rounded-lg bg-black p-3 text-center">
-            <p className="text-xs text-zinc-500">Fee</p>
+            <p className="text-xs text-slate-500">Fee</p>
             <p className="mt-1 text-xl font-bold text-white">
               ${result.feeUsd.toFixed(2)}
             </p>
@@ -77,7 +77,7 @@ export function ResultCard({ result }: Props) {
           <div className="rounded-lg bg-black p-3 text-center">
             {snowtraceUrl ? (
               <>
-                <p className="text-xs text-zinc-500">Snowtrace</p>
+                <p className="text-xs text-slate-500">Snowtrace</p>
                 <a
                   href={snowtraceUrl}
                   target="_blank"
@@ -103,8 +103,8 @@ export function ResultCard({ result }: Props) {
               </>
             ) : (
               <>
-                <p className="text-xs text-zinc-500">Tx Hash</p>
-                <p className="mt-1 text-sm text-zinc-400">—</p>
+                <p className="text-xs text-slate-500">Tx Hash</p>
+                <p className="mt-1 text-sm text-slate-400">—</p>
               </>
             )}
           </div>
@@ -113,12 +113,12 @@ export function ResultCard({ result }: Props) {
         {/* Tx hash copy */}
         {txHash && (
           <div className="flex items-center justify-between gap-3 rounded-lg bg-black px-4 py-3">
-            <p className="font-mono text-xs text-zinc-400 truncate">
+            <p className="font-mono text-xs text-slate-400 truncate">
               {txHash}
             </p>
             <button
               onClick={copyHash}
-              className="shrink-0 rounded-md border border-zinc-700 px-3 py-1.5 text-xs text-zinc-300 transition hover:border-zinc-500 hover:text-white"
+              className="shrink-0 rounded-md border border-slate-700 px-3 py-1.5 text-xs text-slate-300 transition hover:border-slate-500 hover:text-white"
             >
               {copied ? "Copied ✓" : "Copy"}
             </button>
