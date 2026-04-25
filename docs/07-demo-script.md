@@ -4,11 +4,39 @@
 
 ---
 
+## Final Fill-Ins
+
+- Preview URL: `TO_BE_SET_AFTER_DEPLOY`
+- Snowtrace contract tab: `TO_BE_SET_AFTER_DEPLOY`
+- Backup video URL: `TO_BE_SET_AFTER_RECORDING`
+- Narration: `TO_BE_ASSIGNED`
+- Clicking: `TO_BE_ASSIGNED`
+- Camera / timer: `TO_BE_ASSIGNED`
+- Demo email: `TO_BE_ASSIGNED`
+- Demo OTP phone: `TO_BE_ASSIGNED`
+- Demo URL: `https://en.wikipedia.org/wiki/Internet_bot`
+- Safe fallback URL: `https://en.wikipedia.org/wiki/Web_scraping`
+- Demo prompt: `Summarize the main themes of this page and explain why trusted AI agents need verifiable identity.`
+
+## Final Rehearsal Checklist
+
+- [ ] Preview URL bookmarked on the demo laptop
+- [ ] Snowtrace tab open and tested
+- [ ] Backup video saved locally
+- [ ] Backup video uploaded as unlisted YouTube link
+- [ ] Backup video copied to USB
+- [ ] Three funded demo agents pre-created
+- [ ] Demo Google account signed in and OTP path confirmed
+- [ ] Phone hotspot tested
+- [ ] Printed copy of this script packed
+
+---
+
 ## Setup before the demo
 
 1. Demo laptop on the lectern, on ethernet.
 2. Browser open on **preview URL**, marketing page loaded.
-3. Second tab: **Snowtrace** (testnet.snowtrace.io) at our `AgentPassport` contract address — judges can verify this is real if they ask.
+3. Second tab: **Snowtrace** at our `AgentPassport` contract address so judges can verify this is real if they ask.
 4. Third tab: backup video as YouTube unlisted, ready to play if anything breaks.
 5. Phone hotspot ready.
 
@@ -75,7 +103,7 @@ Watch the progress: *Generating wallet… Funding wallet… Minting passport on 
 
 URL: `https://en.wikipedia.org/wiki/Internet_bot` *(or your tested-safe URL)*
 
-Prompt: `Summarize the main themes of this page.`
+Prompt: `Summarize the main themes of this page and explain why trusted AI agents need verifiable identity.`
 
 Click **Run with Passport**.
 
@@ -168,3 +196,21 @@ Animation: red → "Verifying passport..." → green pulse. Iframe morphs into c
 - ✅ Land *"trust by signature, not by CAPTCHA"* with confidence.
 - ✅ Have your phone visible on the table — the OTP comes there, demonstrates this is real, not staged.
 - ✅ End on the green pulse animation. Don't navigate away.
+
+## Rehearsal Log
+
+1. Rehearsal 1:
+   Result:
+   Notes:
+2. Rehearsal 2:
+   Result:
+   Notes:
+3. Rehearsal 3:
+   Result:
+   Notes:
+4. Rehearsal 4 (recorded):
+   Result:
+   Notes:
+5. Rehearsal 5:
+   Result:
+   Notes:
