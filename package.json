@@ -2,13 +2,24 @@
   "name": "agent-passport",
   "private": true,
   "scripts": {
+    "setup": "pnpm install && pnpm setup:env && pnpm contracts:install && pnpm contracts:build",
+    "setup:env": "node apps/web/scripts/genenv.mjs",
+
     "dev": "pnpm --filter web dev",
     "build": "pnpm --filter web build",
     "start": "pnpm --filter web start",
     "fund": "tsx scripts/fund.ts",
+    "typecheck": "pnpm --filter web typecheck",
+
+    "db:migrate": "bash supabase/migrate.sh",
+
+    "contracts:install": "cd packages/contracts && forge install",
     "contracts:build": "cd packages/contracts && forge build",
-    "contracts:test": "cd packages/contracts && forge test",
-    "contracts:deploy": "cd packages/contracts && forge script script/Deploy.s.sol --rpc-url $NEXT_PUBLIC_FUJI_RPC --broadcast"
+    "contracts:test": "cd packages/contracts && forge test -vv",
+    "contracts:deploy": "bash packages/contracts/scripts/deploy.sh",
+    "contracts:sync": "node packages/contracts/scripts/sync-deployments.mjs",
+
+    "deploy:backend": "pnpm contracts:test && pnpm contracts:deploy && pnpm db:migrate"
   },
   "packageManager": "pnpm@9.0.0",
   "dependencies": {
