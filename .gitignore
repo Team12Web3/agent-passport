@@ -10,6 +10,7 @@ dist
 build
 coverage
 *.log
+*.tsbuildinfo
 
 # Foundry
 packages/contracts/out
