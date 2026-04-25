@@ -4,10 +4,8 @@ import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { ConnectEmbed, useActiveAccount, useActiveWalletConnectionStatus } from "thirdweb/react";
 import { avalancheFuji } from "thirdweb/chains";
-import { inAppWallet, createWallet } from "thirdweb/wallets";
 import { getThirdwebClient } from "@/lib/thirdwebClient";
-
-const wallets = [inAppWallet(), createWallet("io.metamask")];
+import { supportedWallets } from "@/lib/thirdweb/wallets";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -37,7 +35,7 @@ export default function LoginPage() {
         ) : (
           <ConnectEmbed
             client={client}
-            wallets={wallets}
+            wallets={supportedWallets}
             chains={[avalancheFuji]}
             appMetadata={{
               name: "Agent Passport",

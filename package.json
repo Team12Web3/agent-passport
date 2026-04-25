@@ -1,27 +1,24 @@
 {
-  "name": "hackathon2",
-  "version": "1.0.0",
-  "description": "",
+  "name": "agent-passport",
+  "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start"
+    "setup": "pnpm install && pnpm setup:env && pnpm contracts:install && pnpm contracts:build",
+    "setup:env": "node apps/web/scripts/genenv.mjs",
+
+    "dev": "pnpm --filter web dev",
+    "build": "pnpm --filter web build",
+    "start": "pnpm --filter web start",
+    "typecheck": "pnpm --filter web typecheck",
+
+    "db:migrate": "bash supabase/migrate.sh",
+
+    "contracts:install": "cd packages/contracts && forge install",
+    "contracts:build": "cd packages/contracts && forge build",
+    "contracts:test": "cd packages/contracts && forge test -vv",
+    "contracts:deploy": "bash packages/contracts/scripts/deploy.sh",
+    "contracts:sync": "node packages/contracts/scripts/sync-deployments.mjs",
+
+    "deploy:backend": "pnpm contracts:test && pnpm contracts:deploy && pnpm db:migrate"
   },
-  "license": "ISC",
-  "dependencies": {
-    "ethers": "^6.16.0",
-    "next": "^16.2.4",
-    "react": "^19.2.5",
-    "react-dom": "^19.2.5",
-    "thirdweb": "^5.119.4"
-  },
-  "devDependencies": {
-    "@types/node": "^25.6.0",
-    "@types/react": "^19.2.14",
-    "@types/react-dom": "^19.2.3",
-    "autoprefixer": "^10.5.0",
-    "postcss": "^8.5.10",
-    "tailwindcss": "^3.4.17",
-    "typescript": "^6.0.3"
-  }
+  "packageManager": "pnpm@9.0.0"
 }

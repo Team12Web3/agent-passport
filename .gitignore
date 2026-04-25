@@ -1,4 +1,21 @@
 node_modules
 .next
-.env.local
 .env
+.env.local
+.env.*.local
+.DS_Store
+.turbo
+out
+dist
+build
+coverage
+*.log
+
+# Foundry
+packages/contracts/out
+packages/contracts/cache
+packages/contracts/broadcast
+
+# IDE
+.vscode
+.idea
