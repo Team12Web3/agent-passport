@@ -2,19 +2,229 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  /* Design tokens — minimalist dark, single emerald accent. */
+  --bg: #07080a;
+  --bg-elev: #0d0f12;
+  --surface: rgba(255, 255, 255, 0.025);
+  --surface-hover: rgba(255, 255, 255, 0.045);
+  --border: rgba(255, 255, 255, 0.07);
+  --border-strong: rgba(255, 255, 255, 0.13);
+  --fg: #f4f4f5;
+  --fg-muted: #a1a1aa;
+  --fg-subtle: #71717a;
+  --fg-faint: #52525b;
+  --accent: #34d399;
+  --accent-soft: rgba(52, 211, 153, 0.12);
+  --accent-ring: rgba(52, 211, 153, 0.35);
+  --warn: #fbbf24;
+  --danger: #fb7185;
+
+  --font-sans:
+    ui-sans-serif, -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter",
+    "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+  --font-mono:
+    ui-monospace, "SF Mono", "JetBrains Mono", Menlo, Consolas,
+    "Liberation Mono", monospace;
+}
+
 html,
 body {
   height: 100%;
 }
 
-body {
-  background:
-    radial-gradient(1200px 600px at 10% -10%, rgba(37, 99, 235, 0.25), transparent 55%),
-    radial-gradient(900px 500px at 100% 0%, rgba(14, 116, 144, 0.2), transparent 50%),
-    #050b1a;
-  @apply text-slate-100;
+html {
+  color-scheme: dark;
 }
 
+body {
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-feature-settings: "ss01", "cv11";
+  letter-spacing: -0.005em;
+  background:
+    radial-gradient(900px 500px at 0% -10%, rgba(52, 211, 153, 0.06), transparent 55%),
+    radial-gradient(800px 600px at 100% 0%, rgba(56, 189, 248, 0.045), transparent 55%),
+    var(--bg);
+  color: var(--fg);
+}
+
+::selection {
+  background: var(--accent-soft);
+  color: var(--fg);
+}
+
+/* Subtle, classy focus ring used across interactive surfaces. */
+.focus-ring {
+  outline: none;
+  box-shadow: 0 0 0 1px var(--border-strong), 0 0 0 4px transparent;
+  transition:
+    box-shadow 150ms ease,
+    border-color 150ms ease,
+    background-color 150ms ease,
+    color 150ms ease;
+}
+.focus-ring:focus-visible {
+  box-shadow: 0 0 0 1px var(--accent), 0 0 0 4px var(--accent-soft);
+}
+
+/* Reusable utility classes that map onto our tokens. */
+@layer components {
+  .surface {
+    background-color: var(--surface);
+    border: 1px solid var(--border);
+  }
+  .surface-hover:hover {
+    background-color: var(--surface-hover);
+    border-color: var(--border-strong);
+  }
+  .text-muted {
+    color: var(--fg-muted);
+  }
+  .text-subtle {
+    color: var(--fg-subtle);
+  }
+  .text-faint {
+    color: var(--fg-faint);
+  }
+  .eyebrow {
+    font-size: 11px;
+    line-height: 1;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--fg-subtle);
+    font-weight: 500;
+  }
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    border-radius: 9999px;
+    border: 1px solid var(--border);
+    background-color: var(--surface);
+    color: var(--fg-muted);
+    font-size: 11.5px;
+    line-height: 1;
+    font-feature-settings: "tnum";
+  }
+  .chip-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 9999px;
+    background-color: var(--fg-faint);
+  }
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 1;
+    border: 1px solid transparent;
+    transition:
+      background-color 150ms ease,
+      border-color 150ms ease,
+      color 150ms ease,
+      transform 60ms ease;
+    cursor: pointer;
+  }
+  .btn:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+  }
+  .btn:not(:disabled):active {
+    transform: translateY(0.5px);
+  }
+  .btn-primary {
+    background-color: var(--accent);
+    color: #052e1f;
+  }
+  .btn-primary:not(:disabled):hover {
+    background-color: #6ee7b7;
+  }
+  .btn-secondary {
+    background-color: var(--surface);
+    border-color: var(--border);
+    color: var(--fg);
+  }
+  .btn-secondary:not(:disabled):hover {
+    background-color: var(--surface-hover);
+    border-color: var(--border-strong);
+  }
+  .btn-ghost {
+    background-color: transparent;
+    color: var(--fg-muted);
+  }
+  .btn-ghost:not(:disabled):hover {
+    color: var(--fg);
+    background-color: var(--surface);
+  }
+  .input {
+    width: 100%;
+    background-color: var(--bg-elev);
+    border: 1px solid var(--border);
+    color: var(--fg);
+    border-radius: 8px;
+    padding: 10px 12px;
+    font-size: 13.5px;
+    line-height: 1.4;
+    transition:
+      border-color 150ms ease,
+      background-color 150ms ease,
+      box-shadow 150ms ease;
+  }
+  .input::placeholder {
+    color: var(--fg-faint);
+  }
+  .input:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 4px var(--accent-soft);
+  }
+  .card {
+    background-color: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+  }
+  .card-hover {
+    transition:
+      background-color 180ms ease,
+      border-color 180ms ease,
+      transform 180ms ease;
+  }
+  .card-hover:hover {
+    background-color: var(--surface-hover);
+    border-color: var(--border-strong);
+  }
+  .divider {
+    height: 1px;
+    background-color: var(--border);
+  }
+}
+
+/* Tighter scrollbars for the dark theme. */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.12) transparent;
+}
+*::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+*::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.12);
+  border-radius: 9999px;
+}
+*::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Used by the run page's "blocked" overlay. */
 @keyframes shake {
   0%, 100% { transform: translateX(0); }
   15%       { transform: translateX(-4px); }

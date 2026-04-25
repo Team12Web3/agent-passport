@@ -1,89 +1,116 @@
-import { createPublicClient, http, type Abi } from "viem";
-import { avalancheFuji } from "viem/chains";
+import { ethers } from "ethers";
+import artifact from "./AgentPassport.artifact.json";
 
+/// Display-shaped passport used by the dashboard and `AgentCard`.
+/// `agentId` is a free-form display string:
+///   - mock rows: "agent-alpha" etc
+///   - on-chain rows: the stringified uint256 passport id ("1", "2", ...)
 export type Passport = {
   owner: string;
   agentId: string;
   score: bigint;
   active: boolean;
+  agentWallet?: string;
+  metadataURI?: string;
+  createdAt?: bigint;
 };
 
-const FUJI_RPC =
+/// Raw struct returned by `getPassport(uint256)`.
+export type RawPassport = {
+  id: bigint;
+  owner: string;
+  agentWallet: string;
+  metadataURI: string;
+  trustScore: number;
+  active: boolean;
+  createdAt: bigint;
+};
+
+export const FUJI_RPC =
   process.env.NEXT_PUBLIC_FUJI_RPC ??
   "https://api.avax-test.network/ext/bc/C/rpc";
+export const FUJI_CHAIN_ID = 43113;
 
-// Legacy ABI from the hackathon contract. The new on-chain `AgentPassport`
-// (packages/contracts) exposes `getPassport(uint256)` instead — those reads
-// happen server-side via `lib/chain/contracts.ts`. This ABI is preserved so
-// the dashboard can still talk to a legacy deployment when the user pins
-// `NEXT_PUBLIC_AGENT_PASSPORT_ADDRESS` to one. If it doesn't match, the
-// dashboard gracefully falls back to mock data.
-const AGENT_PASSPORT_ABI: Abi = [
-  {
-    type: "function",
-    name: "getPassport",
-    stateMutability: "view",
-    inputs: [{ name: "agentId", type: "string" }],
-    outputs: [
-      { name: "owner", type: "address" },
-      { name: "storedAgentId", type: "string" },
-      { name: "score", type: "uint256" },
-      { name: "active", type: "bool" },
-    ],
-  },
-  {
-    type: "function",
-    name: "verifyAgent",
-    stateMutability: "view",
-    inputs: [
-      { name: "agentId", type: "string" },
-      { name: "minScore", type: "uint256" },
-    ],
-    outputs: [{ name: "", type: "bool" }],
-  },
-];
+export const AGENT_PASSPORT_ABI = artifact.abi as ethers.InterfaceAbi;
+export const AGENT_PASSPORT_BYTECODE = artifact.bytecode;
 
-let publicClient: ReturnType<typeof createPublicClient> | null = null;
-function getClient() {
-  if (!publicClient) {
-    publicClient = createPublicClient({
-      chain: avalancheFuji,
-      transport: http(FUJI_RPC),
-    });
-  }
-  return publicClient;
+function isValidAddress(address: string | undefined | null): address is string {
+  return !!address && address.startsWith("0x") && address.length === 42;
 }
 
-export async function fetchPassport(
-  contractAddress: string,
-  agentId: string,
-): Promise<Passport> {
-  const result = (await getClient().readContract({
-    address: contractAddress as `0x${string}`,
-    abi: AGENT_PASSPORT_ABI,
-    functionName: "getPassport",
-    args: [agentId],
-  })) as readonly [string, string, bigint, boolean];
+function readContract(address: string) {
+  return new ethers.Contract(address, AGENT_PASSPORT_ABI, new ethers.JsonRpcProvider(FUJI_RPC));
+}
 
-  const [owner, storedAgentId, score, active] = result;
+/// Read a passport by its uint256 id.
+export async function fetchPassportById(
+  contractAddress: string,
+  id: bigint
+): Promise<RawPassport | null> {
+  if (!isValidAddress(contractAddress)) return null;
+  try {
+    const p = await readContract(contractAddress).getPassport(id);
+    return {
+      id: BigInt(p.id),
+      owner: String(p.owner),
+      agentWallet: String(p.agentWallet),
+      metadataURI: String(p.metadataURI),
+      trustScore: Number(p.trustScore),
+      active: Boolean(p.active),
+      createdAt: BigInt(p.createdAt)
+    };
+  } catch {
+    return null;
+  }
+}
+
+/// List passport ids owned by `owner`.
+export async function fetchPassportsOf(contractAddress: string, owner: string): Promise<bigint[]> {
+  if (!isValidAddress(contractAddress) || !isValidAddress(owner)) return [];
+  try {
+    const ids: bigint[] = await readContract(contractAddress).passportsOf(owner);
+    return ids.map((x) => BigInt(x));
+  } catch {
+    return [];
+  }
+}
+
+/// Convert a raw struct into the display-shaped `Passport` consumed by AgentCard.
+export function toDisplayPassport(raw: RawPassport): Passport {
   return {
-    owner: String(owner),
-    agentId: String(storedAgentId),
-    score: BigInt(score),
-    active: Boolean(active),
+    owner: raw.owner,
+    agentId: raw.id.toString(),
+    score: BigInt(raw.trustScore),
+    active: raw.active,
+    agentWallet: raw.agentWallet,
+    metadataURI: raw.metadataURI,
+    createdAt: raw.createdAt
   };
 }
 
-export async function fetchVerifyAgent(
-  contractAddress: string,
-  agentId: string,
-  minScore: number,
-): Promise<boolean> {
-  const result = (await getClient().readContract({
-    address: contractAddress as `0x${string}`,
-    abi: AGENT_PASSPORT_ABI,
-    functionName: "verifyAgent",
-    args: [agentId, BigInt(minScore)],
-  })) as boolean;
-  return Boolean(result);
+/// Parse the `PassportMinted` event from a transaction receipt log array.
+/// Works with thirdweb-shaped logs (objects with topics + data) and ethers logs.
+export function parsePassportMintedFromLogs(
+  logs: ReadonlyArray<{ topics: ReadonlyArray<string>; data: string; address?: string }>,
+  contractAddress?: string
+): { id: bigint; owner: string; agentWallet: string; metadataURI: string } | null {
+  const iface = new ethers.Interface(AGENT_PASSPORT_ABI);
+  const wantedAddr = contractAddress?.toLowerCase();
+  for (const log of logs) {
+    if (wantedAddr && log.address && log.address.toLowerCase() !== wantedAddr) continue;
+    try {
+      const parsed = iface.parseLog({ topics: Array.from(log.topics), data: log.data });
+      if (parsed?.name === "PassportMinted") {
+        return {
+          id: BigInt(parsed.args.id),
+          owner: String(parsed.args.owner),
+          agentWallet: String(parsed.args.agentWallet),
+          metadataURI: String(parsed.args.metadataURI)
+        };
+      }
+    } catch {
+      // not our log, keep looking
+    }
+  }
+  return null;
 }
