@@ -53,8 +53,23 @@ Dashboard becomes a thin client over the backend. One source of truth for agents
 ```
 
 - Dashboard: no chain reads from the browser, no `useSendTransaction` for mint, no `localStorage` agent keys.
-- Auth: gated on SIWE session via `/api/auth/status`. Wallet hooks remain only for Profile-tab display data (balance, linked email, chain name).
+- Auth: gated on SIWE session via `/api/auth/status`. Wallet hooks remain only for Profile-tab display and the Disconnect button.
 - Agent IDs across the app: Supabase UUIDs.
+
+### thirdweb hooks: kept vs dropped
+
+Kept (Profile tab + header + Disconnect):
+- `useActiveAccount` — wallet address, avatar seed.
+- `useActiveWallet` + `useDisconnect` — Disconnect button.
+- `useActiveWalletChain` — chain name + ID display, Fuji indicator.
+- `useProfiles` — linked email.
+- `useWalletBalance` — balance display.
+
+Dropped (no longer relevant after backend mint takes over):
+- `useSendTransaction` — was used for client-side mint.
+- `useSwitchActiveWalletChain` — was used to force Fuji before the user-signed mint; not needed when the platform key signs server-side. Profile tab can still surface "wrong network" passively.
+
+The Disconnect handler keeps its current shape: `POST /api/auth/logout` (clears the SIWE cookie), then `disconnect(wallet)`, then `router.replace("/login")`.
 
 ## Components
 
