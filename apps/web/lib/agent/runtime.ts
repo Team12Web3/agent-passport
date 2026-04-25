@@ -10,7 +10,7 @@ import { cheapModel } from "./llm";
 import { getPublicClient } from "../chain/client";
 import { ActionLog, AgentPassport, USDC, assertContractsDeployed } from "../chain/contracts";
 import { getSupabase, type AgentRow } from "../db/supabase";
-import { getAgentSigner } from "./wallet";
+import { getSignerFromEncryptedKey } from "./wallet";
 import { buildTrustHeaders } from "./sign";
 import { cleanMarkdown } from "./clean";
 
@@ -100,6 +100,7 @@ export async function runAgentTask(
         passportId: a.passport_id,
         url: args.url,
         encryptedKey: a.encrypted_private_key,
+        intent: args.prompt,
       })
     : undefined;
 
@@ -155,7 +156,7 @@ export async function runAgentTask(
   const taskHash    = keccak256(toBytes(`${args.prompt}|${args.url}`));
   const actionsRoot = keccak256(toBytes(JSON.stringify(actions)));
 
-  const { account, wallet } = getAgentSigner(a.encrypted_private_key);
+  const { account, wallet } = getSignerFromEncryptedKey(a.encrypted_private_key);
   const pub = getPublicClient();
 
   // Approve USDC if needed (one-shot infinite)

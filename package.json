@@ -5,9 +5,16 @@
     "dev": "pnpm --filter web dev",
     "build": "pnpm --filter web build",
     "start": "pnpm --filter web start",
+    "fund": "tsx scripts/fund.ts",
     "contracts:build": "cd packages/contracts && forge build",
     "contracts:test": "cd packages/contracts && forge test",
     "contracts:deploy": "cd packages/contracts && forge script script/Deploy.s.sol --rpc-url $NEXT_PUBLIC_FUJI_RPC --broadcast"
   },
-  "packageManager": "pnpm@9.0.0"
+  "packageManager": "pnpm@9.0.0",
+  "dependencies": {
+    "viem": "^2.48.4"
+  },
+  "devDependencies": {
+    "tsx": "^4.21.0"
+  }
 }

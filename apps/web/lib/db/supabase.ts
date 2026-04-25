@@ -45,6 +45,13 @@ export type ActionRunRow = {
   created_at: string;
 };
 
+export type AgentNonceRow = {
+  agent_id: string;
+  nonce: string;
+  issued_at: string;
+  used_at: string | null;
+};
+
 export type UserRow = {
   id: string;
   thirdweb_id: string;

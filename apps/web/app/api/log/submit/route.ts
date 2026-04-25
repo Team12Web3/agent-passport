@@ -10,7 +10,7 @@ import {
   USDC,
   assertContractsDeployed,
 } from "@/lib/chain/contracts";
-import { getAgentSigner } from "@/lib/agent/wallet";
+import { getSignerFromEncryptedKey } from "@/lib/agent/wallet";
 
 export const runtime = "nodejs";
 
@@ -56,7 +56,7 @@ export async function POST(req: Request) {
     return json({ error: "no_passport" }, { status: 400 });
   }
 
-  const { account, wallet } = getAgentSigner(a.encrypted_private_key);
+  const { account, wallet } = getSignerFromEncryptedKey(a.encrypted_private_key);
   const pub = getPublicClient();
   const fee = BigInt(body.feeAmount);
 

@@ -50,6 +50,25 @@ export async function POST(req: Request) {
     return provisioningFailed("wallet");
   }
 
+  const supabase = getSupabase();
+  const { data: draftAgent, error: draftInsertError } = await supabase
+    .from("agents")
+    .insert({
+      user_id: session.user.id,
+      name: body.name,
+      purpose: body.purpose,
+      tools: body.tools,
+      agent_wallet_address: walletAddress,
+      encrypted_private_key: encryptedKey,
+    })
+    .select("id")
+    .single();
+
+  if (draftInsertError || !draftAgent) {
+    console.error("[agents/create] draft db insert", draftInsertError);
+    return json({ error: "db_insert_failed" }, { status: 500 });
+  }
+
   // 2. Fund
   let fundingTxHash: Hex;
   try {
@@ -57,6 +76,7 @@ export async function POST(req: Request) {
     fundingTxHash = f.fundingTxHash;
   } catch (err) {
     console.error("[agents/create] funding step", err);
+    await supabase.from("agents").delete().eq("id", draftAgent.id);
     return provisioningFailed("funding");
   }
 
@@ -94,23 +114,18 @@ export async function POST(req: Request) {
     passportId = BigInt(minted.topics[1]!).toString();
   } catch (err) {
     console.error("[agents/create] mint step", err);
+    await supabase.from("agents").delete().eq("id", draftAgent.id);
     return provisioningFailed("mint");
   }
 
   // 4. Persist
-  const supabase = getSupabase();
   const { data: agent, error } = await supabase
     .from("agents")
-    .insert({
-      user_id: session.user.id,
-      name:    body.name,
-      purpose: body.purpose,
-      tools:   body.tools,
+    .update({
       passport_id:           passportId,
-      agent_wallet_address:  walletAddress,
-      encrypted_private_key: encryptedKey,
       mint_tx_hash:          mintTxHash,
     })
+    .eq("id", draftAgent.id)
     .select("id")
     .single();
 
