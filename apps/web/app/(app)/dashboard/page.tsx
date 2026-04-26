@@ -520,6 +520,7 @@ function CreateTab({
   createdAgents: AgentRecord[];
   contractAddress: string;
 }) {
+  const noticeVariant = useMotionVariant(fadeUp);
   const isWorking =
     createState.phase !== "idle" &&
     createState.phase !== "done" &&
@@ -571,10 +572,9 @@ function CreateTab({
           {createState.message && (
             <motion.div
               key={createState.message}
-              initial={{ opacity: 0, y: -4 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -4 }}
-              transition={{ duration: 0.18, ease: [0.22, 1, 0.36, 1] }}
+              initial={noticeVariant.initial}
+              animate={noticeVariant.animate}
+              exit={noticeVariant.exit}
             >
               <Notice tone={showError ? "error" : "success"} className="mt-5">
                 {createState.message}
