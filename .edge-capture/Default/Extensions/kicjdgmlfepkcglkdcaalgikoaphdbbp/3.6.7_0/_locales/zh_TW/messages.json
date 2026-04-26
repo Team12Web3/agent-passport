@@ -1,0 +1,116 @@
+{
+   "autoTranslate": {
+      "message": "自動翻譯"
+   },
+   "background": {
+      "message": "背景"
+   },
+   "bilingual": {
+      "message": "雙語"
+   },
+   "close": {
+      "message": "關閉"
+   },
+   "closeUpgradeTip": {
+      "message": "關閉升級提醒"
+   },
+   "color": {
+      "message": "顏色"
+   },
+   "customStyle": {
+      "message": "自定義樣式"
+   },
+   "defaultSubtitles": {
+      "message": "默認字幕"
+   },
+   "description": {
+      "message": "自動切換到本地語言，雙語字幕，字幕下載，字幕配音，自定義字幕樣式。"
+   },
+   "dualMode": {
+      "message": "雙字幕設置"
+   },
+   "dubbingSettings": {
+      "message": "配音設置"
+   },
+   "fontFamily": {
+      "message": "字體"
+   },
+   "fontSize": {
+      "message": "字號"
+   },
+   "functionRemove": {
+      "message": "擴展開關功能已刪除"
+   },
+   "goBack": {
+      "message": "獲取翻譯列表出錯"
+   },
+   "hideDubbing": {
+      "message": "隱藏字幕配音"
+   },
+   "hideSubtitleDownload": {
+      "message": "隱藏字幕下載"
+   },
+   "learnMore": {
+      "message": "學到更多"
+   },
+   "lockTips": {
+      "message": "刷新後生效"
+   },
+   "name": {
+      "message": "YouTube™ 雙字幕"
+   },
+   "newFuntcion": {
+      "message": "新功能即將推出"
+   },
+   "newVersion": {
+      "message": "新版本"
+   },
+   "requestError": {
+      "message": "字幕請求出錯，請稍後重試。"
+   },
+   "resetStyle": {
+      "message": "重置樣式"
+   },
+   "rowGap": {
+      "message": "間距"
+   },
+   "singleMode": {
+      "message": "單字幕設置"
+   },
+   "singleSubtitle": {
+      "message": "單字幕"
+   },
+   "subtitleDownload": {
+      "message": "字幕下載"
+   },
+   "subtitleDubbing": {
+      "message": "字幕配音"
+   },
+   "swapPosition": {
+      "message": "交換位置"
+   },
+   "textStroke": {
+      "message": "文字描邊"
+   },
+   "today": {
+      "message": "今天不再提醒"
+   },
+   "translateButton": {
+      "message": "翻譯字幕"
+   },
+   "translationError": {
+      "message": "自動翻譯服務中斷，請稍後重試。"
+   },
+   "translationErrorDetails": {
+      "message": "自動翻譯出現暫時性故障，可能在幾分鐘後恢復。"
+   },
+   "updateLog": {
+      "message": "更新說明"
+   },
+   "videoButton": {
+      "message": "視頻字幕"
+   },
+   "videoSubtitles": {
+      "message": "視頻字幕"
+   }
+}

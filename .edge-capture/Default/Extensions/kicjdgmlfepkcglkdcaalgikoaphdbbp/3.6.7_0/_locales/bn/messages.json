@@ -1,0 +1,116 @@
+{
+   "autoTranslate": {
+      "message": "স্বতঃ অনুবাদ"
+   },
+   "background": {
+      "message": "পটভূমি"
+   },
+   "bilingual": {
+      "message": "দ্বিভাষিক"
+   },
+   "close": {
+      "message": "বন্ধ"
+   },
+   "closeUpgradeTip": {
+      "message": "আপগ্রেড অনুস্মারক বন্ধ করুন"
+   },
+   "color": {
+      "message": "রঙ"
+   },
+   "customStyle": {
+      "message": "কাস্টম শৈলী"
+   },
+   "defaultSubtitles": {
+      "message": "ডিফল্ট সাবটাইটেলগুলি"
+   },
+   "description": {
+      "message": "স্বয়ংক্রিয়ভাবে স্থানীয় ভাষা, দ্বিভাষিক সাবটাইটেল, সাবটাইটেল ডাউনলোড, সাবটাইটেল ডাবিং, কাস্টম সাবটাইটেল শৈলীতে স্যুইচ করুন।"
+   },
+   "dualMode": {
+      "message": "ডুয়াল সাবটাইটেল সেটিংস"
+   },
+   "dubbingSettings": {
+      "message": "ডাবিং সেটিংস"
+   },
+   "fontFamily": {
+      "message": "হরফ"
+   },
+   "fontSize": {
+      "message": "অক্ষরের আকার"
+   },
+   "functionRemove": {
+      "message": "এক্সটেনশানগুলির স্যুইচ ফাংশন সরানো হয়েছে"
+   },
+   "goBack": {
+      "message": "অনুবাদ তালিকা পেতে ত্রুটি"
+   },
+   "hideDubbing": {
+      "message": "ক্লোজড ক্যাপশন ডাবিং"
+   },
+   "hideSubtitleDownload": {
+      "message": "সাবটাইটেল ডাউনলোডগুলি লুকান"
+   },
+   "learnMore": {
+      "message": "আরও জানুন"
+   },
+   "lockTips": {
+      "message": "রিফ্রেশ করার পরে প্রভাব নিন"
+   },
+   "name": {
+      "message": "ইউটিউব ual দ্বৈত সাবটাইটেল"
+   },
+   "newFuntcion": {
+      "message": "নতুন বৈশিষ্ট্য শীঘ্রই আসছে"
+   },
+   "newVersion": {
+      "message": "নতুন সংস্করণ"
+   },
+   "requestError": {
+      "message": "ক্যাপশন অনুরোধে একটি ত্রুটি ছিল, দয়া করে পরে আবার চেষ্টা করুন।"
+   },
+   "resetStyle": {
+      "message": "শৈলী রিসেট করুন"
+   },
+   "rowGap": {
+      "message": "ব্যবধান"
+   },
+   "singleMode": {
+      "message": "একক সাবটাইটেল সেটিং"
+   },
+   "singleSubtitle": {
+      "message": "একক সাবটাইটেল"
+   },
+   "subtitleDownload": {
+      "message": "সাবটাইটেলগুলি ডাউনলোড করুন"
+   },
+   "subtitleDubbing": {
+      "message": "সাবটাইটেল ডাবিং"
+   },
+   "swapPosition": {
+      "message": "অদলবদল অবস্থান"
+   },
+   "textStroke": {
+      "message": "টেক্সট স্ট্রোক"
+   },
+   "today": {
+      "message": "আজকে মনে করিয়ে দেবেন না"
+   },
+   "translateButton": {
+      "message": "সাবটাইটেল অনুবাদ করুন"
+   },
+   "translationError": {
+      "message": "স্বয়ংক্রিয় অনুবাদ পরিষেবা বাধাগ্রস্ত হয়েছে, দয়া করে পরে আবার চেষ্টা করুন।"
+   },
+   "translationErrorDetails": {
+      "message": "স্বয়ংক্রিয় অনুবাদ অস্থায়ীভাবে অর্ডার থেকে বাইরে এবং কয়েক মিনিটের মধ্যে আবার শুরু হতে পারে।"
+   },
+   "updateLog": {
+      "message": "অব্যাহতি পত্র"
+   },
+   "videoButton": {
+      "message": "ভিডিও সাবটাইটেল"
+   },
+   "videoSubtitles": {
+      "message": "ভিডিও সাবটাইটেলগুলি"
+   }
+}

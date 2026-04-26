@@ -1,0 +1,116 @@
+{
+   "autoTranslate": {
+      "message": "स्वयंचलित अनुवाद"
+   },
+   "background": {
+      "message": "पार्श्वभूमी"
+   },
+   "bilingual": {
+      "message": "द्विभाषिक"
+   },
+   "close": {
+      "message": "बंद"
+   },
+   "closeUpgradeTip": {
+      "message": "अपग्रेड स्मरणपत्रे बंद करा"
+   },
+   "color": {
+      "message": "रंग"
+   },
+   "customStyle": {
+      "message": "सानुकूल शैली"
+   },
+   "defaultSubtitles": {
+      "message": "डीफॉल्ट उपशीर्षके"
+   },
+   "description": {
+      "message": "स्थानिक भाषा, द्विभाषिक उपशीर्षके, उपशीर्षक डाउनलोड, उपशीर्षक डबिंग, सानुकूल उपशीर्षक शैलीवर स्वयंचलितपणे स्विच करा."
+   },
+   "dualMode": {
+      "message": "दुहेरी उपशीर्षक सेटिंग्ज"
+   },
+   "dubbingSettings": {
+      "message": "डबिंग सेटिंग्ज"
+   },
+   "fontFamily": {
+      "message": "फॉन्ट"
+   },
+   "fontSize": {
+      "message": "अक्षराचा आकार"
+   },
+   "functionRemove": {
+      "message": "विस्तार स्विच फंक्शन काढले गेले आहे"
+   },
+   "goBack": {
+      "message": "भाषांतर सूची मिळविताना त्रुटी"
+   },
+   "hideDubbing": {
+      "message": "बंद मथळा डबिंग"
+   },
+   "hideSubtitleDownload": {
+      "message": "उपशीर्षके डाउनलोड लपवा"
+   },
+   "learnMore": {
+      "message": "अधिक जाणून घ्या"
+   },
+   "lockTips": {
+      "message": "रीफ्रेश केल्यानंतर प्रभाव घ्या"
+   },
+   "name": {
+      "message": "YouTube ual ड्युअल उपशीर्षके"
+   },
+   "newFuntcion": {
+      "message": "नवीन वैशिष्ट्ये लवकरच येत आहेत"
+   },
+   "newVersion": {
+      "message": "नवीन आवृत्ती"
+   },
+   "requestError": {
+      "message": "मथळ्याच्या विनंतीमध्ये एक त्रुटी होती, कृपया नंतर पुन्हा प्रयत्न करा."
+   },
+   "resetStyle": {
+      "message": "शैली रीसेट करा"
+   },
+   "rowGap": {
+      "message": "अंतर"
+   },
+   "singleMode": {
+      "message": "एकल उपशीर्षक सेटिंग"
+   },
+   "singleSubtitle": {
+      "message": "एकच उपशीर्षके"
+   },
+   "subtitleDownload": {
+      "message": "उपशीर्षके डाउनलोड"
+   },
+   "subtitleDubbing": {
+      "message": "उपशीर्षक डबिंग"
+   },
+   "swapPosition": {
+      "message": "स्वॅप स्थिती"
+   },
+   "textStroke": {
+      "message": "मजकूर स्ट्रोक"
+   },
+   "today": {
+      "message": "आज स्मरण देऊ नका"
+   },
+   "translateButton": {
+      "message": "उपशीर्षकांचे भाषांतर करा"
+   },
+   "translationError": {
+      "message": "स्वयंचलित भाषांतर सेवेत व्यत्यय आला आहे, कृपया नंतर पुन्हा प्रयत्न करा."
+   },
+   "translationErrorDetails": {
+      "message": "स्वयंचलित अनुवाद तात्पुरते ऑर्डरच्या बाहेर आहे आणि काही मिनिटांत पुन्हा सुरू होईल."
+   },
+   "updateLog": {
+      "message": "रिलीझ नोट्स"
+   },
+   "videoButton": {
+      "message": "व्हिडिओ उपशीर्षके"
+   },
+   "videoSubtitles": {
+      "message": "व्हिडिओ उपशीर्षके"
+   }
+}

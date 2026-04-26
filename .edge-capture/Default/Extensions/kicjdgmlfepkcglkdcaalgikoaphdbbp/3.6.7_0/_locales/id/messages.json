@@ -1,0 +1,116 @@
+{
+   "autoTranslate": {
+      "message": "Terjemahkan otomatis"
+   },
+   "background": {
+      "message": "Latar Belakang"
+   },
+   "bilingual": {
+      "message": "Dua bahasa"
+   },
+   "close": {
+      "message": "Menutup"
+   },
+   "closeUpgradeTip": {
+      "message": "Matikan pengingat peningkatan"
+   },
+   "color": {
+      "message": "warna"
+   },
+   "customStyle": {
+      "message": "Gaya kustom"
+   },
+   "defaultSubtitles": {
+      "message": "Subtitel default"
+   },
+   "description": {
+      "message": "Secara otomatis beralih ke bahasa lokal, subtitle dwibahasa, unduhan subtitle, dubbing subtitle, gaya subtitle khusus."
+   },
+   "dualMode": {
+      "message": "Pengaturan subtitle ganda"
+   },
+   "dubbingSettings": {
+      "message": "Pengaturan sulih suara"
+   },
+   "fontFamily": {
+      "message": "jenis huruf"
+   },
+   "fontSize": {
+      "message": "Ukuran huruf"
+   },
+   "functionRemove": {
+      "message": "Fungsi sakelar ekstensi telah dihapus"
+   },
+   "goBack": {
+      "message": "Kesalahan mendapatkan daftar terjemahan"
+   },
+   "hideDubbing": {
+      "message": "Dubbing teks tertutup"
+   },
+   "hideSubtitleDownload": {
+      "message": "Sembunyikan unduhan Subtitle"
+   },
+   "learnMore": {
+      "message": "Belajarlah lagi"
+   },
+   "lockTips": {
+      "message": "Berlaku setelah penyegaran"
+   },
+   "name": {
+      "message": "Subtitel ganda YouTube™"
+   },
+   "newFuntcion": {
+      "message": "Fitur baru segera hadir"
+   },
+   "newVersion": {
+      "message": "versi baru"
+   },
+   "requestError": {
+      "message": "Terjadi kesalahan dalam permintaan teks, coba lagi nanti."
+   },
+   "resetStyle": {
+      "message": "atur ulang gaya"
+   },
+   "rowGap": {
+      "message": "jarak"
+   },
+   "singleMode": {
+      "message": "Pengaturan subtitle tunggal"
+   },
+   "singleSubtitle": {
+      "message": "Subtitle tunggal"
+   },
+   "subtitleDownload": {
+      "message": "Unduhan subtitle"
+   },
+   "subtitleDubbing": {
+      "message": "Dubbing subtitle"
+   },
+   "swapPosition": {
+      "message": "Tukar posisi"
+   },
+   "textStroke": {
+      "message": "Stroke teks"
+   },
+   "today": {
+      "message": "Jangan ingatkan hari ini"
+   },
+   "translateButton": {
+      "message": "Terjemahkan subtitle"
+   },
+   "translationError": {
+      "message": "Layanan terjemahan otomatis terputus, silakan coba lagi nanti."
+   },
+   "translationErrorDetails": {
+      "message": "Terjemahan otomatis untuk sementara rusak dan dapat dilanjutkan dalam beberapa menit."
+   },
+   "updateLog": {
+      "message": "Catatan Rilis"
+   },
+   "videoButton": {
+      "message": "Subtitle video"
+   },
+   "videoSubtitles": {
+      "message": "Subtitle video"
+   }
+}

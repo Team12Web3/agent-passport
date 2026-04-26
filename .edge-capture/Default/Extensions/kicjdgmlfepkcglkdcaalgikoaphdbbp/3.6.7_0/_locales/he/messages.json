@@ -1,0 +1,116 @@
+{
+   "autoTranslate": {
+      "message": "תרגם אוטומטית"
+   },
+   "background": {
+      "message": "רקע כללי"
+   },
+   "bilingual": {
+      "message": "דוּ לְשׁוֹנִי"
+   },
+   "close": {
+      "message": "סגור"
+   },
+   "closeUpgradeTip": {
+      "message": "כבה את תזכורות השדרוג"
+   },
+   "color": {
+      "message": "צֶבַע"
+   },
+   "customStyle": {
+      "message": "סגנון מותאם אישית"
+   },
+   "defaultSubtitles": {
+      "message": "כתוביות ברירת מחדל"
+   },
+   "description": {
+      "message": "עבור אוטומטית לשפה מקומית, כתוביות דו לשוניות, הורדת כתוביות, דיבוב כתוביות, סגנון כתוביות מותאם אישית."
+   },
+   "dualMode": {
+      "message": "הגדרות כתוביות כפולות"
+   },
+   "dubbingSettings": {
+      "message": "הגדרות דיבוב"
+   },
+   "fontFamily": {
+      "message": "גוֹפָן"
+   },
+   "fontSize": {
+      "message": "גודל גופן"
+   },
+   "functionRemove": {
+      "message": "פונקציית מתג ההרחבות הוסרה"
+   },
+   "goBack": {
+      "message": "שגיאה בקבלת רשימת התרגום"
+   },
+   "hideDubbing": {
+      "message": "דיבוב כתוביות סגורות"
+   },
+   "hideSubtitleDownload": {
+      "message": "הסתר הורדת כתוביות"
+   },
+   "learnMore": {
+      "message": "למד עוד"
+   },
+   "lockTips": {
+      "message": "נכנס לתוקף לאחר רענון"
+   },
+   "name": {
+      "message": "כתוביות כפולות של YouTube ™"
+   },
+   "newFuntcion": {
+      "message": "תכונות חדשות בקרוב"
+   },
+   "newVersion": {
+      "message": "גרסה חדשה"
+   },
+   "requestError": {
+      "message": "אירעה שגיאה בבקשת הכיתוב. נסה שוב מאוחר יותר."
+   },
+   "resetStyle": {
+      "message": "איפוס סגנון"
+   },
+   "rowGap": {
+      "message": "מרווחים"
+   },
+   "singleMode": {
+      "message": "הגדרת כתוביות בודדות"
+   },
+   "singleSubtitle": {
+      "message": "כתוביות בודדות"
+   },
+   "subtitleDownload": {
+      "message": "הורדת כתוביות"
+   },
+   "subtitleDubbing": {
+      "message": "דיבוב כתוביות"
+   },
+   "swapPosition": {
+      "message": "החלף עמדה"
+   },
+   "textStroke": {
+      "message": "קו טקסט"
+   },
+   "today": {
+      "message": "אל תזכיר היום"
+   },
+   "translateButton": {
+      "message": "תרגם כתוביות"
+   },
+   "translationError": {
+      "message": "שירות התרגום האוטומטי מופרע, נסה שוב מאוחר יותר."
+   },
+   "translationErrorDetails": {
+      "message": "תרגום אוטומטי אינו פעיל באופן זמני ועשוי לחדש בעוד מספר דקות."
+   },
+   "updateLog": {
+      "message": "מכתבי שחרור"
+   },
+   "videoButton": {
+      "message": "כתוביות וידאו"
+   },
+   "videoSubtitles": {
+      "message": "כתוביות וידאו"
+   }
+}

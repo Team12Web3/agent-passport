@@ -1,0 +1,116 @@
+{
+   "autoTranslate": {
+      "message": "Otomatik çevir"
+   },
+   "background": {
+      "message": "arka fon"
+   },
+   "bilingual": {
+      "message": "iki dilli"
+   },
+   "close": {
+      "message": "Kapat"
+   },
+   "closeUpgradeTip": {
+      "message": "Yükseltme hatırlatıcılarını kapat"
+   },
+   "color": {
+      "message": "renk"
+   },
+   "customStyle": {
+      "message": "Özel stil"
+   },
+   "defaultSubtitles": {
+      "message": "Varsayılan altyazılar"
+   },
+   "description": {
+      "message": "Otomatik olarak yerel dile, iki dilli altyazılara, altyazı indirmeye, altyazı dublajına, özel altyazı stiline geçiş yapın."
+   },
+   "dualMode": {
+      "message": "Çift altyazı ayarları"
+   },
+   "dubbingSettings": {
+      "message": "dublaj ayarları"
+   },
+   "fontFamily": {
+      "message": "Yazı tipi"
+   },
+   "fontSize": {
+      "message": "Yazı Boyutu"
+   },
+   "functionRemove": {
+      "message": "Uzantı değiştirme işlevi kaldırıldı"
+   },
+   "goBack": {
+      "message": "Çeviri listesi alınırken hata oluştu"
+   },
+   "hideDubbing": {
+      "message": "Altyazı dublajı"
+   },
+   "hideSubtitleDownload": {
+      "message": "Altyazı indirmeyi gizle"
+   },
+   "learnMore": {
+      "message": "Daha fazla bilgi edin"
+   },
+   "lockTips": {
+      "message": "Yenilemeden sonra yürürlüğe gir"
+   },
+   "name": {
+      "message": "YouTube™ çift altyazı"
+   },
+   "newFuntcion": {
+      "message": "Yeni özellikler yakında geliyor"
+   },
+   "newVersion": {
+      "message": "Yeni sürüm"
+   },
+   "requestError": {
+      "message": "Altyazı isteğinde bir hata oluştu, lütfen daha sonra tekrar deneyin."
+   },
+   "resetStyle": {
+      "message": "stil sıfırlama"
+   },
+   "rowGap": {
+      "message": "boşluk"
+   },
+   "singleMode": {
+      "message": "Tek altyazı ayarı"
+   },
+   "singleSubtitle": {
+      "message": "Tek altyazı"
+   },
+   "subtitleDownload": {
+      "message": "Altyazı indir"
+   },
+   "subtitleDubbing": {
+      "message": "altyazı dublajı"
+   },
+   "swapPosition": {
+      "message": "Pozisyonu değiştir"
+   },
+   "textStroke": {
+      "message": "Metin konturu"
+   },
+   "today": {
+      "message": "Bugün hatırlatma"
+   },
+   "translateButton": {
+      "message": "Altyazıları çevir"
+   },
+   "translationError": {
+      "message": "Otomatik çeviri hizmeti kesintiye uğradı, lütfen daha sonra tekrar deneyin."
+   },
+   "translationErrorDetails": {
+      "message": "Otomatik çeviri geçici olarak devre dışıdır ve birkaç dakika içinde devam edebilir."
+   },
+   "updateLog": {
+      "message": "Sürüm notları"
+   },
+   "videoButton": {
+      "message": "Video altyazıları"
+   },
+   "videoSubtitles": {
+      "message": "Video altyazıları"
+   }
+}

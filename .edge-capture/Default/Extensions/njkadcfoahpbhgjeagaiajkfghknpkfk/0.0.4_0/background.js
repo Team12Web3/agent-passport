@@ -1,0 +1,1 @@
+(function(){chrome.action.onClicked.addListener((function(n){}))})();

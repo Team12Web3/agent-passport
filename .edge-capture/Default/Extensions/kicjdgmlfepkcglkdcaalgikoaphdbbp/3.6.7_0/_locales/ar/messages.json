@@ -1,0 +1,116 @@
+{
+   "autoTranslate": {
+      "message": "الترجمة الآلية"
+   },
+   "background": {
+      "message": "معرفتي"
+   },
+   "bilingual": {
+      "message": "ثنائي اللغة"
+   },
+   "close": {
+      "message": "يغلق"
+   },
+   "closeUpgradeTip": {
+      "message": "قم بإيقاف تشغيل تذكيرات الترقية"
+   },
+   "color": {
+      "message": "لون"
+   },
+   "customStyle": {
+      "message": "نمط مخصص"
+   },
+   "defaultSubtitles": {
+      "message": "الترجمة الافتراضية"
+   },
+   "description": {
+      "message": "قم بالتبديل تلقائيًا إلى اللغة المحلية ، والترجمة ثنائية اللغة ، وتحميل الترجمة ، ودبلجة الترجمة ، ونمط الترجمة المخصص."
+   },
+   "dualMode": {
+      "message": "إعدادات الترجمة المزدوجة"
+   },
+   "dubbingSettings": {
+      "message": "إعدادات الدبلجة"
+   },
+   "fontFamily": {
+      "message": "الخط"
+   },
+   "fontSize": {
+      "message": "حجم الخط"
+   },
+   "functionRemove": {
+      "message": "تمت إزالة وظيفة مفتاح الامتدادات"
+   },
+   "goBack": {
+      "message": "خطأ في الحصول على قائمة الترجمة"
+   },
+   "hideDubbing": {
+      "message": "تسمية توضيحية مغلقة"
+   },
+   "hideSubtitleDownload": {
+      "message": "إخفاء تنزيل الترجمات"
+   },
+   "learnMore": {
+      "message": "يتعلم أكثر"
+   },
+   "lockTips": {
+      "message": "يسري مفعوله بعد التحديث"
+   },
+   "name": {
+      "message": "ترجمة مزدوجة على YouTube ™"
+   },
+   "newFuntcion": {
+      "message": "ميزات جديدة قريبا"
+   },
+   "newVersion": {
+      "message": "نسخة جديدة"
+   },
+   "requestError": {
+      "message": "حدث خطأ في طلب التسمية التوضيحية ، يرجى المحاولة مرة أخرى لاحقًا."
+   },
+   "resetStyle": {
+      "message": "إعادة ضبط النمط"
+   },
+   "rowGap": {
+      "message": "تباعد"
+   },
+   "singleMode": {
+      "message": "إعداد الترجمة الفردية"
+   },
+   "singleSubtitle": {
+      "message": "ترجمة فردية"
+   },
+   "subtitleDownload": {
+      "message": "تحميل الترجمات"
+   },
+   "subtitleDubbing": {
+      "message": "دبلجة الترجمة"
+   },
+   "swapPosition": {
+      "message": "مركز المبادلة"
+   },
+   "textStroke": {
+      "message": "شطب النص"
+   },
+   "today": {
+      "message": "لا تذكر اليوم"
+   },
+   "translateButton": {
+      "message": "ترجمة الترجمة"
+   },
+   "translationError": {
+      "message": "تمت مقاطعة خدمة الترجمة الآلية ، يرجى المحاولة مرة أخرى لاحقًا."
+   },
+   "translationErrorDetails": {
+      "message": "الترجمة الآلية معطلة مؤقتًا وقد تستأنف في غضون بضع دقائق."
+   },
+   "updateLog": {
+      "message": "ملاحظات الإصدار"
+   },
+   "videoButton": {
+      "message": "ترجمة الفيديو"
+   },
+   "videoSubtitles": {
+      "message": "ترجمة الفيديو"
+   }
+}

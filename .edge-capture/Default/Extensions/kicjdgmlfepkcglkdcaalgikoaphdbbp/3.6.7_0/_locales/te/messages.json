@@ -1,0 +1,116 @@
+{
+   "autoTranslate": {
+      "message": "స్వీయ-అనువాదం"
+   },
+   "background": {
+      "message": "నేపథ్య"
+   },
+   "bilingual": {
+      "message": "ద్విభాషా"
+   },
+   "close": {
+      "message": "దగ్గరగా"
+   },
+   "closeUpgradeTip": {
+      "message": "అప్‌గ్రేడ్ రిమైండర్‌లను ఆఫ్ చేయండి"
+   },
+   "color": {
+      "message": "రంగు"
+   },
+   "customStyle": {
+      "message": "అనుకూల శైలి"
+   },
+   "defaultSubtitles": {
+      "message": "డిఫాల్ట్ ఉపశీర్షికలు"
+   },
+   "description": {
+      "message": "స్థానిక భాష, ద్విభాషా ఉపశీర్షికలు, ఉపశీర్షిక డౌన్‌లోడ్, ఉపశీర్షిక డబ్బింగ్, అనుకూల ఉపశీర్షిక శైలికి స్వయంచాలకంగా మారండి."
+   },
+   "dualMode": {
+      "message": "ద్వంద్వ ఉపశీర్షిక సెట్టింగ్‌లు"
+   },
+   "dubbingSettings": {
+      "message": "డబ్బింగ్ సెట్టింగ్‌లు"
+   },
+   "fontFamily": {
+      "message": "ఫాంట్"
+   },
+   "fontSize": {
+      "message": "ఫాంట్ పరిమాణం"
+   },
+   "functionRemove": {
+      "message": "పొడిగింపుల స్విచ్ ఫంక్షన్ తొలగించబడింది"
+   },
+   "goBack": {
+      "message": "అనువాద జాబితాను పొందడంలో లోపం"
+   },
+   "hideDubbing": {
+      "message": "క్లోజ్డ్ క్యాప్షన్ డబ్బింగ్"
+   },
+   "hideSubtitleDownload": {
+      "message": "ఉపశీర్షికల డౌన్‌లోడ్ దాచు"
+   },
+   "learnMore": {
+      "message": "ఇంకా నేర్చుకో"
+   },
+   "lockTips": {
+      "message": "రిఫ్రెష్ చేసిన తర్వాత ప్రభావం చూపుతుంది"
+   },
+   "name": {
+      "message": "YouTube ద్వంద్వ ఉపశీర్షికలు"
+   },
+   "newFuntcion": {
+      "message": "క్రొత్త ఫీచర్లు త్వరలో వస్తున్నాయి"
+   },
+   "newVersion": {
+      "message": "కొత్త వెర్షన్"
+   },
+   "requestError": {
+      "message": "శీర్షిక అభ్యర్థనలో లోపం ఉంది, దయచేసి తరువాత మళ్లీ ప్రయత్నించండి."
+   },
+   "resetStyle": {
+      "message": "రీసెట్ శైలి"
+   },
+   "rowGap": {
+      "message": "అంతరం"
+   },
+   "singleMode": {
+      "message": "ఒకే ఉపశీర్షిక సెట్టింగ్"
+   },
+   "singleSubtitle": {
+      "message": "ఒకే ఉపశీర్షికలు"
+   },
+   "subtitleDownload": {
+      "message": "ఉపశీర్షికలు డౌన్‌లోడ్"
+   },
+   "subtitleDubbing": {
+      "message": "ఉపశీర్షిక డబ్బింగ్"
+   },
+   "swapPosition": {
+      "message": "స్థానం మార్పిడి"
+   },
+   "textStroke": {
+      "message": "టెక్స్ట్ స్ట్రోక్"
+   },
+   "today": {
+      "message": "ఈ రోజు గుర్తు చేయవద్దు"
+   },
+   "translateButton": {
+      "message": "ఉపశీర్షికలను అనువదించండి"
+   },
+   "translationError": {
+      "message": "స్వయంచాలక అనువాద సేవ అంతరాయం కలిగింది, దయచేసి తరువాత మళ్లీ ప్రయత్నించండి."
+   },
+   "translationErrorDetails": {
+      "message": "స్వయంచాలక అనువాదం తాత్కాలికంగా ఆర్డర్‌లో లేదు మరియు కొన్ని నిమిషాల్లో తిరిగి ప్రారంభమవుతుంది."
+   },
+   "updateLog": {
+      "message": "విడుదల గమనికలు"
+   },
+   "videoButton": {
+      "message": "వీడియో ఉపశీర్షికలు"
+   },
+   "videoSubtitles": {
+      "message": "వీడియో ఉపశీర్షికలు"
+   }
+}

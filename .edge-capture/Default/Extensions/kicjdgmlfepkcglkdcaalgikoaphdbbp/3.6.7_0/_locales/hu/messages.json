@@ -1,0 +1,116 @@
+{
+   "autoTranslate": {
+      "message": "Automatikus fordítás"
+   },
+   "background": {
+      "message": "háttér"
+   },
+   "bilingual": {
+      "message": "Kétnyelvű"
+   },
+   "close": {
+      "message": "Bezárás"
+   },
+   "closeUpgradeTip": {
+      "message": "Kapcsolja ki a frissítési emlékeztetőket"
+   },
+   "color": {
+      "message": "szín"
+   },
+   "customStyle": {
+      "message": "Egyedi stílus"
+   },
+   "defaultSubtitles": {
+      "message": "Alapértelmezett feliratok"
+   },
+   "description": {
+      "message": "Automatikus váltás helyi nyelvre, kétnyelvű feliratokra, feliratok letöltésére, szinkronizálásra, egyéni feliratstílusra."
+   },
+   "dualMode": {
+      "message": "Kettős felirat beállítások"
+   },
+   "dubbingSettings": {
+      "message": "Szinkronizálási beállítások"
+   },
+   "fontFamily": {
+      "message": "Betűtípus"
+   },
+   "fontSize": {
+      "message": "Betűméret"
+   },
+   "functionRemove": {
+      "message": "A bővítmények kapcsoló funkciója eltávolításra került"
+   },
+   "goBack": {
+      "message": "Hiba történt a fordítási lista lekérésekor"
+   },
+   "hideDubbing": {
+      "message": "Feliratok szinkronizálása"
+   },
+   "hideSubtitleDownload": {
+      "message": "A felirat letöltése elrejtése"
+   },
+   "learnMore": {
+      "message": "Tudj meg többet"
+   },
+   "lockTips": {
+      "message": "Frissítés után lép életbe"
+   },
+   "name": {
+      "message": "YouTube ™ kettős felirat"
+   },
+   "newFuntcion": {
+      "message": "Új funkciók hamarosan megjelennek"
+   },
+   "newVersion": {
+      "message": "új verzió"
+   },
+   "requestError": {
+      "message": "Hiba történt a feliratkérésben, próbálkozzon újra később."
+   },
+   "resetStyle": {
+      "message": "stílus visszaállítása"
+   },
+   "rowGap": {
+      "message": "térköz"
+   },
+   "singleMode": {
+      "message": "Egyetlen felirat beállítás"
+   },
+   "singleSubtitle": {
+      "message": "Egyetlen felirat"
+   },
+   "subtitleDownload": {
+      "message": "Feliratok letöltése"
+   },
+   "subtitleDubbing": {
+      "message": "Feliratok szinkronizálása"
+   },
+   "swapPosition": {
+      "message": "Cserélj pozíciót"
+   },
+   "textStroke": {
+      "message": "Szövegvonás"
+   },
+   "today": {
+      "message": "Ne emlékeztessen ma"
+   },
+   "translateButton": {
+      "message": "Feliratok fordítása"
+   },
+   "translationError": {
+      "message": "Az automatikus fordítási szolgáltatás megszakadt, próbálkozzon újra később."
+   },
+   "translationErrorDetails": {
+      "message": "Az automatikus fordítás ideiglenesen nem működik, és néhány perc múlva folytatódhat."
+   },
+   "updateLog": {
+      "message": "Kiadási megjegyzések"
+   },
+   "videoButton": {
+      "message": "Videó feliratok"
+   },
+   "videoSubtitles": {
+      "message": "Videó feliratai"
+   }
+}

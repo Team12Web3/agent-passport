@@ -1,0 +1,116 @@
+{
+   "autoTranslate": {
+      "message": "સ્વત-અનુવાદ"
+   },
+   "background": {
+      "message": "પૃષ્ઠભૂમિ"
+   },
+   "bilingual": {
+      "message": "દ્વિભાષી"
+   },
+   "close": {
+      "message": "બંધ"
+   },
+   "closeUpgradeTip": {
+      "message": "અપગ્રેડ રીમાઇન્ડર્સ બંધ કરો"
+   },
+   "color": {
+      "message": "રંગ"
+   },
+   "customStyle": {
+      "message": "કસ્ટમ શૈલી"
+   },
+   "defaultSubtitles": {
+      "message": "ડિફaultલ્ટ ઉપશીર્ષકો"
+   },
+   "description": {
+      "message": "સ્થાનિક ભાષા, દ્વિભાષી ઉપશીર્ષકો, ઉપશીર્ષક ડાઉનલોડ, સબટાઈટલ ડબિંગ, કસ્ટમ સબટાઈટલ શૈલી પર આપમેળે સ્વિચ કરો."
+   },
+   "dualMode": {
+      "message": "ડ્યુઅલ સબટાઈટલ સેટિંગ્સ"
+   },
+   "dubbingSettings": {
+      "message": "ડબિંગ સેટિંગ્સ"
+   },
+   "fontFamily": {
+      "message": "ફોન્ટ"
+   },
+   "fontSize": {
+      "message": "અક્ષર ની જાડાઈ"
+   },
+   "functionRemove": {
+      "message": "એક્સ્ટેંશન સ્વીચ ફંક્શન દૂર કરવામાં આવ્યું છે"
+   },
+   "goBack": {
+      "message": "અનુવાદ સૂચિ મેળવવામાં ભૂલ"
+   },
+   "hideDubbing": {
+      "message": "બંધ કૅપ્શન ડબિંગ"
+   },
+   "hideSubtitleDownload": {
+      "message": "ઉપશીર્ષક ડાઉનલોડ છુપાવો"
+   },
+   "learnMore": {
+      "message": "વધુ શીખો"
+   },
+   "lockTips": {
+      "message": "તાજું કર્યા પછી અસર લો"
+   },
+   "name": {
+      "message": "YouTube ual ડ્યુઅલ સબટાઈટલ"
+   },
+   "newFuntcion": {
+      "message": "નવી સુવિધાઓ ટૂંક સમયમાં આવી રહી છે"
+   },
+   "newVersion": {
+      "message": "નવી આવૃત્તિ"
+   },
+   "requestError": {
+      "message": "કtionપ્શન વિનંતીમાં ભૂલ આવી હતી, કૃપા કરીને પછીથી ફરી પ્રયાસ કરો."
+   },
+   "resetStyle": {
+      "message": "શૈલી રીસેટ કરો"
+   },
+   "rowGap": {
+      "message": "અંતર"
+   },
+   "singleMode": {
+      "message": "સિંગલ સબટાઈટલ સેટિંગ"
+   },
+   "singleSubtitle": {
+      "message": "એકલ ઉપશીર્ષકો"
+   },
+   "subtitleDownload": {
+      "message": "ઉપશીર્ષકો ડાઉનલોડ"
+   },
+   "subtitleDubbing": {
+      "message": "સબટાઈટલ ડબિંગ"
+   },
+   "swapPosition": {
+      "message": "સ્વેપ સ્થિતિ"
+   },
+   "textStroke": {
+      "message": "ટેક્સ્ટ સ્ટ્રોક"
+   },
+   "today": {
+      "message": "આજે યાદ નથી"
+   },
+   "translateButton": {
+      "message": "સબટાઈટલનો અનુવાદ કરો"
+   },
+   "translationError": {
+      "message": "સ્વચાલિત ભાષાંતર સેવા વિક્ષેપિત છે, કૃપા કરીને પછીથી ફરી પ્રયાસ કરો."
+   },
+   "translationErrorDetails": {
+      "message": "સ્વચાલિત ભાષાંતર અસ્થાયીરૂપે ક્રમમાં બહાર આવ્યું છે અને થોડીવારમાં ફરી શરૂ થઈ શકે છે."
+   },
+   "updateLog": {
+      "message": "પ્રકાશન નોંધો"
+   },
+   "videoButton": {
+      "message": "વિડિઓ સબટાઈટલ"
+   },
+   "videoSubtitles": {
+      "message": "વિડિઓ ઉપશીર્ષકો"
+   }
+}

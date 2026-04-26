@@ -1,0 +1,116 @@
+{
+   "autoTranslate": {
+      "message": "ಸ್ವಯಂ-ಅನುವಾದ"
+   },
+   "background": {
+      "message": "ಹಿನ್ನೆಲೆ"
+   },
+   "bilingual": {
+      "message": "ದ್ವಿಭಾಷಾ"
+   },
+   "close": {
+      "message": "ಮುಚ್ಚಿ"
+   },
+   "closeUpgradeTip": {
+      "message": "ಅಪ್‌ಗ್ರೇಡ್ ರಿಮೈಂಡರ್‌ಗಳನ್ನು ಆಫ್ ಮಾಡಿ"
+   },
+   "color": {
+      "message": "ಬಣ್ಣ"
+   },
+   "customStyle": {
+      "message": "ಕಸ್ಟಮ್ ಶೈಲಿ"
+   },
+   "defaultSubtitles": {
+      "message": "ಡೀಫಾಲ್ಟ್ ಉಪಶೀರ್ಷಿಕೆಗಳು"
+   },
+   "description": {
+      "message": "ಸ್ಥಳೀಯ ಭಾಷೆ, ದ್ವಿಭಾಷಾ ಉಪಶೀರ್ಷಿಕೆಗಳು, ಉಪಶೀರ್ಷಿಕೆ ಡೌನ್‌ಲೋಡ್, ಉಪಶೀರ್ಷಿಕೆ ಡಬ್ಬಿಂಗ್, ಕಸ್ಟಮ್ ಉಪಶೀರ್ಷಿಕೆ ಶೈಲಿಗೆ ಸ್ವಯಂಚಾಲಿತವಾಗಿ ಬದಲಿಸಿ."
+   },
+   "dualMode": {
+      "message": "ಡ್ಯುಯಲ್ ಉಪಶೀರ್ಷಿಕೆ ಸೆಟ್ಟಿಂಗ್‌ಗಳು"
+   },
+   "dubbingSettings": {
+      "message": "ಡಬ್ಬಿಂಗ್ ಸೆಟ್ಟಿಂಗ್‌ಗಳು"
+   },
+   "fontFamily": {
+      "message": "ಫಾಂಟ್"
+   },
+   "fontSize": {
+      "message": "ಅಕ್ಷರ ಗಾತ್ರ"
+   },
+   "functionRemove": {
+      "message": "ವಿಸ್ತರಣೆಗಳ ಸ್ವಿಚ್ ಕಾರ್ಯವನ್ನು ತೆಗೆದುಹಾಕಲಾಗಿದೆ"
+   },
+   "goBack": {
+      "message": "ಅನುವಾದ ಪಟ್ಟಿಯನ್ನು ಪಡೆಯುವಲ್ಲಿ ದೋಷ"
+   },
+   "hideDubbing": {
+      "message": "ಮುಚ್ಚಿದ ಶೀರ್ಷಿಕೆ ಡಬ್ಬಿಂಗ್"
+   },
+   "hideSubtitleDownload": {
+      "message": "ಉಪಶೀರ್ಷಿಕೆಗಳ ಡೌನ್‌ಲೋಡ್ ಅನ್ನು ಮರೆಮಾಡಿ"
+   },
+   "learnMore": {
+      "message": "ಇನ್ನಷ್ಟು ತಿಳಿಯಿರಿ"
+   },
+   "lockTips": {
+      "message": "ರಿಫ್ರೆಶ್ ಮಾಡಿದ ನಂತರ ಪರಿಣಾಮ ಬೀರುತ್ತದೆ"
+   },
+   "name": {
+      "message": "YouTube ™ ಉಭಯ ಉಪಶೀರ್ಷಿಕೆಗಳು"
+   },
+   "newFuntcion": {
+      "message": "ಹೊಸ ವೈಶಿಷ್ಟ್ಯಗಳು ಶೀಘ್ರದಲ್ಲೇ ಬರಲಿವೆ"
+   },
+   "newVersion": {
+      "message": "ಹೊಸ ಆವೃತ್ತಿ"
+   },
+   "requestError": {
+      "message": "ಶೀರ್ಷಿಕೆ ವಿನಂತಿಯಲ್ಲಿ ದೋಷ ಕಂಡುಬಂದಿದೆ, ದಯವಿಟ್ಟು ನಂತರ ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ."
+   },
+   "resetStyle": {
+      "message": "ಶೈಲಿಯನ್ನು ಮರುಹೊಂದಿಸಿ"
+   },
+   "rowGap": {
+      "message": "ಅಂತರ"
+   },
+   "singleMode": {
+      "message": "ಏಕ ಉಪಶೀರ್ಷಿಕೆ ಸೆಟ್ಟಿಂಗ್"
+   },
+   "singleSubtitle": {
+      "message": "ಏಕ ಉಪಶೀರ್ಷಿಕೆಗಳು"
+   },
+   "subtitleDownload": {
+      "message": "ಉಪಶೀರ್ಷಿಕೆಗಳ ಡೌನ್‌ಲೋಡ್"
+   },
+   "subtitleDubbing": {
+      "message": "ಉಪಶೀರ್ಷಿಕೆ ಡಬ್ಬಿಂಗ್"
+   },
+   "swapPosition": {
+      "message": "ಸ್ಥಾನವನ್ನು ಬದಲಿಸಿ"
+   },
+   "textStroke": {
+      "message": "ಪಠ್ಯ ಸ್ಟ್ರೋಕ್"
+   },
+   "today": {
+      "message": "ಇಂದು ನೆನಪಿಸಬೇಡಿ"
+   },
+   "translateButton": {
+      "message": "ಉಪಶೀರ್ಷಿಕೆಗಳನ್ನು ಅನುವಾದಿಸಿ"
+   },
+   "translationError": {
+      "message": "ಸ್ವಯಂಚಾಲಿತ ಅನುವಾದ ಸೇವೆ ಅಡ್ಡಿಪಡಿಸಲಾಗಿದೆ, ದಯವಿಟ್ಟು ನಂತರ ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ."
+   },
+   "translationErrorDetails": {
+      "message": "ಸ್ವಯಂಚಾಲಿತ ಅನುವಾದವು ತಾತ್ಕಾಲಿಕವಾಗಿ ಕ್ರಮಬದ್ಧವಾಗಿಲ್ಲ ಮತ್ತು ಕೆಲವು ನಿಮಿಷಗಳಲ್ಲಿ ಪುನರಾರಂಭಗೊಳ್ಳಬಹುದು."
+   },
+   "updateLog": {
+      "message": "ಬಿಡುಗಡೆ ಟಿಪ್ಪಣಿಗಳು"
+   },
+   "videoButton": {
+      "message": "ವೀಡಿಯೊ ಉಪಶೀರ್ಷಿಕೆಗಳು"
+   },
+   "videoSubtitles": {
+      "message": "ವೀಡಿಯೊ ಉಪಶೀರ್ಷಿಕೆಗಳು"
+   }
+}

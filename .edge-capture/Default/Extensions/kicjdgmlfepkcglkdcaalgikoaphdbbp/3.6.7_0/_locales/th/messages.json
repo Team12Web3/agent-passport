@@ -1,0 +1,116 @@
+{
+   "autoTranslate": {
+      "message": "แปลอัตโนมัติ"
+   },
+   "background": {
+      "message": "พื้นหลัง"
+   },
+   "bilingual": {
+      "message": "สองภาษา"
+   },
+   "close": {
+      "message": "ปิด"
+   },
+   "closeUpgradeTip": {
+      "message": "ปิดการแจ้งเตือนการอัปเกรด"
+   },
+   "color": {
+      "message": "สี"
+   },
+   "customStyle": {
+      "message": "สไตล์ที่กำหนดเอง"
+   },
+   "defaultSubtitles": {
+      "message": "คำบรรยายเริ่มต้น"
+   },
+   "description": {
+      "message": "สลับเป็นภาษาท้องถิ่น คำบรรยายสองภาษา ดาวน์โหลดคำบรรยาย พากย์คำบรรยาย สไตล์คำบรรยายที่กำหนดเองโดยอัตโนมัติ"
+   },
+   "dualMode": {
+      "message": "การตั้งค่าคำบรรยายคู่"
+   },
+   "dubbingSettings": {
+      "message": "การตั้งค่าเสียงพากย์"
+   },
+   "fontFamily": {
+      "message": "แบบอักษร"
+   },
+   "fontSize": {
+      "message": "ขนาดตัวอักษร"
+   },
+   "functionRemove": {
+      "message": "ฟังก์ชันสวิตช์ส่วนขยายถูกลบออก"
+   },
+   "goBack": {
+      "message": "เกิดข้อผิดพลาดในการรับรายการแปล"
+   },
+   "hideDubbing": {
+      "message": "คำบรรยายใต้ภาพปิดเสียง"
+   },
+   "hideSubtitleDownload": {
+      "message": "ซ่อนคำบรรยาย ดาวน์โหลด"
+   },
+   "learnMore": {
+      "message": "เรียนรู้เพิ่มเติม"
+   },
+   "lockTips": {
+      "message": "มีผลหลังจากรีเฟรช"
+   },
+   "name": {
+      "message": "คำบรรยายคู่ของ YouTube™"
+   },
+   "newFuntcion": {
+      "message": "คุณสมบัติใหม่เร็ว ๆ นี้"
+   },
+   "newVersion": {
+      "message": "เวอร์ชั่นใหม่"
+   },
+   "requestError": {
+      "message": "มีข้อผิดพลาดในคำขอคำอธิบายภาพ โปรดลองอีกครั้งในภายหลัง"
+   },
+   "resetStyle": {
+      "message": "รีเซ็ตสไตล์"
+   },
+   "rowGap": {
+      "message": "ระยะห่าง"
+   },
+   "singleMode": {
+      "message": "การตั้งค่าคำบรรยายเดียว"
+   },
+   "singleSubtitle": {
+      "message": "คำบรรยายเดี่ยว"
+   },
+   "subtitleDownload": {
+      "message": "ดาวน์โหลดคำบรรยาย"
+   },
+   "subtitleDubbing": {
+      "message": "พากย์เสียงพากย์"
+   },
+   "swapPosition": {
+      "message": "สลับตำแหน่ง"
+   },
+   "textStroke": {
+      "message": "จังหวะข้อความ"
+   },
+   "today": {
+      "message": "วันนี้ไม่ต้องจำ"
+   },
+   "translateButton": {
+      "message": "แปลคำบรรยาย"
+   },
+   "translationError": {
+      "message": "บริการแปลอัตโนมัติหยุดชะงัก โปรดลองอีกครั้งในภายหลัง"
+   },
+   "translationErrorDetails": {
+      "message": "การแปลอัตโนมัติใช้งานไม่ได้ชั่วคราวและอาจดำเนินการต่อในอีกไม่กี่นาที"
+   },
+   "updateLog": {
+      "message": "บันทึกประจำรุ่น"
+   },
+   "videoButton": {
+      "message": "คำบรรยายวิดีโอ"
+   },
+   "videoSubtitles": {
+      "message": "คำบรรยายวิดีโอ"
+   }
+}

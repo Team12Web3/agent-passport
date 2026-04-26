@@ -1,0 +1,116 @@
+{
+   "autoTranslate": {
+      "message": "Аутоматски преведи"
+   },
+   "background": {
+      "message": "позадини"
+   },
+   "bilingual": {
+      "message": "Двојезични"
+   },
+   "close": {
+      "message": "Близу"
+   },
+   "closeUpgradeTip": {
+      "message": "Искључите подсетнике за надоградњу"
+   },
+   "color": {
+      "message": "боја"
+   },
+   "customStyle": {
+      "message": "Прилагођени стил"
+   },
+   "defaultSubtitles": {
+      "message": "Подразумевани титлови"
+   },
+   "description": {
+      "message": "Аутоматски пређите на локални језик, двојезичне титлове, преузимање титлова, преснимавање титлова, прилагођени стил титла."
+   },
+   "dualMode": {
+      "message": "Двострука подешавања титла"
+   },
+   "dubbingSettings": {
+      "message": "Подешавања преснимавања"
+   },
+   "fontFamily": {
+      "message": "Фонт"
+   },
+   "fontSize": {
+      "message": "Величина фонта"
+   },
+   "functionRemove": {
+      "message": "Уклоњена је функција пребацивања додатака"
+   },
+   "goBack": {
+      "message": "Грешка при преузимању листе превода"
+   },
+   "hideDubbing": {
+      "message": "Синхронизовање титлова"
+   },
+   "hideSubtitleDownload": {
+      "message": "Сакриј преузимање титлова"
+   },
+   "learnMore": {
+      "message": "Сазнајте више"
+   },
+   "lockTips": {
+      "message": "Ступи на снагу након освежавања"
+   },
+   "name": {
+      "message": "ИоуТубе ™ двоструки титлови"
+   },
+   "newFuntcion": {
+      "message": "Нове функције ускоро"
+   },
+   "newVersion": {
+      "message": "Нова верзија"
+   },
+   "requestError": {
+      "message": "Дошло је до грешке у захтеву за титл, покушајте поново касније."
+   },
+   "resetStyle": {
+      "message": "ресетовање стила"
+   },
+   "rowGap": {
+      "message": "размак"
+   },
+   "singleMode": {
+      "message": "Подешавање једног титла"
+   },
+   "singleSubtitle": {
+      "message": "Појединачни титлови"
+   },
+   "subtitleDownload": {
+      "message": "Преузимање титлова"
+   },
+   "subtitleDubbing": {
+      "message": "Синхронизација титлова"
+   },
+   "swapPosition": {
+      "message": "Замени позицију"
+   },
+   "textStroke": {
+      "message": "Тект строке"
+   },
+   "today": {
+      "message": "Не подсећај данас"
+   },
+   "translateButton": {
+      "message": "Преведи титлове"
+   },
+   "translationError": {
+      "message": "Услуга аутоматског превођења је прекинута, покушајте поново касније."
+   },
+   "translationErrorDetails": {
+      "message": "Аутоматски пријевод привремено није у функцији и може се наставити за неколико минута."
+   },
+   "updateLog": {
+      "message": "Белешке о издању"
+   },
+   "videoButton": {
+      "message": "Видео титлови"
+   },
+   "videoSubtitles": {
+      "message": "Видео титлови"
+   }
+}

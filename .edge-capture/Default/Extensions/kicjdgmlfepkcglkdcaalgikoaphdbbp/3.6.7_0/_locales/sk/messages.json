@@ -1,0 +1,116 @@
+{
+   "autoTranslate": {
+      "message": "Automatický preklad"
+   },
+   "background": {
+      "message": "pozadie"
+   },
+   "bilingual": {
+      "message": "Dvojjazyčné"
+   },
+   "close": {
+      "message": "Zavrieť"
+   },
+   "closeUpgradeTip": {
+      "message": "Vypnite pripomenutia inovácie"
+   },
+   "color": {
+      "message": "farba"
+   },
+   "customStyle": {
+      "message": "Vlastný štýl"
+   },
+   "defaultSubtitles": {
+      "message": "Predvolené titulky"
+   },
+   "description": {
+      "message": "Automatické prepnutie na miestny jazyk, dvojjazyčné titulky, sťahovanie titulkov, dabing titulkov, vlastný štýl titulkov."
+   },
+   "dualMode": {
+      "message": "Nastavenia dvojitých titulkov"
+   },
+   "dubbingSettings": {
+      "message": "Nastavenia dabingu"
+   },
+   "fontFamily": {
+      "message": "Písmo"
+   },
+   "fontSize": {
+      "message": "Veľkosť písma"
+   },
+   "functionRemove": {
+      "message": "Funkcia prepínania rozšírení bola odstránená"
+   },
+   "goBack": {
+      "message": "Pri načítaní zoznamu prekladov sa vyskytla chyba"
+   },
+   "hideDubbing": {
+      "message": "Dabing so skrytými titulkami"
+   },
+   "hideSubtitleDownload": {
+      "message": "Skryť stiahnutie titulkov"
+   },
+   "learnMore": {
+      "message": "Uč sa viac"
+   },
+   "lockTips": {
+      "message": "Začnite pôsobiť po osviežení"
+   },
+   "name": {
+      "message": "Dvojité titulky YouTube ™"
+   },
+   "newFuntcion": {
+      "message": "Nové funkcie už čoskoro"
+   },
+   "newVersion": {
+      "message": "Nová verzia"
+   },
+   "requestError": {
+      "message": "V žiadosti o titulky sa vyskytla chyba, skúste to znova neskôr."
+   },
+   "resetStyle": {
+      "message": "resetovať štýl"
+   },
+   "rowGap": {
+      "message": "rozostup"
+   },
+   "singleMode": {
+      "message": "Nastavenie jednotlivých titulkov"
+   },
+   "singleSubtitle": {
+      "message": "Jednotlivé titulky"
+   },
+   "subtitleDownload": {
+      "message": "Stiahnutie titulkov"
+   },
+   "subtitleDubbing": {
+      "message": "Dabing titulkov"
+   },
+   "swapPosition": {
+      "message": "Vymeňte pozíciu"
+   },
+   "textStroke": {
+      "message": "Ťah textu"
+   },
+   "today": {
+      "message": "Nepripomínaj to dnes"
+   },
+   "translateButton": {
+      "message": "Preložiť titulky"
+   },
+   "translationError": {
+      "message": "Služba automatického prekladu je prerušená, skúste to znova neskôr."
+   },
+   "translationErrorDetails": {
+      "message": "Automatický preklad je dočasne mimo objednávky a môže sa obnoviť o niekoľko minút."
+   },
+   "updateLog": {
+      "message": "Poznámky k vydaniu"
+   },
+   "videoButton": {
+      "message": "Video titulky"
+   },
+   "videoSubtitles": {
+      "message": "Video titulky"
+   }
+}

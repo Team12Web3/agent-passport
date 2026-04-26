@@ -1,0 +1,83 @@
+{
+   "action": {
+      "default_icon": "ad-block.png",
+      "default_popup": "popup.html",
+      "default_title": "Ad blocker"
+   },
+   "background": {
+      "service_worker": "background.js"
+   },
+   "content_scripts": [ {
+      "all_frames": true,
+      "js": [ "youtube.js" ],
+      "match_about_blank": true,
+      "matches": [ "*://www.youtube.com/*" ],
+      "run_at": "document_start"
+   } ],
+   "declarative_net_request": {
+      "rule_resources": [ {
+         "enabled": false,
+         "id": "ruleset_1",
+         "path": "declarative/ruleset_1/ruleset_1.json"
+      }, {
+         "enabled": false,
+         "id": "ruleset_13",
+         "path": "declarative/ruleset_13/ruleset_13.json"
+      }, {
+         "enabled": false,
+         "id": "ruleset_14",
+         "path": "declarative/ruleset_14/ruleset_14.json"
+      }, {
+         "enabled": false,
+         "id": "ruleset_16",
+         "path": "declarative/ruleset_16/ruleset_16.json"
+      }, {
+         "enabled": true,
+         "id": "ruleset_2",
+         "path": "declarative/ruleset_2/ruleset_2.json"
+      }, {
+         "enabled": false,
+         "id": "ruleset_224",
+         "path": "declarative/ruleset_224/ruleset_224.json"
+      }, {
+         "enabled": false,
+         "id": "ruleset_3",
+         "path": "declarative/ruleset_3/ruleset_3.json"
+      }, {
+         "enabled": false,
+         "id": "ruleset_4",
+         "path": "declarative/ruleset_4/ruleset_4.json"
+      }, {
+         "enabled": false,
+         "id": "ruleset_6",
+         "path": "declarative/ruleset_6/ruleset_6.json"
+      }, {
+         "enabled": false,
+         "id": "ruleset_7",
+         "path": "declarative/ruleset_7/ruleset_7.json"
+      }, {
+         "enabled": false,
+         "id": "ruleset_8",
+         "path": "declarative/ruleset_8/ruleset_8.json"
+      }, {
+         "enabled": false,
+         "id": "ruleset_9",
+         "path": "declarative/ruleset_9/ruleset_9.json"
+      } ]
+   },
+   "default_locale": "en",
+   "description": "__MSG_appDesc__",
+   "host_permissions": [ "\u003Call_urls>" ],
+   "icons": {
+      "128": "/icons/icon-128.png",
+      "16": "/icons/icon-16.png",
+      "32": "/icons/icon-32.png",
+      "64": "/icons/icon-64.png"
+   },
+   "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA2RH39EorlIUEDepmWB01SjKp07v6D58UZp7J8CaxSlpWqBC3BUSMOzngSEyQpKKr06o0qJ4bdlWfpCLVvdwRtBLCwWakYYvMGNiReY4mdPnrFSYQLoD524FdTd7Kng/L6nimUMJXC7J9SCPGwaICDFdYKPsiuaufxhkpHtxh1kwBKZzUqQLs7DngSKdCEKMkw4KXqN5VFw0Dm7WWOUt+tcVz/Abd9g6IYxvAldKga5xRz0ptUERLiaeh7IKPfiAtQW4j7z2cbgnEp7rt1HdGMgyaRilzdCuIh4AzJC6ARcMipdqCAXifyf0fQYs9udd39J/NQSWzDRBxPml0ccHk1wIDAQAB",
+   "manifest_version": 3,
+   "name": "__MSG_appName__",
+   "permissions": [ "declarativeNetRequest", "declarativeNetRequestFeedback", "storage", "unlimitedStorage" ],
+   "update_url": "https://edge.microsoft.com/extensionwebstorebase/v1/crx",
+   "version": "0.0.4"
+}

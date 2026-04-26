@@ -1,0 +1,37 @@
+{
+   "action": {
+      "default_icon": {
+         "16": "data/icons/16.png",
+         "32": "data/icons/32.png",
+         "48": "data/icons/48.png",
+         "64": "data/icons/64.png"
+      },
+      "default_popup": "data/interface/popup.html",
+      "default_title": "__MSG_app_name__"
+   },
+   "background": {
+      "service_worker": "/js/bg-worker.js"
+   },
+   "default_locale": "en",
+   "description": "__MSG_app_description__",
+   "homepage_url": "https://blocksite.freeonlineapps.net",
+   "host_permissions": [ "\u003Call_urls>" ],
+   "icons": {
+      "128": "data/icons/128.png",
+      "16": "data/icons/16.png",
+      "32": "data/icons/32.png",
+      "48": "data/icons/48.png",
+      "64": "data/icons/64.png"
+   },
+   "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAu1gtVMQs/1QPWVT1qr2Kfi3jNs7tyKF0io0QeE6Bdc1KPZ+1XqPkwWNEQCDKt3GnREpjl2SPFm/rK74bF9LU+5xEZD5W5yuudBe95NJpP8qAox/rOq2R7ymjwNVtAPcWasGRhRS1lnfUM2IELXxhro5G8HBozqGaU5xoxzgTdgYzc/hv1QXbcAt2oVXWGgJICQ6ZKpTJXrqrKcbfrLZvjXuMrUS+fUB5DopArQCcWMleerKl7mjZMwAywdjVK5+ikmrZ47q72LQ5ZFgk5Cwzieug0cq/CDbEJ3qiVBHhUuA9Ba0IIjeV3WeHmmDZ50ijBSv1/XlqJkraFhRxW9bU+wIDAQAB",
+   "manifest_version": 3,
+   "name": "__MSG_app_name__",
+   "permissions": [ "tabs", "storage", "webRequest" ],
+   "short_name": "block site",
+   "update_url": "https://edge.microsoft.com/extensionwebstorebase/v1/crx",
+   "version": "3.1.0",
+   "web_accessible_resources": [ {
+      "matches": [ "\u003Call_urls>" ],
+      "resources": [ "/data/interface/redirect.html" ]
+   } ]
+}

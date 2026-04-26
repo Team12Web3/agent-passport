@@ -1,0 +1,116 @@
+{
+   "autoTranslate": {
+      "message": "Traducció automàtica"
+   },
+   "background": {
+      "message": "fons"
+   },
+   "bilingual": {
+      "message": "Bilingüe"
+   },
+   "close": {
+      "message": "Tanca"
+   },
+   "closeUpgradeTip": {
+      "message": "Desactiva els recordatoris d'actualització"
+   },
+   "color": {
+      "message": "color"
+   },
+   "customStyle": {
+      "message": "Estil personalitzat"
+   },
+   "defaultSubtitles": {
+      "message": "Subtítols predeterminats"
+   },
+   "description": {
+      "message": "Canvia automàticament a l'idioma local, subtítols bilingües, baixada de subtítols, doblatge de subtítols, estil de subtítols personalitzat."
+   },
+   "dualMode": {
+      "message": "Configuració de subtítols duals"
+   },
+   "dubbingSettings": {
+      "message": "Configuració de doblatge"
+   },
+   "fontFamily": {
+      "message": "Font"
+   },
+   "fontSize": {
+      "message": "Mida de la font"
+   },
+   "functionRemove": {
+      "message": "S&#39;ha eliminat la funció de commutador d&#39;extensions"
+   },
+   "goBack": {
+      "message": "Error en obtenir la llista de traduccions"
+   },
+   "hideDubbing": {
+      "message": "Doblatge de subtítols"
+   },
+   "hideSubtitleDownload": {
+      "message": "Amaga la baixada de subtítols"
+   },
+   "learnMore": {
+      "message": "Aprèn més"
+   },
+   "lockTips": {
+      "message": "Fa efecte després de la actualització"
+   },
+   "name": {
+      "message": "Subtítols dobles de YouTube ™"
+   },
+   "newFuntcion": {
+      "message": "Aviat hi haurà noves funcions"
+   },
+   "newVersion": {
+      "message": "nova versió"
+   },
+   "requestError": {
+      "message": "S&#39;ha produït un error a la sol·licitud de subtítols; torneu-ho a provar més tard."
+   },
+   "resetStyle": {
+      "message": "restablir l'estil"
+   },
+   "rowGap": {
+      "message": "espaiat"
+   },
+   "singleMode": {
+      "message": "Configuració de subtítols únics"
+   },
+   "singleSubtitle": {
+      "message": "Subtítols individuals"
+   },
+   "subtitleDownload": {
+      "message": "Descàrrega de subtítols"
+   },
+   "subtitleDubbing": {
+      "message": "Doblatge de subtítols"
+   },
+   "swapPosition": {
+      "message": "Canvi de posició"
+   },
+   "textStroke": {
+      "message": "Traç de text"
+   },
+   "today": {
+      "message": "No ho recordi avui"
+   },
+   "translateButton": {
+      "message": "Traduir subtítols"
+   },
+   "translationError": {
+      "message": "El servei de traducció automàtica està interromput. Torneu-ho a provar més tard."
+   },
+   "translationErrorDetails": {
+      "message": "La traducció automàtica està temporalment fora d’ordre i es pot reprendre en uns minuts."
+   },
+   "updateLog": {
+      "message": "Notes de la versió"
+   },
+   "videoButton": {
+      "message": "Subtítols de vídeo"
+   },
+   "videoSubtitles": {
+      "message": "Subtítols de vídeo"
+   }
+}

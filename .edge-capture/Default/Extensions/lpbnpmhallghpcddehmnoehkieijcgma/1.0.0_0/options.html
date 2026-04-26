@@ -1,0 +1,62 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>The Channel Blocker</title>
+<style>
+  body {
+    font-family: system-ui, sans-serif;
+    padding: 16px
+  }
+
+  .row {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 12px
+  }
+
+  .item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 6px 8px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    margin: 6px 0
+  }
+
+  .key {
+    font-weight: 600
+  }
+
+  .toggle {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px
+  }
+
+  input,
+  button {
+    font-size: 14px
+  }
+</style>
+
+<h1>Blacklist</h1>
+
+<div class="toggle">
+  <input type="checkbox" id="enabled">
+  <label for="enabled">Blacklist enabled</label>
+</div>
+
+<div class="toggle">
+  <input type="checkbox" id="nohover">
+  <label for="nohover">Disable video hover previews</label>
+</div>
+
+<div class="row">
+  <input id="key" placeholder="channel id or handle like @handle">
+  <button id="add">Add</button>
+</div>
+
+<div id="list"></div>
+
+<script src="options.js"></script>

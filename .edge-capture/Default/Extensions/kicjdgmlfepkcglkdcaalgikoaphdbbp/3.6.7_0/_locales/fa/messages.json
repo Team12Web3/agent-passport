@@ -1,0 +1,116 @@
+{
+   "autoTranslate": {
+      "message": "ترجمه خودکار"
+   },
+   "background": {
+      "message": "زمینه"
+   },
+   "bilingual": {
+      "message": "دو زبانه"
+   },
+   "close": {
+      "message": "نزدیک"
+   },
+   "closeUpgradeTip": {
+      "message": "یادآوری های ارتقا را خاموش کنید"
+   },
+   "color": {
+      "message": "رنگ"
+   },
+   "customStyle": {
+      "message": "سبک سفارشی"
+   },
+   "defaultSubtitles": {
+      "message": "زیرنویس پیش فرض"
+   },
+   "description": {
+      "message": "به طور خودکار به زبان محلی، زیرنویس دو زبانه، دانلود زیرنویس، دوبله زیرنویس، سبک زیرنویس سفارشی تغییر دهید."
+   },
+   "dualMode": {
+      "message": "تنظیمات زیرنویس دوگانه"
+   },
+   "dubbingSettings": {
+      "message": "تنظیمات دوبله"
+   },
+   "fontFamily": {
+      "message": "فونت"
+   },
+   "fontSize": {
+      "message": "اندازه فونت"
+   },
+   "functionRemove": {
+      "message": "عملکرد سوییچ برنامه های افزودنی حذف شده است"
+   },
+   "goBack": {
+      "message": "خطا در دریافت لیست ترجمه"
+   },
+   "hideDubbing": {
+      "message": "دوبله زیرنویس"
+   },
+   "hideSubtitleDownload": {
+      "message": "پنهان کردن بارگیری زیرنویس ها"
+   },
+   "learnMore": {
+      "message": "بیشتر بدانید"
+   },
+   "lockTips": {
+      "message": "بعد از رفرش اثر بگذارید"
+   },
+   "name": {
+      "message": "زیرنویس دوگانه YouTube"
+   },
+   "newFuntcion": {
+      "message": "ویژگی های جدید به زودی"
+   },
+   "newVersion": {
+      "message": "نسخه جدید"
+   },
+   "requestError": {
+      "message": "در درخواست زیرنویس خطایی روی داد ، لطفاً بعداً دوباره امتحان کنید."
+   },
+   "resetStyle": {
+      "message": "بازنشانی سبک"
+   },
+   "rowGap": {
+      "message": "فاصله گذاری"
+   },
+   "singleMode": {
+      "message": "تنظیم تک زیرنویس"
+   },
+   "singleSubtitle": {
+      "message": "زیرنویس تک"
+   },
+   "subtitleDownload": {
+      "message": "دانلود زیرنویس"
+   },
+   "subtitleDubbing": {
+      "message": "دوبله زیرنویس"
+   },
+   "swapPosition": {
+      "message": "جابجایی موقعیت"
+   },
+   "textStroke": {
+      "message": "سکته مغزی متن"
+   },
+   "today": {
+      "message": "امروز یادآوری نکن"
+   },
+   "translateButton": {
+      "message": "ترجمه زیرنویس"
+   },
+   "translationError": {
+      "message": "خدمات ترجمه خودکار قطع شده است ، لطفاً بعداً دوباره امتحان کنید."
+   },
+   "translationErrorDetails": {
+      "message": "ترجمه خودکار به طور موقت از کار افتاده است و ممکن است طی چند دقیقه از سر گرفته شود."
+   },
+   "updateLog": {
+      "message": "یادداشت های انتشار"
+   },
+   "videoButton": {
+      "message": "زیرنویس ویدیو"
+   },
+   "videoSubtitles": {
+      "message": "زیرنویس ویدیو"
+   }
+}

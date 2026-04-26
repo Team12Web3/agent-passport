@@ -1,0 +1,116 @@
+{
+   "autoTranslate": {
+      "message": "Автоматический перевод"
+   },
+   "background": {
+      "message": "фон"
+   },
+   "bilingual": {
+      "message": "Двуязычный"
+   },
+   "close": {
+      "message": "Закрывать"
+   },
+   "closeUpgradeTip": {
+      "message": "Отключить напоминания об обновлении"
+   },
+   "color": {
+      "message": "цвет"
+   },
+   "customStyle": {
+      "message": "Собственный стиль"
+   },
+   "defaultSubtitles": {
+      "message": "Субтитры по умолчанию"
+   },
+   "description": {
+      "message": "Автоматическое переключение на местный язык, двуязычные субтитры, загрузка субтитров, дублирование субтитров, пользовательский стиль субтитров."
+   },
+   "dualMode": {
+      "message": "Настройки двойных субтитров"
+   },
+   "dubbingSettings": {
+      "message": "Настройки перезаписи"
+   },
+   "fontFamily": {
+      "message": "Шрифт"
+   },
+   "fontSize": {
+      "message": "Размер шрифта"
+   },
+   "functionRemove": {
+      "message": "Функция переключения расширений была удалена"
+   },
+   "goBack": {
+      "message": "Не удалось получить список переводов"
+   },
+   "hideDubbing": {
+      "message": "Копирование субтитров"
+   },
+   "hideSubtitleDownload": {
+      "message": "Скрыть субтитры скачать"
+   },
+   "learnMore": {
+      "message": "Учить больше"
+   },
+   "lockTips": {
+      "message": "Вступить в силу после обновления"
+   },
+   "name": {
+      "message": "Двойные субтитры YouTube ™"
+   },
+   "newFuntcion": {
+      "message": "Скоро появятся новые функции"
+   },
+   "newVersion": {
+      "message": "новая версия"
+   },
+   "requestError": {
+      "message": "При запросе субтитров произошла ошибка. Повторите попытку позже."
+   },
+   "resetStyle": {
+      "message": "сбросить стиль"
+   },
+   "rowGap": {
+      "message": "интервал"
+   },
+   "singleMode": {
+      "message": "Настройка одиночных субтитров"
+   },
+   "singleSubtitle": {
+      "message": "Одиночные субтитры"
+   },
+   "subtitleDownload": {
+      "message": "Скачать субтитры"
+   },
+   "subtitleDubbing": {
+      "message": "Дублирование субтитров"
+   },
+   "swapPosition": {
+      "message": "Поменять местами"
+   },
+   "textStroke": {
+      "message": "Обводка текста"
+   },
+   "today": {
+      "message": "Не напоминай сегодня"
+   },
+   "translateButton": {
+      "message": "Перевести субтитры"
+   },
+   "translationError": {
+      "message": "Услуга автоматического перевода прервана, повторите попытку позже."
+   },
+   "translationErrorDetails": {
+      "message": "Автоматический перевод временно не работает и может возобновиться через несколько минут."
+   },
+   "updateLog": {
+      "message": "Примечания к выпуску"
+   },
+   "videoButton": {
+      "message": "Субтитры к видео"
+   },
+   "videoSubtitles": {
+      "message": "Субтитры к видео"
+   }
+}

@@ -1,0 +1,37 @@
+{
+   "action": {
+      "default_icon": "icons/icon128x128.png",
+      "default_popup": "src/popup.html"
+   },
+   "background": {
+      "service_worker": "javascript/background.js",
+      "type": "module"
+   },
+   "content_scripts": [ {
+      "all_frames": true,
+      "js": [ "javascript/content.js" ],
+      "matches": [ "\u003Call_urls>" ],
+      "run_at": "document_end"
+   } ],
+   "content_security_policy": {
+      "extension_pages": "script-src 'self'; object-src 'self'"
+   },
+   "default_locale": "en",
+   "description": "__MSG_desc__",
+   "icons": {
+      "128": "icons/icon128x128.png",
+      "32": "icons/icon32x32.png",
+      "48": "icons/icon48x48.png",
+      "64": "icons/icon64x64.png"
+   },
+   "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEArOU2TbhNK1XjUjdieQdZESky1xpCCvTtg+SoE/HU+y9kWKFqbxA+AkeQxYkgW1bs1wJ1w9fX4/Kjdhp+u0Hge5cjbHrvZxEuti1xSJ6bygTAfsQCKZryPSu0KCLM9haiL9+6SaV0G6k6mGXh0dlNSph4/BEotETmQjGJFaUGDWTHRhJKI6GZUviuO/AzC1ecoA6jG2STlo6pKWIpipiXDK7cyUT+Gezr8/Ln7NJRAUsIHHk6ml5HfeMhcWcAC+Ek8GVaYesKKWXAtw/gnAX3QpzaVQIds0AbzQ60hw/15y0XtW5bdAR2XpHrPZo1FTM+QvEL6gGHr9mKyjluFaNFFwIDAQAB",
+   "manifest_version": 3,
+   "name": "__MSG_name__",
+   "options_ui": {
+      "open_in_tab": true,
+      "page": "src/index.html?page=settings&tab=blockList"
+   },
+   "permissions": [ "storage", "activeTab", "tabs", "alarms" ],
+   "update_url": "https://edge.microsoft.com/extensionwebstorebase/v1/crx",
+   "version": "1.0.4"
+}

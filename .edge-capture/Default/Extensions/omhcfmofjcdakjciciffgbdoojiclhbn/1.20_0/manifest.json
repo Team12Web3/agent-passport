@@ -1,0 +1,32 @@
+{
+   "background": {
+      "scripts": [ "background.js" ]
+   },
+   "browser_action": {
+      "default_icon": {
+         "16": "li-icon16.png",
+         "19": "li-icon19.png",
+         "32": "li-icon32.png",
+         "38": "li-icon38.png"
+      }
+   },
+   "content_scripts": [ {
+      "js": [ "content.js" ],
+      "matches": [ "https://www.linkedin.com/*" ]
+   } ],
+   "content_security_policy": "script-src 'self' https://platform.linkedin.com; object-src 'self'",
+   "description": "This extension lights up with a new notification count whenever you have new activity waiting for you at LinkedIn.",
+   "icons": {
+      "128": "li-icon.png"
+   },
+   "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA1MDo6/zkZg0WHDxZ8bEPBN4oLfZa3r9PkQqbISjhP0wX67vJD2/2PmETztQ07/0nESWEWFvZlr/uIG9zQLjglzlEZiZGM1pw2Ip3nXjavoGiN+oCOQdONicspZtQjCbl1JmIxbdA/7H1uVAUORxxOTqUTeSeO1/YoGUO0nW+tfKZcfwW5IeK+7VLHstA4N6Qmnjo9EYysi9BdSWK+iPwQtoupOjlIS9rfZK9lKsfvDWLbjFBbNegYfuef7kv93Kh2ccuzRNTOOf4g7jyxSKER0zasuSk4ItGTLJ4zH57KlQ9tqydYzcjOveDUiKDFPnM+kCCBuohEPnVDzhsrf3myQIDAQAB",
+   "manifest_version": 2,
+   "name": "LinkedIn Extension",
+   "options_ui": {
+      "chrome_style": true,
+      "page": "options.html"
+   },
+   "permissions": [ "https://www.linkedin.com/*" ],
+   "update_url": "https://edge.microsoft.com/extensionwebstorebase/v1/crx",
+   "version": "1.20"
+}

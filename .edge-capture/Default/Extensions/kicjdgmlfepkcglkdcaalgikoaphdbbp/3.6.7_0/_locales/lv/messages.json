@@ -1,0 +1,116 @@
+{
+   "autoTranslate": {
+      "message": "Automātiska tulkošana"
+   },
+   "background": {
+      "message": "fons"
+   },
+   "bilingual": {
+      "message": "Bilingvāli"
+   },
+   "close": {
+      "message": "Aizvērt"
+   },
+   "closeUpgradeTip": {
+      "message": "Izslēdziet atgādinājumus par jaunināšanu"
+   },
+   "color": {
+      "message": "krāsa"
+   },
+   "customStyle": {
+      "message": "Pielāgots stils"
+   },
+   "defaultSubtitles": {
+      "message": "Noklusētie subtitri"
+   },
+   "description": {
+      "message": "Automātiski pārslēdzieties uz vietējo valodu, divvalodu subtitriem, subtitru lejupielādi, subtitru dublēšanu, pielāgotu subtitru stilu."
+   },
+   "dualMode": {
+      "message": "Divu subtitru iestatījumi"
+   },
+   "dubbingSettings": {
+      "message": "Dublēšanas iestatījumi"
+   },
+   "fontFamily": {
+      "message": "Fonts"
+   },
+   "fontSize": {
+      "message": "Fonta izmērs"
+   },
+   "functionRemove": {
+      "message": "Paplašinājumu slēdža funkcija ir noņemta"
+   },
+   "goBack": {
+      "message": "Iegūstot tulkošanas sarakstu, radās kļūda"
+   },
+   "hideDubbing": {
+      "message": "Slēgto parakstu dublēšana"
+   },
+   "hideSubtitleDownload": {
+      "message": "Slēpt subtitru lejupielādi"
+   },
+   "learnMore": {
+      "message": "Uzzināt vairāk"
+   },
+   "lockTips": {
+      "message": "Stājas spēkā pēc atsvaidzināšanas"
+   },
+   "name": {
+      "message": "YouTube ™ dubultā subtitri"
+   },
+   "newFuntcion": {
+      "message": "Drīzumā tiks piedāvātas jaunas funkcijas"
+   },
+   "newVersion": {
+      "message": "jauna versija"
+   },
+   "requestError": {
+      "message": "Parakstu pieprasījumā radās kļūda. Lūdzu, vēlāk mēģiniet vēlreiz."
+   },
+   "resetStyle": {
+      "message": "atiestatīt stilu"
+   },
+   "rowGap": {
+      "message": "atstarpes"
+   },
+   "singleMode": {
+      "message": "Viens subtitru iestatījums"
+   },
+   "singleSubtitle": {
+      "message": "Atsevišķi subtitri"
+   },
+   "subtitleDownload": {
+      "message": "Subtitru lejupielāde"
+   },
+   "subtitleDubbing": {
+      "message": "Subtitru dublēšana"
+   },
+   "swapPosition": {
+      "message": "Apmainīt pozīciju"
+   },
+   "textStroke": {
+      "message": "Teksta triepiens"
+   },
+   "today": {
+      "message": "Neatgādini šodien"
+   },
+   "translateButton": {
+      "message": "Tulkot subtitrus"
+   },
+   "translationError": {
+      "message": "Automātiskās tulkošanas pakalpojums ir pārtraukts. Lūdzu, vēlāk mēģiniet vēlreiz."
+   },
+   "translationErrorDetails": {
+      "message": "Automātiskā tulkošana īslaicīgi nedarbojas un var atsākties pēc dažām minūtēm."
+   },
+   "updateLog": {
+      "message": "Izlaiduma piezīmes"
+   },
+   "videoButton": {
+      "message": "Video subtitri"
+   },
+   "videoSubtitles": {
+      "message": "Video subtitri"
+   }
+}

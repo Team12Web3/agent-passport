@@ -1,0 +1,116 @@
+{
+   "autoTranslate": {
+      "message": "Automatisch übersetzen"
+   },
+   "background": {
+      "message": "Hintergrund"
+   },
+   "bilingual": {
+      "message": "Zweisprachig"
+   },
+   "close": {
+      "message": "Schließen"
+   },
+   "closeUpgradeTip": {
+      "message": "Upgrade-Erinnerungen deaktivieren"
+   },
+   "color": {
+      "message": "Farbe"
+   },
+   "customStyle": {
+      "message": "Benutzerdefinierter Stil"
+   },
+   "defaultSubtitles": {
+      "message": "Standarduntertitel"
+   },
+   "description": {
+      "message": "Wechseln Sie automatisch zu lokaler Sprache, zweisprachigen Untertiteln, Download von Untertiteln, Synchronisieren von Untertiteln, benutzerdefiniertem Untertitelstil."
+   },
+   "dualMode": {
+      "message": "Einstellungen für duale Untertitel"
+   },
+   "dubbingSettings": {
+      "message": "Überspieleinstellungen"
+   },
+   "fontFamily": {
+      "message": "Schriftart"
+   },
+   "fontSize": {
+      "message": "Schriftgröße"
+   },
+   "functionRemove": {
+      "message": "Nebenstellenschalterfunktion wurde entfernt"
+   },
+   "goBack": {
+      "message": "Fehler beim Abrufen der Übersetzungsliste"
+   },
+   "hideDubbing": {
+      "message": "Synchronisieren von Untertiteln"
+   },
+   "hideSubtitleDownload": {
+      "message": "Untertitel-Download ausblenden"
+   },
+   "learnMore": {
+      "message": "Mehr erfahren"
+   },
+   "lockTips": {
+      "message": "Wirksam nach Aktualisierung"
+   },
+   "name": {
+      "message": "YouTube™-Doppeluntertitel"
+   },
+   "newFuntcion": {
+      "message": "Neue Funktionen in Kürze"
+   },
+   "newVersion": {
+      "message": "neue Version"
+   },
+   "requestError": {
+      "message": "Bei der Untertitelanforderung ist ein Fehler aufgetreten. Bitte versuchen Sie es später erneut."
+   },
+   "resetStyle": {
+      "message": "Stil zurücksetzen"
+   },
+   "rowGap": {
+      "message": "Abstand"
+   },
+   "singleMode": {
+      "message": "Einstellung für einzelne Untertitel"
+   },
+   "singleSubtitle": {
+      "message": "Einzelne Untertitel"
+   },
+   "subtitleDownload": {
+      "message": "Untertitel herunterladen"
+   },
+   "subtitleDubbing": {
+      "message": "Überspielen von Untertiteln"
+   },
+   "swapPosition": {
+      "message": "Position tauschen"
+   },
+   "textStroke": {
+      "message": "Textstrich"
+   },
+   "today": {
+      "message": "Heute nicht erinnern"
+   },
+   "translateButton": {
+      "message": "Untertitel übersetzen"
+   },
+   "translationError": {
+      "message": "Der automatische Übersetzungsdienst ist unterbrochen, bitte versuchen Sie es später erneut."
+   },
+   "translationErrorDetails": {
+      "message": "Die automatische Übersetzung ist vorübergehend außer Betrieb und kann in wenigen Minuten wieder aufgenommen werden."
+   },
+   "updateLog": {
+      "message": "Versionshinweise"
+   },
+   "videoButton": {
+      "message": "Videountertitel"
+   },
+   "videoSubtitles": {
+      "message": "Videountertitel"
+   }
+}

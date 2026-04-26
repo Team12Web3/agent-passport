@@ -1,0 +1,61 @@
+{
+   "action": {
+      "default_icon": {
+         "19": "icons/icon-19.png",
+         "38": "icons/icon-38.png"
+      },
+      "default_popup": "popup.html",
+      "default_title": "Planet VPN"
+   },
+   "background": {
+      "service_worker": "background.js",
+      "type": "module"
+   },
+   "content_scripts": [ {
+      "css": [ "content/pinModal.css" ],
+      "js": [ "content/pinModal.js" ],
+      "matches": [ "https://freeplanetvpn.com/*", "https://planetvpnarab.com/*", "https://freevpnplanet.net/*" ],
+      "runAt": "document_start"
+   } ],
+   "declarative_net_request": {
+      "rule_resources": [ {
+         "enabled": false,
+         "id": "tracking",
+         "path": "rulesets/trackingRuleset.json"
+      }, {
+         "enabled": false,
+         "id": "adblocker_1",
+         "path": "rulesets/adblockerRuleset_1.json"
+      }, {
+         "enabled": false,
+         "id": "adblocker_2",
+         "path": "rulesets/adblockerRuleset_2.json"
+      }, {
+         "enabled": true,
+         "id": "request_headers",
+         "path": "rulesets/responseHeaders.json"
+      } ]
+   },
+   "default_locale": "en",
+   "description": "__MSG_appDescription__",
+   "externally_connectable": {
+      "matches": [ "*://localhost/*", "*://freeplanetvpn.com/*", "*://*.freeplanetvpn.com/*" ]
+   },
+   "host_permissions": [ "\u003Call_urls>", "http://*/*", "https://*/*" ],
+   "icons": {
+      "128": "icons/icon-128.png",
+      "16": "icons/icon-16.png",
+      "48": "icons/icon-48.png",
+      "96": "icons/icon-96.png"
+   },
+   "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA5kwLw8ZBvMfLHnl1UA+o9I+sABpjevOX4wbWAG+mgZD3LesXgUvarY2ZSWHM45o97yxx/I3ClqB7x0WUnkaWsYYHSFesrDQwjO4qYv51z1gziDCAI9+p+CfotxfynDjzNOjlCk3FGHM3EvGRXCuUbtfGft0+TlaoKdANig0GULZ3qV9FSKQODGPY4KierbwC29Ohv4/UU6e37SOpggd4bFTjzWd0r0lXATesQmdutLVLVyrE9Q18chLf2Ki/dnM+KsOVaPoqAifUZCaQzfSV21v0FrSR3CJXScopxjhDdpvTCdZI8Xx3GRO8GhSwTOQ//i/7qUCFVKEUVvdEG0xBnQIDAQAB",
+   "manifest_version": 3,
+   "name": "__MSG_appName__",
+   "permissions": [ "proxy", "storage", "unlimitedStorage", "history", "webRequest", "webRequestAuthProvider", "declarativeNetRequest", "declarativeNetRequestFeedback", "tabs", "privacy", "management", "scripting", "offscreen", "notifications" ],
+   "update_url": "https://edge.microsoft.com/extensionwebstorebase/v1/crx",
+   "version": "2.5.0",
+   "web_accessible_resources": [ {
+      "matches": [ "http://*/*", "https://*/*" ],
+      "resources": [ "blocked.html", "scripts/blocked.js", "icons/icon-48.png" ]
+   } ]
+}

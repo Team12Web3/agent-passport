@@ -1,0 +1,116 @@
+{
+   "autoTranslate": {
+      "message": "Αυτόματη μετάφραση"
+   },
+   "background": {
+      "message": "Ιστορικό"
+   },
+   "bilingual": {
+      "message": "Δίγλωσσος"
+   },
+   "close": {
+      "message": "Κλείσε"
+   },
+   "closeUpgradeTip": {
+      "message": "Απενεργοποιήστε τις υπενθυμίσεις αναβάθμισης"
+   },
+   "color": {
+      "message": "χρώμα"
+   },
+   "customStyle": {
+      "message": "Προσαρμοσμένο στυλ"
+   },
+   "defaultSubtitles": {
+      "message": "Προεπιλεγμένοι υπότιτλοι"
+   },
+   "description": {
+      "message": "Αυτόματη εναλλαγή σε τοπική γλώσσα, δίγλωσσους υπότιτλους, λήψη υποτίτλων, μεταγλώττιση υποτίτλων, προσαρμοσμένο στυλ υπότιτλων."
+   },
+   "dualMode": {
+      "message": "Ρυθμίσεις διπλών υποτίτλων"
+   },
+   "dubbingSettings": {
+      "message": "Ρυθμίσεις μεταγλώττισης"
+   },
+   "fontFamily": {
+      "message": "Γραμματοσειρά"
+   },
+   "fontSize": {
+      "message": "Μέγεθος γραμματοσειράς"
+   },
+   "functionRemove": {
+      "message": "Η λειτουργία διακόπτη επεκτάσεων έχει καταργηθεί"
+   },
+   "goBack": {
+      "message": "Σφάλμα κατά τη λήψη της λίστας μετάφρασης"
+   },
+   "hideDubbing": {
+      "message": "Μεταγλώττιση κλειστής λεζάντας"
+   },
+   "hideSubtitleDownload": {
+      "message": "Απόκρυψη λήψης υπότιτλων"
+   },
+   "learnMore": {
+      "message": "Μάθε περισσότερα"
+   },
+   "lockTips": {
+      "message": "Εφαρμόστε μετά την ανανέωση"
+   },
+   "name": {
+      "message": "Διπλοί υπότιτλοι στο YouTube ™"
+   },
+   "newFuntcion": {
+      "message": "Νέες λειτουργίες σύντομα"
+   },
+   "newVersion": {
+      "message": "νέα έκδοση"
+   },
+   "requestError": {
+      "message": "Παρουσιάστηκε σφάλμα στο αίτημα υπότιτλων. Δοκιμάστε ξανά αργότερα."
+   },
+   "resetStyle": {
+      "message": "επαναφορά στυλ"
+   },
+   "rowGap": {
+      "message": "απόσταση"
+   },
+   "singleMode": {
+      "message": "Ρύθμιση μεμονωμένου υπότιτλου"
+   },
+   "singleSubtitle": {
+      "message": "Μεμονωμένοι υπότιτλοι"
+   },
+   "subtitleDownload": {
+      "message": "Λήψη υπότιτλων"
+   },
+   "subtitleDubbing": {
+      "message": "Μεταγλώττιση υπότιτλων"
+   },
+   "swapPosition": {
+      "message": "Ανταλλαγή θέσης"
+   },
+   "textStroke": {
+      "message": "Κείμενο εγκεφαλικό επεισόδιο"
+   },
+   "today": {
+      "message": "Μην θυμίζετε σήμερα"
+   },
+   "translateButton": {
+      "message": "Μετάφραση υπότιτλων"
+   },
+   "translationError": {
+      "message": "Διακόπηκε η υπηρεσία αυτόματης μετάφρασης. Δοκιμάστε ξανά αργότερα."
+   },
+   "translationErrorDetails": {
+      "message": "Η αυτόματη μετάφραση είναι προσωρινά εκτός λειτουργίας και ενδέχεται να συνεχιστεί σε λίγα λεπτά."
+   },
+   "updateLog": {
+      "message": "Σημειώσεις έκδοσης"
+   },
+   "videoButton": {
+      "message": "Υπότιτλοι βίντεο"
+   },
+   "videoSubtitles": {
+      "message": "Υπότιτλοι βίντεο"
+   }
+}

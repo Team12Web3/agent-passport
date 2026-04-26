@@ -1,0 +1,33 @@
+{
+   "background": {
+      "persistent": false,
+      "scripts": [ "background.js" ]
+   },
+   "browser_action": {
+      "default_popup": "popup/popup.html"
+   },
+   "content_scripts": [ {
+      "all_frames": true,
+      "js": [ "subtitles.js" ],
+      "matches": [ "https://www.youtube.com/*", "https://www.youtube-nocookie.com/embed/*" ],
+      "run_at": "document_start"
+   }, {
+      "all_frames": true,
+      "js": [ "watch.js" ],
+      "matches": [ "https://www.youtube.com/watch*", "https://www.youtube.com/embed/*", "https://www.youtube-nocookie.com/embed/*" ]
+   } ],
+   "default_locale": "en",
+   "description": "__MSG_description__",
+   "icons": {
+      "128": "assets/128.png",
+      "16": "assets/16.png",
+      "32": "assets/32.png",
+      "48": "assets/36.png"
+   },
+   "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAsJMfLlB9Hu7rDU65Wn4luPw5SF5T+fMSv5mQ8YHaa+lVjw9YEFbCsVxD+Rt0WxwFa6mkT+H+MCZHi0xBf+co7zkJUCTtx16HVhHDvfA+EvqFKEcm/Rxa436Q8TcQQEv6P2GSf2STa47gxKDDTo+5pcvYVH+Mv3qZG7vFp/AJT7orKhf8MvQlHbIO6soiYFZrnxedH8m4f0zXhrtyaz7fiHWeqeaJyWNSQigWcFItfGWNNRIQVP1pe2KcDGNoiFvHLfUCM8EAS0XsxjtJaZ/dpgMHVLfFBggZGCfaPqbPWmqH45Hp7PUy4+vktP6YHHwKR9WZGk/pHbmLgc8tD7iDBQIDAQAB",
+   "manifest_version": 2,
+   "name": "__MSG_name__",
+   "permissions": [ "storage", "declarativeContent", "contextMenus", "fontSettings", "https://www.youtube.com/", "https://www.youtube-nocookie.com/" ],
+   "update_url": "https://edge.microsoft.com/extensionwebstorebase/v1/crx",
+   "version": "3.6.7"
+}

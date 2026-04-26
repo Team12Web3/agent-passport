@@ -453,6 +453,41 @@ CONSTRAINTS:
 - Mock Supabase, viem wallet clients, and public client reads.
 - Cover:
   1. `createAgentWallet()` returns an address plus encrypted key
+
+## 15. Trusted proxy browser demo
+
+```text
+CONTEXT:
+- The hostile target page has not adopted the protocol natively yet.
+- We still want a live demo showing that trusted headers unlock a cleaner operator view.
+
+TASK:
+Create:
+- `apps/web/app/api/relay/clean-html/route.ts`
+- `apps/web/app/trusted-browser/page.tsx`
+
+CONSTRAINTS:
+- The relay route must:
+  1. verify the full 10-header trust bundle
+  2. fetch the target URL
+  3. remove hostile UI elements such as:
+     - `aside.popup`
+     - `.modal-backdrop`
+     - `.human-check`
+     - `.demo-controls`
+     - buttons containing `Click here maybe?` or `Continue as human`
+- The page must show:
+  - the original hostile page in one main preview window
+  - when a scenario is clicked, that same preview window should switch directly to the relay response
+  - a separate side panel for the headers used
+  - a separate side panel for the verification steps
+- Keep the implementation dependency-light. Do not add a heavyweight HTML parser unless it is truly required.
+
+ACCEPTANCE:
+- `/trusted-browser` starts on the raw hostile page and swaps the same preview window to the trusted relay response when a protocol scenario is selected
+- `/api/relay/clean-html` returns sanitized HTML only when the trust bundle passes
+- The relay blocks when trust verification fails
+```
   2. `getAgentSigner()` loads the encrypted key and returns a wallet client
   3. `fundAgentWallet()` sends AVAX, sends USDC, and approves ActionLog
   4. `fundAgentWallet()` throws when faucet AVAX is insufficient

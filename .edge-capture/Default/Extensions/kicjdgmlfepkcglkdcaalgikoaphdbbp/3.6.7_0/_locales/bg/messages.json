@@ -1,0 +1,116 @@
+{
+   "autoTranslate": {
+      "message": "Автоматичен превод"
+   },
+   "background": {
+      "message": "заден план"
+   },
+   "bilingual": {
+      "message": "Двуезичен"
+   },
+   "close": {
+      "message": "Близо"
+   },
+   "closeUpgradeTip": {
+      "message": "Изключете напомнянията за надстройка"
+   },
+   "color": {
+      "message": "цвят"
+   },
+   "customStyle": {
+      "message": "Персонализиран стил"
+   },
+   "defaultSubtitles": {
+      "message": "Субтитри по подразбиране"
+   },
+   "description": {
+      "message": "Автоматично превключване на местен език, двуезични субтитри, изтегляне на субтитри, дублаж на субтитри, персонализиран стил на субтитри."
+   },
+   "dualMode": {
+      "message": "Настройки за двойни субтитри"
+   },
+   "dubbingSettings": {
+      "message": "Настройки за презапис"
+   },
+   "fontFamily": {
+      "message": "Шрифт"
+   },
+   "fontSize": {
+      "message": "Размер на шрифта"
+   },
+   "functionRemove": {
+      "message": "Функцията за превключване на разширения е премахната"
+   },
+   "goBack": {
+      "message": "Грешка при получаване на списък с преводи"
+   },
+   "hideDubbing": {
+      "message": "Дублаж със затворени надписи"
+   },
+   "hideSubtitleDownload": {
+      "message": "Скриване на изтеглянето на субтитри"
+   },
+   "learnMore": {
+      "message": "Научете повече"
+   },
+   "lockTips": {
+      "message": "Влезте в сила след опресняване"
+   },
+   "name": {
+      "message": "Двойни субтитри на YouTube ™"
+   },
+   "newFuntcion": {
+      "message": "Очаквайте скоро нови функции"
+   },
+   "newVersion": {
+      "message": "нова версия"
+   },
+   "requestError": {
+      "message": "При заявката за надпис възникна грешка. Моля, опитайте отново по-късно."
+   },
+   "resetStyle": {
+      "message": "стил за нулиране"
+   },
+   "rowGap": {
+      "message": "разстояние"
+   },
+   "singleMode": {
+      "message": "Настройка на единични субтитри"
+   },
+   "singleSubtitle": {
+      "message": "Единични субтитри"
+   },
+   "subtitleDownload": {
+      "message": "Изтегляне на субтитри"
+   },
+   "subtitleDubbing": {
+      "message": "Дублаж на субтитри"
+   },
+   "swapPosition": {
+      "message": "Разменете позицията"
+   },
+   "textStroke": {
+      "message": "Текстов щрих"
+   },
+   "today": {
+      "message": "Не напомняйте днес"
+   },
+   "translateButton": {
+      "message": "Превеждайте субтитрите"
+   },
+   "translationError": {
+      "message": "Услугата за автоматичен превод е прекъсната, моля, опитайте отново по-късно."
+   },
+   "translationErrorDetails": {
+      "message": "Автоматичният превод временно не работи и може да се възобнови след няколко минути."
+   },
+   "updateLog": {
+      "message": "Бележки към изданието"
+   },
+   "videoButton": {
+      "message": "Видео субтитри"
+   },
+   "videoSubtitles": {
+      "message": "Видео субтитри"
+   }
+}

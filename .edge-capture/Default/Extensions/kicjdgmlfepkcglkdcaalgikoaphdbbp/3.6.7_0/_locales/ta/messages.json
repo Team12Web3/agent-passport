@@ -1,0 +1,116 @@
+{
+   "autoTranslate": {
+      "message": "தானாக மொழிபெயர்க்கவும்"
+   },
+   "background": {
+      "message": "பின்னணி"
+   },
+   "bilingual": {
+      "message": "இருமொழி"
+   },
+   "close": {
+      "message": "நெருக்கமான"
+   },
+   "closeUpgradeTip": {
+      "message": "மேம்படுத்தல் நினைவூட்டல்களை முடக்கவும்"
+   },
+   "color": {
+      "message": "நிறம்"
+   },
+   "customStyle": {
+      "message": "விருப்ப நடை"
+   },
+   "defaultSubtitles": {
+      "message": "இயல்புநிலை வசன வரிகள்"
+   },
+   "description": {
+      "message": "உள்ளூர் மொழி, இருமொழி வசன வரிகள், வசனப் பதிவிறக்கம், வசன டப்பிங், தனிப்பயன் வசன நடைக்கு தானாக மாறவும்."
+   },
+   "dualMode": {
+      "message": "இரட்டை வசன அமைப்புகள்"
+   },
+   "dubbingSettings": {
+      "message": "டப்பிங் அமைப்புகள்"
+   },
+   "fontFamily": {
+      "message": "எழுத்துரு"
+   },
+   "fontSize": {
+      "message": "எழுத்துரு அளவு"
+   },
+   "functionRemove": {
+      "message": "நீட்டிப்புகள் சுவிட்ச் செயல்பாடு அகற்றப்பட்டது"
+   },
+   "goBack": {
+      "message": "மொழிபெயர்ப்பு பட்டியலைப் பெறுவதில் பிழை"
+   },
+   "hideDubbing": {
+      "message": "மூடிய தலைப்பு டப்பிங்"
+   },
+   "hideSubtitleDownload": {
+      "message": "வசனங்களின் பதிவிறக்கத்தை மறைக்க"
+   },
+   "learnMore": {
+      "message": "மேலும் அறிக"
+   },
+   "lockTips": {
+      "message": "புதுப்பித்த பிறகு நடைமுறைக்கு வரும்"
+   },
+   "name": {
+      "message": "YouTube இரட்டை வசன வரிகள்"
+   },
+   "newFuntcion": {
+      "message": "புதிய அம்சங்கள் விரைவில்"
+   },
+   "newVersion": {
+      "message": "புதிய பதிப்பு"
+   },
+   "requestError": {
+      "message": "தலைப்பு கோரிக்கையில் பிழை ஏற்பட்டது, பின்னர் மீண்டும் முயற்சிக்கவும்."
+   },
+   "resetStyle": {
+      "message": "பாணியை மீட்டமை"
+   },
+   "rowGap": {
+      "message": "இடைவெளி"
+   },
+   "singleMode": {
+      "message": "ஒற்றை வசன அமைப்பு"
+   },
+   "singleSubtitle": {
+      "message": "ஒற்றை வசன வரிகள்"
+   },
+   "subtitleDownload": {
+      "message": "வசன வரிகள் பதிவிறக்கம்"
+   },
+   "subtitleDubbing": {
+      "message": "வசன டப்பிங்"
+   },
+   "swapPosition": {
+      "message": "இடமாற்றம்"
+   },
+   "textStroke": {
+      "message": "உரை பக்கவாதம்"
+   },
+   "today": {
+      "message": "இன்று நினைவூட்ட வேண்டாம்"
+   },
+   "translateButton": {
+      "message": "வசனங்களை மொழிபெயர்க்கவும்"
+   },
+   "translationError": {
+      "message": "தானியங்கி மொழிபெயர்ப்பு சேவை தடைபட்டுள்ளது, தயவுசெய்து பின்னர் மீண்டும் முயற்சிக்கவும்."
+   },
+   "translationErrorDetails": {
+      "message": "தானியங்கி மொழிபெயர்ப்பு தற்காலிகமாக ஒழுங்கற்றது மற்றும் சில நிமிடங்களில் மீண்டும் தொடங்கலாம்."
+   },
+   "updateLog": {
+      "message": "வெளியீட்டு குறிப்புகள்"
+   },
+   "videoButton": {
+      "message": "வீடியோ வசனங்கள்"
+   },
+   "videoSubtitles": {
+      "message": "வீடியோ வசன வரிகள்"
+   }
+}

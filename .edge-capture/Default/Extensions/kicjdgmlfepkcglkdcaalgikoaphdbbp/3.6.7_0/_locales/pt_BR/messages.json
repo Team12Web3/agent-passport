@@ -1,0 +1,116 @@
+{
+   "autoTranslate": {
+      "message": "Tradução automática"
+   },
+   "background": {
+      "message": "fundo"
+   },
+   "bilingual": {
+      "message": "Bilingue"
+   },
+   "close": {
+      "message": "Perto"
+   },
+   "closeUpgradeTip": {
+      "message": "Desativar lembretes de atualização"
+   },
+   "color": {
+      "message": "cor"
+   },
+   "customStyle": {
+      "message": "Estilo personalizado"
+   },
+   "defaultSubtitles": {
+      "message": "Legendas padrão"
+   },
+   "description": {
+      "message": "Alternar automaticamente para o idioma local, legendas bilíngues, download de legendas, duplicação de legendas, estilo de legenda personalizado."
+   },
+   "dualMode": {
+      "message": "Configurações de legenda dupla"
+   },
+   "dubbingSettings": {
+      "message": "Configurações de dublagem"
+   },
+   "fontFamily": {
+      "message": "Fonte"
+   },
+   "fontSize": {
+      "message": "Tamanho da fonte"
+   },
+   "functionRemove": {
+      "message": "A função de troca de extensões foi removida"
+   },
+   "goBack": {
+      "message": "Erro ao obter lista de tradução"
+   },
+   "hideDubbing": {
+      "message": "Dublagem de closed caption"
+   },
+   "hideSubtitleDownload": {
+      "message": "Ocultar download de legendas"
+   },
+   "learnMore": {
+      "message": "Saber mais"
+   },
+   "lockTips": {
+      "message": "Entrar em vigor após a atualização"
+   },
+   "name": {
+      "message": "Legendas duplas do YouTube ™"
+   },
+   "newFuntcion": {
+      "message": "Novos recursos em breve"
+   },
+   "newVersion": {
+      "message": "nova versão"
+   },
+   "requestError": {
+      "message": "Ocorreu um erro na solicitação de legenda, tente novamente mais tarde."
+   },
+   "resetStyle": {
+      "message": "redefinir estilo"
+   },
+   "rowGap": {
+      "message": "espaçamento"
+   },
+   "singleMode": {
+      "message": "Configuração de legenda única"
+   },
+   "singleSubtitle": {
+      "message": "Legendas simples"
+   },
+   "subtitleDownload": {
+      "message": "Download de legendas"
+   },
+   "subtitleDubbing": {
+      "message": "Dublagem de legendas"
+   },
+   "swapPosition": {
+      "message": "Trocar posição"
+   },
+   "textStroke": {
+      "message": "Traço de texto"
+   },
+   "today": {
+      "message": "Não lembre hoje"
+   },
+   "translateButton": {
+      "message": "Traduzir legendas"
+   },
+   "translationError": {
+      "message": "O serviço de tradução automática foi interrompido, tente novamente mais tarde."
+   },
+   "translationErrorDetails": {
+      "message": "A tradução automática está temporariamente fora de serviço e pode ser retomada em alguns minutos."
+   },
+   "updateLog": {
+      "message": "Notas de Lançamento"
+   },
+   "videoButton": {
+      "message": "Legendas de vídeo"
+   },
+   "videoSubtitles": {
+      "message": "Legendas de vídeo"
+   }
+}

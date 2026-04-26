@@ -1,0 +1,116 @@
+{
+   "autoTranslate": {
+      "message": "Oversett automatisk"
+   },
+   "background": {
+      "message": "bakgrunn"
+   },
+   "bilingual": {
+      "message": "Tospråklig"
+   },
+   "close": {
+      "message": "Lukk"
+   },
+   "closeUpgradeTip": {
+      "message": "Slå av oppgraderingspåminnelser"
+   },
+   "color": {
+      "message": "farge"
+   },
+   "customStyle": {
+      "message": "Egendefinert stil"
+   },
+   "defaultSubtitles": {
+      "message": "Standard teksting"
+   },
+   "description": {
+      "message": "Bytt automatisk til lokalt språk, tospråklige undertekster, undertekstnedlasting, undertekstdubbing, tilpasset undertekststil."
+   },
+   "dualMode": {
+      "message": "Doble undertekstinnstillinger"
+   },
+   "dubbingSettings": {
+      "message": "Dubbinginnstillinger"
+   },
+   "fontFamily": {
+      "message": "Font"
+   },
+   "fontSize": {
+      "message": "Skriftstørrelse"
+   },
+   "functionRemove": {
+      "message": "Utvidelsesbryterfunksjon er fjernet"
+   },
+   "goBack": {
+      "message": "Feil ved henting av oversettelsesliste"
+   },
+   "hideDubbing": {
+      "message": "Dubbing for hørselshemmede"
+   },
+   "hideSubtitleDownload": {
+      "message": "Skjul nedlasting av undertekster"
+   },
+   "learnMore": {
+      "message": "Lære mer"
+   },
+   "lockTips": {
+      "message": "Tre i kraft etter oppdatering"
+   },
+   "name": {
+      "message": "YouTube ™ dobbel teksting"
+   },
+   "newFuntcion": {
+      "message": "Nye funksjoner kommer snart"
+   },
+   "newVersion": {
+      "message": "ny verson"
+   },
+   "requestError": {
+      "message": "Det var en feil i tekstingsforespørselen. Prøv igjen senere."
+   },
+   "resetStyle": {
+      "message": "tilbakestill stil"
+   },
+   "rowGap": {
+      "message": "mellomrom"
+   },
+   "singleMode": {
+      "message": "Enkel undertekstinnstilling"
+   },
+   "singleSubtitle": {
+      "message": "Enkelt undertekster"
+   },
+   "subtitleDownload": {
+      "message": "Tekstnedlasting"
+   },
+   "subtitleDubbing": {
+      "message": "Dubbing av undertekster"
+   },
+   "swapPosition": {
+      "message": "Bytt posisjon"
+   },
+   "textStroke": {
+      "message": "Tekststrek"
+   },
+   "today": {
+      "message": "Ikke minne i dag"
+   },
+   "translateButton": {
+      "message": "Oversett undertekster"
+   },
+   "translationError": {
+      "message": "Den automatiske oversettelsestjenesten er avbrutt. Prøv igjen senere."
+   },
+   "translationErrorDetails": {
+      "message": "Automatisk oversettelse er midlertidig ute av drift og kan fortsette om noen minutter."
+   },
+   "updateLog": {
+      "message": "Utgivelsesnotater"
+   },
+   "videoButton": {
+      "message": "Video undertekster"
+   },
+   "videoSubtitles": {
+      "message": "Video undertekster"
+   }
+}

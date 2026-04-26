@@ -1,0 +1,116 @@
+{
+   "autoTranslate": {
+      "message": "Автоматичний переклад"
+   },
+   "background": {
+      "message": "фону"
+   },
+   "bilingual": {
+      "message": "Двомовні"
+   },
+   "close": {
+      "message": "Закрити"
+   },
+   "closeUpgradeTip": {
+      "message": "Вимкніть нагадування про оновлення"
+   },
+   "color": {
+      "message": "колір"
+   },
+   "customStyle": {
+      "message": "Індивідуальний стиль"
+   },
+   "defaultSubtitles": {
+      "message": "Субтитри за замовчуванням"
+   },
+   "description": {
+      "message": "Автоматичне перемикання на місцеву мову, двомовні субтитри, завантаження субтитрів, дубляж субтитрів, користувацький стиль субтитрів."
+   },
+   "dualMode": {
+      "message": "Налаштування подвійних субтитрів"
+   },
+   "dubbingSettings": {
+      "message": "Налаштування дубляжу"
+   },
+   "fontFamily": {
+      "message": "Шрифт"
+   },
+   "fontSize": {
+      "message": "Розмір шрифту"
+   },
+   "functionRemove": {
+      "message": "Функцію перемикання розширень видалено"
+   },
+   "goBack": {
+      "message": "Помилка отримання списку перекладів"
+   },
+   "hideDubbing": {
+      "message": "Дубляж закритих субтитрів"
+   },
+   "hideSubtitleDownload": {
+      "message": "Сховати завантаження субтитрів"
+   },
+   "learnMore": {
+      "message": "Вивчайте більше"
+   },
+   "lockTips": {
+      "message": "Набирає чинності після оновлення"
+   },
+   "name": {
+      "message": "Подвійні субтитри YouTube ™"
+   },
+   "newFuntcion": {
+      "message": "Незабаром з’являться нові функції"
+   },
+   "newVersion": {
+      "message": "Нова версія"
+   },
+   "requestError": {
+      "message": "У запиті на підпис сталася помилка. Повторіть спробу пізніше."
+   },
+   "resetStyle": {
+      "message": "скинути стиль"
+   },
+   "rowGap": {
+      "message": "інтервал"
+   },
+   "singleMode": {
+      "message": "Налаштування окремих субтитрів"
+   },
+   "singleSubtitle": {
+      "message": "Окремі субтитри"
+   },
+   "subtitleDownload": {
+      "message": "Завантажити субтитри"
+   },
+   "subtitleDubbing": {
+      "message": "Дубляж субтитрів"
+   },
+   "swapPosition": {
+      "message": "Поміняти позицію"
+   },
+   "textStroke": {
+      "message": "Штрих тексту"
+   },
+   "today": {
+      "message": "Не нагадуйте сьогодні"
+   },
+   "translateButton": {
+      "message": "Перекладіть субтитри"
+   },
+   "translationError": {
+      "message": "Послуга автоматичного перекладу перервана, спробуйте пізніше."
+   },
+   "translationErrorDetails": {
+      "message": "Автоматичний переклад тимчасово не працює і може відновитись через кілька хвилин."
+   },
+   "updateLog": {
+      "message": "Примітки до випуску"
+   },
+   "videoButton": {
+      "message": "Відео субтитри"
+   },
+   "videoSubtitles": {
+      "message": "Субтитри відео"
+   }
+}

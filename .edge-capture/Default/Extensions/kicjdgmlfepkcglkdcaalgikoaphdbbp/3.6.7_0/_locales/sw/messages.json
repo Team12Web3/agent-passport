@@ -1,0 +1,116 @@
+{
+   "autoTranslate": {
+      "message": "Tafsiri-kiotomatiki"
+   },
+   "background": {
+      "message": "usuli"
+   },
+   "bilingual": {
+      "message": "Lugha mbili"
+   },
+   "close": {
+      "message": "Funga"
+   },
+   "closeUpgradeTip": {
+      "message": "Zima vikumbusho vya kuboresha"
+   },
+   "color": {
+      "message": "rangi"
+   },
+   "customStyle": {
+      "message": "Mtindo maalum"
+   },
+   "defaultSubtitles": {
+      "message": "Manukuu chaguomsingi"
+   },
+   "description": {
+      "message": "Badilisha kiotomatiki hadi lugha ya ndani, manukuu ya lugha mbili, upakuaji wa manukuu, uandikaji wa manukuu, mtindo maalum wa manukuu."
+   },
+   "dualMode": {
+      "message": "Mipangilio ya manukuu mawili"
+   },
+   "dubbingSettings": {
+      "message": "Mipangilio ya kunakili"
+   },
+   "fontFamily": {
+      "message": "Fonti"
+   },
+   "fontSize": {
+      "message": "Ukubwa wa herufi"
+   },
+   "functionRemove": {
+      "message": "Kazi ya ubadilishaji wa viendelezi imeondolewa"
+   },
+   "goBack": {
+      "message": "Hitilafu katika kupata orodha ya tafsiri"
+   },
+   "hideDubbing": {
+      "message": "Manukuu yaliyofungwa yanaiga"
+   },
+   "hideSubtitleDownload": {
+      "message": "Ficha manukuu"
+   },
+   "learnMore": {
+      "message": "Jifunze zaidi"
+   },
+   "lockTips": {
+      "message": "Anza kutumika baada ya kuonyesha upya"
+   },
+   "name": {
+      "message": "Manukuu mawili ya YouTube ™"
+   },
+   "newFuntcion": {
+      "message": "Vipengele vipya vinakuja hivi karibuni"
+   },
+   "newVersion": {
+      "message": "toleo jipya"
+   },
+   "requestError": {
+      "message": "Kulikuwa na hitilafu katika ombi la manukuu, tafadhali jaribu tena baadaye."
+   },
+   "resetStyle": {
+      "message": "weka upya mtindo"
+   },
+   "rowGap": {
+      "message": "nafasi"
+   },
+   "singleMode": {
+      "message": "Mpangilio wa manukuu moja"
+   },
+   "singleSubtitle": {
+      "message": "Vichwa vidogo moja"
+   },
+   "subtitleDownload": {
+      "message": "Subtitles kupakua"
+   },
+   "subtitleDubbing": {
+      "message": "Uandikaji wa manukuu"
+   },
+   "swapPosition": {
+      "message": "Badilisha nafasi"
+   },
+   "textStroke": {
+      "message": "Kiharusi cha maandishi"
+   },
+   "today": {
+      "message": "Usikumbushe leo"
+   },
+   "translateButton": {
+      "message": "Tafsiri manukuu"
+   },
+   "translationError": {
+      "message": "Huduma ya tafsiri ya moja kwa moja imeingiliwa, tafadhali jaribu tena baadaye."
+   },
+   "translationErrorDetails": {
+      "message": "Utafsiri kiotomatiki haujapangwa kwa muda na unaweza kuanza tena kwa dakika chache."
+   },
+   "updateLog": {
+      "message": "Vidokezo vya Kutolewa"
+   },
+   "videoButton": {
+      "message": "Manukuu ya video"
+   },
+   "videoSubtitles": {
+      "message": "Manukuu ya video"
+   }
+}

@@ -1,0 +1,116 @@
+{
+   "autoTranslate": {
+      "message": "Traduction automatique"
+   },
+   "background": {
+      "message": "Contexte"
+   },
+   "bilingual": {
+      "message": "Bilingue"
+   },
+   "close": {
+      "message": "Fermer"
+   },
+   "closeUpgradeTip": {
+      "message": "Désactiver les rappels de mise à niveau"
+   },
+   "color": {
+      "message": "Couleur"
+   },
+   "customStyle": {
+      "message": "Style personnalisé"
+   },
+   "defaultSubtitles": {
+      "message": "Sous-titres par défaut"
+   },
+   "description": {
+      "message": "Basculez automatiquement vers la langue locale, les sous-titres bilingues, le téléchargement de sous-titres, le doublage de sous-titres, le style de sous-titre personnalisé."
+   },
+   "dualMode": {
+      "message": "Paramètres de sous-titres doubles"
+   },
+   "dubbingSettings": {
+      "message": "Paramètres de doublage"
+   },
+   "fontFamily": {
+      "message": "Police de caractère"
+   },
+   "fontSize": {
+      "message": "Taille de police"
+   },
+   "functionRemove": {
+      "message": "La fonction de commutateur d&#39;extensions a été supprimée"
+   },
+   "goBack": {
+      "message": "Erreur lors de l&#39;obtention de la liste des traductions"
+   },
+   "hideDubbing": {
+      "message": "Doublage de sous-titres codés"
+   },
+   "hideSubtitleDownload": {
+      "message": "Masquer le téléchargement des sous-titres"
+   },
+   "learnMore": {
+      "message": "Apprendre encore plus"
+   },
+   "lockTips": {
+      "message": "Prendre effet après l'actualisation"
+   },
+   "name": {
+      "message": "Double sous-titres YouTube™"
+   },
+   "newFuntcion": {
+      "message": "De nouvelles fonctionnalités à venir"
+   },
+   "newVersion": {
+      "message": "nouvelle version"
+   },
+   "requestError": {
+      "message": "Une erreur s&#39;est produite dans la demande de sous-titrage, veuillez réessayer plus tard."
+   },
+   "resetStyle": {
+      "message": "style de réinitialisation"
+   },
+   "rowGap": {
+      "message": "espacement"
+   },
+   "singleMode": {
+      "message": "Paramètre de sous-titre unique"
+   },
+   "singleSubtitle": {
+      "message": "Sous-titres uniques"
+   },
+   "subtitleDownload": {
+      "message": "Téléchargement des sous-titres"
+   },
+   "subtitleDubbing": {
+      "message": "Doublage de sous-titres"
+   },
+   "swapPosition": {
+      "message": "Changer de position"
+   },
+   "textStroke": {
+      "message": "Trait de texte"
+   },
+   "today": {
+      "message": "Ne rappelle pas aujourd&#39;hui"
+   },
+   "translateButton": {
+      "message": "Traduire les sous-titres"
+   },
+   "translationError": {
+      "message": "Le service de traduction automatique est interrompu, veuillez réessayer plus tard."
+   },
+   "translationErrorDetails": {
+      "message": "La traduction automatique est temporairement hors service et peut reprendre dans quelques minutes."
+   },
+   "updateLog": {
+      "message": "Notes de version"
+   },
+   "videoButton": {
+      "message": "Sous-titres vidéo"
+   },
+   "videoSubtitles": {
+      "message": "Sous-titres vidéo"
+   }
+}

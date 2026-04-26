@@ -11,7 +11,8 @@
 3. Second tab: Snowtrace (`testnet.snowtrace.io`) at our `AgentPassport` contract address so judges can verify this is real if they ask.
 4. Third tab: backup video as YouTube unlisted, ready to play if anything breaks.
 5. Fourth tab: `/trust-lab`, ready for the visual verifiable-intents fallback or Q&A.
-6. Phone hotspot ready.
+6. Fifth tab: `/trusted-browser`, ready for the proxy-cleaning demo against the hostile target page.
+7. Phone hotspot ready.
 
 ---
 
@@ -138,7 +139,25 @@ Show the trust states quickly:
 
 > "That is the trust premium. Untrusted agents get friction. Trusted agents get the green channel."
 
-### 2:25-2:40 - Close
+### 2:25-2:40 - Trusted browser proxy (optional)
+
+**Action:** Switch to `/trusted-browser`.
+
+Show:
+
+- the raw hostile page in the main preview window
+- click one scenario button so the same preview window swaps to the relay response
+- the right-side panel with the trust bundle and verification steps
+
+**Narrator:**
+
+> "Here is the same hostile site in the main preview window. When I click a protocol scenario, that exact preview switches from the raw page to the relay response."
+
+> "On the right, the trust panel shows the wallet header bundle and every verification step. If the bundle passes, our trusted relay fetches the page, strips popup ads, human-check prompts, and misleading click traps, and renders a clean operator-safe view."
+
+> "This is the fallback path for sites that have not adopted the protocol natively yet."
+
+### 2:40-2:55 - Close
 
 **Action:** Stay on the green pulse animation or the trust-lab success state. Do not navigate away.
 

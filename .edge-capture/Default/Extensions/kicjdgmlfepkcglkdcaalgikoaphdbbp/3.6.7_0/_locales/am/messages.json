@@ -1,0 +1,116 @@
+{
+   "autoTranslate": {
+      "message": "በራስ-መተርጎም"
+   },
+   "background": {
+      "message": "ዳራ"
+   },
+   "bilingual": {
+      "message": "ባለ ሁለት ቋንቋ"
+   },
+   "close": {
+      "message": "ገጠመ"
+   },
+   "closeUpgradeTip": {
+      "message": "የማሻሻያ አስታዋሾችን ያጥፉ"
+   },
+   "color": {
+      "message": "ቀለም"
+   },
+   "customStyle": {
+      "message": "ብጁ ዘይቤ"
+   },
+   "defaultSubtitles": {
+      "message": "ነባሪ የትርጉም ጽሑፎች"
+   },
+   "description": {
+      "message": "በራስ-ሰር ወደ የአካባቢ ቋንቋ፣ የሁለት ቋንቋዎች የትርጉም ጽሑፎች፣ የትርጉም ጽሑፎች ማውረድ፣ የትርጉም ጽሑፍ ቅጂ፣ ብጁ የትርጉም ጽሑፍ ዘይቤ ይቀይሩ።"
+   },
+   "dualMode": {
+      "message": "ድርብ የትርጉም ቅንጅቶች"
+   },
+   "dubbingSettings": {
+      "message": "የደብዳቤ ቅንጅቶች"
+   },
+   "fontFamily": {
+      "message": "ቅርጸ-ቁምፊ"
+   },
+   "fontSize": {
+      "message": "የፊደል መጠን"
+   },
+   "functionRemove": {
+      "message": "የቅጥያዎች መቀየሪያ ተግባር ተወግዷል"
+   },
+   "goBack": {
+      "message": "የትርጉም ዝርዝር ማግኘት ላይ ስህተት"
+   },
+   "hideDubbing": {
+      "message": "ዝግ መግለጫ ፅሁፍ መፃፍ"
+   },
+   "hideSubtitleDownload": {
+      "message": "የትርጉም ጽሑፎችን ማውረድ ደብቅ"
+   },
+   "learnMore": {
+      "message": "ተጨማሪ እወቅ"
+   },
+   "lockTips": {
+      "message": "ከታደሰ በኋላ ተግብር"
+   },
+   "name": {
+      "message": "ዩቲዩብ ™ ባለሁለት ንዑስ ርዕሶች"
+   },
+   "newFuntcion": {
+      "message": "አዳዲስ ባህሪዎች በቅርቡ ይመጣሉ"
+   },
+   "newVersion": {
+      "message": "አዲስ ስሪት"
+   },
+   "requestError": {
+      "message": "በመግለጫ ጽሁፍ ጥያቄ ላይ አንድ ስህተት ነበር ፣ እባክዎ ቆይተው እንደገና ይሞክሩ።"
+   },
+   "resetStyle": {
+      "message": "ቅጥን ዳግም አስጀምር"
+   },
+   "rowGap": {
+      "message": "ክፍተት"
+   },
+   "singleMode": {
+      "message": "ነጠላ የትርጉም ጽሑፍ ቅንብር"
+   },
+   "singleSubtitle": {
+      "message": "ነጠላ የትርጉም ጽሑፎች"
+   },
+   "subtitleDownload": {
+      "message": "የትርጉም ጽሑፎች ማውረድ"
+   },
+   "subtitleDubbing": {
+      "message": "የንኡስ ርእስ መፃፍ"
+   },
+   "swapPosition": {
+      "message": "ቦታ ይለዋወጡ"
+   },
+   "textStroke": {
+      "message": "የጽሑፍ ጭረት"
+   },
+   "today": {
+      "message": "ዛሬ አታስታውስ"
+   },
+   "translateButton": {
+      "message": "የትርጉም ጽሑፎችን ተርጉም።"
+   },
+   "translationError": {
+      "message": "ራስ-ሰር የትርጉም አገልግሎት ተቋርጧል ፣ እባክዎ ቆይተው እንደገና ይሞክሩ።"
+   },
+   "translationErrorDetails": {
+      "message": "ራስ-ሰር ትርጉም ለጊዜው ከትእዛዝ ውጭ ስለሆነ በጥቂት ደቂቃዎች ውስጥ እንደገና ሊጀመር ይችላል።"
+   },
+   "updateLog": {
+      "message": "የመልቀቂያ ማስታወሻዎች"
+   },
+   "videoButton": {
+      "message": "የቪዲዮ የትርጉም ጽሑፎች"
+   },
+   "videoSubtitles": {
+      "message": "የቪዲዮ ንዑስ ርዕሶች"
+   }
+}

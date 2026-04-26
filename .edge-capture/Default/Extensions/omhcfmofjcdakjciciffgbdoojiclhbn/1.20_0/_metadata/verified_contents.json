@@ -1,0 +1,24 @@
+[
+  {
+    "description": "treehash per file",
+    "signed_content": {
+      "payload": "eyJpdGVtX2lkIjoib21oY2Ztb2ZqY2Rha2pjaWNpZmZnYmRvb2ppY2xoYm4iLCJpdGVtX3ZlcnNpb24iOiIxLjIwIiwicHJvdG9jb2xfdmVyc2lvbiI6MSwiY29udGVudF9oYXNoZXMiOlt7ImZvcm1hdCI6InRyZWVoYXNoIiwiZGlnZXN0Ijoic2hhMjU2IiwiYmxvY2tfc2l6ZSI6NDA5NiwiaGFzaF9ibG9ja19zaXplIjo0MDk2LCJmaWxlcyI6W3sicGF0aCI6ImJhY2tncm91bmQuanMiLCJyb290X2hhc2giOiJxX1ZwOFh1clUwdHh1RVJFV2lQQ3NWektVb2xMelpWV3o1azRGRnNHRldBIn0seyJwYXRoIjoiY29udGVudC5qcyIsInJvb3RfaGFzaCI6IlU5SDVGcTZKVExLMXNuOG9GT0dQU1R0aEVGVDhDcjcwcVFoQUoyMFZ1SXcifSx7InBhdGgiOiJsaS1pY29uLnBuZyIsInJvb3RfaGFzaCI6Im5NSjNlMUxtQnY0ZF9IVEQzaEd5aFdJQUIzekdENGx5OWFfcml4UzhlZWcifSx7InBhdGgiOiJsaS1pY29uMTYucG5nIiwicm9vdF9oYXNoIjoiTGlGbnF0TmlLZHRhMVg0RUZHU2xZXzF6dmt2YVNkU09pdUtyaEg2alRtZyJ9LHsicGF0aCI6ImxpLWljb24xOS5wbmciLCJyb290X2hhc2giOiJSYTlJQjV0NzdQekdlM1FTUG1nZTd1RURQd2JnUFV3djhubVhtcDdtR2xvIn0seyJwYXRoIjoibGktaWNvbjMyLnBuZyIsInJvb3RfaGFzaCI6ImRYY0diZThHTWJlQlRjcEJLaXpjQ1BHWkR4bFg5R0JWMjYySUJjMks2UU0ifSx7InBhdGgiOiJsaS1pY29uMzgucG5nIiwicm9vdF9oYXNoIjoiOGpndzc0Z0h1QWp6MENubFBYak8tWGhDbjBqSFVSTkJpOVdTaFd3YnFhTSJ9LHsicGF0aCI6Im1hbmlmZXN0Lmpzb24iLCJyb290X2hhc2giOiJ3QWtYcEM5aDM3SV94Ync1X0F2VnhrOEw3bHhCMEdHMXN0TXZpWVE2NHE0In0seyJwYXRoIjoib3B0aW9ucy5odG1sIiwicm9vdF9oYXNoIjoiUzR4YW02cDREUHMzdGh5SHMtZko0T1lOLWtsVjQwNU04dEFjYU1GRW82RSJ9XX1dfQ",
+      "signatures": [
+        {
+          "header": {
+            "kid": "publisher"
+          },
+          "protected": "eyJhbGciOiJSUzI1NiJ9",
+          "signature": "CuuFIuMNXuK-G7oZTCiPFO-E7S8YGaeq3tyAJWMi_8feDj4F_rb-cELaSPUPwVGOCPf8OgYHIZo13va4LgM91tDafSuS7ecvOQgKz6LaLANgyXCfZtgnxTeoR2cByYeCkiicI5OLNOaFC8BxoUQ2LpzEWbPsgHI6vHa63iAuHtix-l1VhsacQRHbcKmySlt8BCqmvJY3Xq67qrHirwEckm7POOx5jE3vTDsR_BBHTW-wuMp3_law27OthnbAWbURND6ttOCCHpNdKhHd4EejfGJqptYSJldYtIrkhv-jeQ33ncfLD-svF3I5eOCGmdflJdmGXZBa5SuxS_2NpwOEDA"
+        },
+        {
+          "header": {
+            "kid": "webstore"
+          },
+          "protected": "eyJhbGciOiJSUzI1NiJ9",
+          "signature": "draFIO-BHSiO_mSM_99PDIfA2VO_jr363Afxn4gVm70ZbCMRfxSZRgCra2qmVS4u8rmJMrKXKBX44ARJ5Npz2BJYqRM1pdTJyG6MwiKkPshnzxi5nKrS9r3jUxLXlkYQ0iXPKE2IF70NQV6L0ejUydszKVsIiM0SRNOLOgst1kDNh3mNb6q-CTZjvA7XFDz2ZR9F07ph30C59zyr0rX29ou_xAE_gnu2oznNcn5jMiKwP4hkjFRHf4uZ5vjctENKVmmd1bB628-oIsw2oHmy43Vsa8gIT-0ZMdPJfZenyR66ObdJcL54DJ-4Knuaac0EwsUniyUUA3FOYerby6nH4g"
+        }
+      ]
+    }
+  }
+]

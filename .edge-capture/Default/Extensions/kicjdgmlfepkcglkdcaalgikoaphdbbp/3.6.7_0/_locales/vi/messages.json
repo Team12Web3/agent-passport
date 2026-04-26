@@ -1,0 +1,116 @@
+{
+   "autoTranslate": {
+      "message": "Dịch tự động"
+   },
+   "background": {
+      "message": "lai lịch"
+   },
+   "bilingual": {
+      "message": "Song ngữ"
+   },
+   "close": {
+      "message": "Đóng"
+   },
+   "closeUpgradeTip": {
+      "message": "Tắt lời nhắc nâng cấp"
+   },
+   "color": {
+      "message": "màu sắc"
+   },
+   "customStyle": {
+      "message": "Phong cách tùy chỉnh"
+   },
+   "defaultSubtitles": {
+      "message": "Phụ đề mặc định"
+   },
+   "description": {
+      "message": "Tự động chuyển sang ngôn ngữ địa phương, phụ đề song ngữ, tải xuống phụ đề, lồng phụ đề, kiểu phụ đề tùy chỉnh."
+   },
+   "dualMode": {
+      "message": "Cài đặt phụ đề kép"
+   },
+   "dubbingSettings": {
+      "message": "Cài đặt lồng tiếng"
+   },
+   "fontFamily": {
+      "message": "Nét chữ"
+   },
+   "fontSize": {
+      "message": "Cỡ chữ"
+   },
+   "functionRemove": {
+      "message": "Chức năng chuyển đổi tiện ích mở rộng đã bị loại bỏ"
+   },
+   "goBack": {
+      "message": "Lỗi khi tải danh sách bản dịch"
+   },
+   "hideDubbing": {
+      "message": "Lồng tiếng cho phụ đề chi tiết"
+   },
+   "hideSubtitleDownload": {
+      "message": "Ẩn phụ đề tải xuống"
+   },
+   "learnMore": {
+      "message": "Tìm hiểu thêm"
+   },
+   "lockTips": {
+      "message": "Có hiệu lực sau khi làm mới"
+   },
+   "name": {
+      "message": "YouTube ™ phụ đề kép"
+   },
+   "newFuntcion": {
+      "message": "Các tính năng mới sắp ra mắt"
+   },
+   "newVersion": {
+      "message": "phiên bản mới"
+   },
+   "requestError": {
+      "message": "Đã xảy ra lỗi trong yêu cầu phụ đề, vui lòng thử lại sau."
+   },
+   "resetStyle": {
+      "message": "đặt lại phong cách"
+   },
+   "rowGap": {
+      "message": "khoảng cách"
+   },
+   "singleMode": {
+      "message": "Cài đặt phụ đề đơn"
+   },
+   "singleSubtitle": {
+      "message": "Phụ đề đơn"
+   },
+   "subtitleDownload": {
+      "message": "Tải xuống phụ đề"
+   },
+   "subtitleDubbing": {
+      "message": "Lồng tiếng phụ đề"
+   },
+   "swapPosition": {
+      "message": "Hoán đổi vị trí"
+   },
+   "textStroke": {
+      "message": "Nét văn bản"
+   },
+   "today": {
+      "message": "Đừng nhắc hôm nay"
+   },
+   "translateButton": {
+      "message": "Dịch phụ đề"
+   },
+   "translationError": {
+      "message": "Dịch vụ dịch tự động bị gián đoạn, vui lòng thử lại sau."
+   },
+   "translationErrorDetails": {
+      "message": "Bản dịch tự động tạm thời không hoạt động và có thể tiếp tục sau vài phút."
+   },
+   "updateLog": {
+      "message": "Ghi chú phát hành"
+   },
+   "videoButton": {
+      "message": "Phụ đề video"
+   },
+   "videoSubtitles": {
+      "message": "Phụ đề video"
+   }
+}

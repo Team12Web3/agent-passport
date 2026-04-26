@@ -1,0 +1,116 @@
+{
+   "autoTranslate": {
+      "message": "Awtomatikong isalin"
+   },
+   "background": {
+      "message": "background"
+   },
+   "bilingual": {
+      "message": "Dalawang wika"
+   },
+   "close": {
+      "message": "Isara"
+   },
+   "closeUpgradeTip": {
+      "message": "I-off ang mga paalala sa pag-upgrade"
+   },
+   "color": {
+      "message": "kulay"
+   },
+   "customStyle": {
+      "message": "Pasadyang istilo"
+   },
+   "defaultSubtitles": {
+      "message": "Mga default na subtitle"
+   },
+   "description": {
+      "message": "Awtomatikong lumipat sa lokal na wika, mga bilingual na subtitle, pag-download ng subtitle, subtitle dubbing, custom na istilo ng subtitle."
+   },
+   "dualMode": {
+      "message": "Mga setting ng dalawahang subtitle"
+   },
+   "dubbingSettings": {
+      "message": "Mga setting ng dubbing"
+   },
+   "fontFamily": {
+      "message": "Font"
+   },
+   "fontSize": {
+      "message": "Laki ng font"
+   },
+   "functionRemove": {
+      "message": "Ang pagpapaandar ng switch ng mga extension ay tinanggal"
+   },
+   "goBack": {
+      "message": "Error sa pagkuha ng listahan ng pagsasalin"
+   },
+   "hideDubbing": {
+      "message": "Closed caption dubbing"
+   },
+   "hideSubtitleDownload": {
+      "message": "Itago ang pag-download ng Mga Subtitle"
+   },
+   "learnMore": {
+      "message": "Matuto nang higit pa"
+   },
+   "lockTips": {
+      "message": "Magkabisa pagkatapos ng pag-refresh"
+   },
+   "name": {
+      "message": "Mga dalawahang subtitle ng YouTube ™"
+   },
+   "newFuntcion": {
+      "message": "Paparating na ang mga bagong tampok"
+   },
+   "newVersion": {
+      "message": "bagong bersyon"
+   },
+   "requestError": {
+      "message": "Mayroong isang error sa kahilingan sa caption, mangyaring subukang muli sa ibang pagkakataon."
+   },
+   "resetStyle": {
+      "message": "i-reset ang istilo"
+   },
+   "rowGap": {
+      "message": "spacing"
+   },
+   "singleMode": {
+      "message": "Isang setting ng subtitle"
+   },
+   "singleSubtitle": {
+      "message": "Mga solong subtitle"
+   },
+   "subtitleDownload": {
+      "message": "Pag-download ng mga subtitle"
+   },
+   "subtitleDubbing": {
+      "message": "Subtitle dubbing"
+   },
+   "swapPosition": {
+      "message": "Magpalit ng posisyon"
+   },
+   "textStroke": {
+      "message": "Text stroke"
+   },
+   "today": {
+      "message": "Huwag ipaalala ngayon"
+   },
+   "translateButton": {
+      "message": "Magsalin ng mga subtitle"
+   },
+   "translationError": {
+      "message": "Nagambala ang awtomatikong serbisyo sa pagsasalin, pakisubukang muli sa ibang pagkakataon."
+   },
+   "translationErrorDetails": {
+      "message": "Ang awtomatikong pagsasalin ay pansamantalang wala sa order at maaaring ipagpatuloy sa loob ng ilang minuto."
+   },
+   "updateLog": {
+      "message": "Mga Tala sa Paglabas"
+   },
+   "videoButton": {
+      "message": "Mga subtitle ng video"
+   },
+   "videoSubtitles": {
+      "message": "Mga subtitle ng video"
+   }
+}

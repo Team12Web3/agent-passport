@@ -1,0 +1,116 @@
+{
+   "autoTranslate": {
+      "message": "Traducere automată"
+   },
+   "background": {
+      "message": "fundal"
+   },
+   "bilingual": {
+      "message": "Bilingv"
+   },
+   "close": {
+      "message": "Închide"
+   },
+   "closeUpgradeTip": {
+      "message": "Dezactivați mementourile de actualizare"
+   },
+   "color": {
+      "message": "culoare"
+   },
+   "customStyle": {
+      "message": "Stilul personalizat"
+   },
+   "defaultSubtitles": {
+      "message": "Subtitrări implicite"
+   },
+   "description": {
+      "message": "Comutați automat la limba locală, subtitrări bilingve, descărcare de subtitrări, dublare a subtitrarilor, stil personalizat de subtitrare."
+   },
+   "dualMode": {
+      "message": "Setări duble pentru subtitrare"
+   },
+   "dubbingSettings": {
+      "message": "Setări de dublare"
+   },
+   "fontFamily": {
+      "message": "Font"
+   },
+   "fontSize": {
+      "message": "Marimea fontului"
+   },
+   "functionRemove": {
+      "message": "Funcția de comutare a extensiilor a fost eliminată"
+   },
+   "goBack": {
+      "message": "Eroare la obținerea listei de traduceri"
+   },
+   "hideDubbing": {
+      "message": "Dublare de subtitrări"
+   },
+   "hideSubtitleDownload": {
+      "message": "Ascundeți descărcarea subtitrărilor"
+   },
+   "learnMore": {
+      "message": "Află mai multe"
+   },
+   "lockTips": {
+      "message": "Intră în vigoare după reîmprospătare"
+   },
+   "name": {
+      "message": "Subtitrări duale YouTube ™"
+   },
+   "newFuntcion": {
+      "message": "Funcții noi în curând"
+   },
+   "newVersion": {
+      "message": "versiune noua"
+   },
+   "requestError": {
+      "message": "A apărut o eroare la solicitarea de subtitrare, încercați din nou mai târziu."
+   },
+   "resetStyle": {
+      "message": "resetează stilul"
+   },
+   "rowGap": {
+      "message": "spaţiere"
+   },
+   "singleMode": {
+      "message": "Setare unică de subtitrare"
+   },
+   "singleSubtitle": {
+      "message": "Subtitrări unice"
+   },
+   "subtitleDownload": {
+      "message": "Descărcare subtitrări"
+   },
+   "subtitleDubbing": {
+      "message": "Dublare subtitrare"
+   },
+   "swapPosition": {
+      "message": "Schimbați poziția"
+   },
+   "textStroke": {
+      "message": "Contur text"
+   },
+   "today": {
+      "message": "Nu reaminti azi"
+   },
+   "translateButton": {
+      "message": "Traduceți subtitrări"
+   },
+   "translationError": {
+      "message": "Serviciul de traducere automată este întrerupt, vă rugăm să încercați din nou mai târziu."
+   },
+   "translationErrorDetails": {
+      "message": "Traducerea automată nu funcționează temporar și se poate relua în câteva minute."
+   },
+   "updateLog": {
+      "message": "Note de lansare"
+   },
+   "videoButton": {
+      "message": "Subtitrări video"
+   },
+   "videoSubtitles": {
+      "message": "Subtitrări video"
+   }
+}

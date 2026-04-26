@@ -1,0 +1,116 @@
+{
+   "autoTranslate": {
+      "message": "Automatisch vertalen"
+   },
+   "background": {
+      "message": "achtergrond"
+   },
+   "bilingual": {
+      "message": "tweetalig"
+   },
+   "close": {
+      "message": "Dichtbij"
+   },
+   "closeUpgradeTip": {
+      "message": "Upgradeherinneringen uitschakelen"
+   },
+   "color": {
+      "message": "kleur"
+   },
+   "customStyle": {
+      "message": "Aangepaste stijl"
+   },
+   "defaultSubtitles": {
+      "message": "Standaard ondertitels"
+   },
+   "description": {
+      "message": "Automatisch overschakelen naar de lokale taal, tweetalige ondertitels, ondertiteling downloaden, ondertiteling nasynchronisatie, aangepaste ondertitelstijl."
+   },
+   "dualMode": {
+      "message": "Instellingen voor dubbele ondertiteling"
+   },
+   "dubbingSettings": {
+      "message": "Kopieerinstellingen"
+   },
+   "fontFamily": {
+      "message": "Lettertype"
+   },
+   "fontSize": {
+      "message": "Lettertypegrootte"
+   },
+   "functionRemove": {
+      "message": "Schakelfunctie voor extensies is verwijderd"
+   },
+   "goBack": {
+      "message": "Fout bij ophalen van vertaallijst"
+   },
+   "hideDubbing": {
+      "message": "Nasynchronisatie van ondertitels"
+   },
+   "hideSubtitleDownload": {
+      "message": "Ondertitels downloaden verbergen"
+   },
+   "learnMore": {
+      "message": "Kom meer te weten"
+   },
+   "lockTips": {
+      "message": "In werking treden na vernieuwen"
+   },
+   "name": {
+      "message": "YouTube™ dubbele ondertiteling"
+   },
+   "newFuntcion": {
+      "message": "Binnenkort nieuwe functies"
+   },
+   "newVersion": {
+      "message": "nieuwe versie"
+   },
+   "requestError": {
+      "message": "Er is een fout opgetreden in het ondertitelingsverzoek, probeer het later opnieuw."
+   },
+   "resetStyle": {
+      "message": "stijl resetten"
+   },
+   "rowGap": {
+      "message": "spatiëring"
+   },
+   "singleMode": {
+      "message": "Enkele ondertitelinstelling"
+   },
+   "singleSubtitle": {
+      "message": "Enkele ondertiteling"
+   },
+   "subtitleDownload": {
+      "message": "Ondertitels downloaden"
+   },
+   "subtitleDubbing": {
+      "message": "Nasynchronisatie van ondertitels"
+   },
+   "swapPosition": {
+      "message": "Wissel van positie"
+   },
+   "textStroke": {
+      "message": "Tekststreek"
+   },
+   "today": {
+      "message": "Niet herinneren vandaag"
+   },
+   "translateButton": {
+      "message": "Ondertitels vertalen"
+   },
+   "translationError": {
+      "message": "De automatische vertaalservice is onderbroken, probeer het later opnieuw."
+   },
+   "translationErrorDetails": {
+      "message": "Automatische vertaling is tijdelijk buiten gebruik en kan over een paar minuten worden hervat."
+   },
+   "updateLog": {
+      "message": "Release-opmerkingen"
+   },
+   "videoButton": {
+      "message": "Video-ondertiteling"
+   },
+   "videoSubtitles": {
+      "message": "Video-ondertiteling"
+   }
+}

@@ -1,0 +1,116 @@
+{
+   "autoTranslate": {
+      "message": "自動翻訳"
+   },
+   "background": {
+      "message": "バックグラウンド"
+   },
+   "bilingual": {
+      "message": "バイリンガル"
+   },
+   "close": {
+      "message": "閉じる"
+   },
+   "closeUpgradeTip": {
+      "message": "アップグレードのリマインダーをオフにする"
+   },
+   "color": {
+      "message": "色"
+   },
+   "customStyle": {
+      "message": "カスタムスタイル"
+   },
+   "defaultSubtitles": {
+      "message": "デフォルトの字幕"
+   },
+   "description": {
+      "message": "現地の言語、バイリンガル字幕、字幕ダウンロード、字幕吹き替え、カスタム字幕スタイルに自動的に切り替わります。"
+   },
+   "dualMode": {
+      "message": "デュアル字幕設定"
+   },
+   "dubbingSettings": {
+      "message": "ダビング設定"
+   },
+   "fontFamily": {
+      "message": "フォント"
+   },
+   "fontSize": {
+      "message": "フォントサイズ"
+   },
+   "functionRemove": {
+      "message": "拡張機能の切り替え機能が削除されました"
+   },
+   "goBack": {
+      "message": "翻訳リストの取得中にエラーが発生しました"
+   },
+   "hideDubbing": {
+      "message": "クローズドキャプション吹き替え"
+   },
+   "hideSubtitleDownload": {
+      "message": "字幕のダウンロードを隠す"
+   },
+   "learnMore": {
+      "message": "もっと詳しく知る"
+   },
+   "lockTips": {
+      "message": "更新後に有効になります"
+   },
+   "name": {
+      "message": "YouTube™ デュアル字幕"
+   },
+   "newFuntcion": {
+      "message": "新機能は近日公開予定"
+   },
+   "newVersion": {
+      "message": "新しいバージョン"
+   },
+   "requestError": {
+      "message": "キャプション リクエストにエラーがありました。しばらくしてからもう一度お試しください。"
+   },
+   "resetStyle": {
+      "message": "スタイルをリセット"
+   },
+   "rowGap": {
+      "message": "間隔"
+   },
+   "singleMode": {
+      "message": "単一字幕設定"
+   },
+   "singleSubtitle": {
+      "message": "単一字幕"
+   },
+   "subtitleDownload": {
+      "message": "字幕ダウンロード"
+   },
+   "subtitleDubbing": {
+      "message": "字幕吹き替え"
+   },
+   "swapPosition": {
+      "message": "スワップ位置"
+   },
+   "textStroke": {
+      "message": "テキストストローク"
+   },
+   "today": {
+      "message": "今日は思い出さない"
+   },
+   "translateButton": {
+      "message": "字幕を翻訳する"
+   },
+   "translationError": {
+      "message": "自動翻訳サービスが中断されました。しばらくしてからもう一度お試しください。"
+   },
+   "translationErrorDetails": {
+      "message": "自動翻訳は一時的に停止しており、数分後に再開する場合があります。"
+   },
+   "updateLog": {
+      "message": "リリースノート"
+   },
+   "videoButton": {
+      "message": "ビデオ字幕"
+   },
+   "videoSubtitles": {
+      "message": "ビデオ字幕"
+   }
+}

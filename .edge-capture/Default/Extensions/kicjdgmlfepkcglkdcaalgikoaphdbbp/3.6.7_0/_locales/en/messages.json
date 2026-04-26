@@ -1,0 +1,116 @@
+{
+   "autoTranslate": {
+      "message": "Auto-translate"
+   },
+   "background": {
+      "message": "background"
+   },
+   "bilingual": {
+      "message": "Bilingual"
+   },
+   "close": {
+      "message": "Close"
+   },
+   "closeUpgradeTip": {
+      "message": "Turn off upgrade reminders"
+   },
+   "color": {
+      "message": "color"
+   },
+   "customStyle": {
+      "message": "Custom style"
+   },
+   "defaultSubtitles": {
+      "message": "Default subtitles"
+   },
+   "description": {
+      "message": "Automatically switch to local language, bilingual subtitles, subtitle download, subtitle dubbing, custom subtitle style."
+   },
+   "dualMode": {
+      "message": "Dual subtitle settings"
+   },
+   "dubbingSettings": {
+      "message": "Dubbing settings"
+   },
+   "fontFamily": {
+      "message": "Font"
+   },
+   "fontSize": {
+      "message": "Font size"
+   },
+   "functionRemove": {
+      "message": "Extensions switch function has been removed"
+   },
+   "goBack": {
+      "message": "Error getting translation list"
+   },
+   "hideDubbing": {
+      "message": "Closed caption dubbing"
+   },
+   "hideSubtitleDownload": {
+      "message": "Hide Subtitles download"
+   },
+   "learnMore": {
+      "message": "Learn more"
+   },
+   "lockTips": {
+      "message": "Take effect after refresh"
+   },
+   "name": {
+      "message": "YouTube™ bilingual subtitles"
+   },
+   "newFuntcion": {
+      "message": "New features coming soon"
+   },
+   "newVersion": {
+      "message": "new version"
+   },
+   "requestError": {
+      "message": "There was an error in the caption request, please try again later."
+   },
+   "resetStyle": {
+      "message": "reset style"
+   },
+   "rowGap": {
+      "message": "spacing"
+   },
+   "singleMode": {
+      "message": "Single subtitle setting"
+   },
+   "singleSubtitle": {
+      "message": "Single subtitles"
+   },
+   "subtitleDownload": {
+      "message": "Subtitles download"
+   },
+   "subtitleDubbing": {
+      "message": "Subtitle dubbing"
+   },
+   "swapPosition": {
+      "message": "Swap position"
+   },
+   "textStroke": {
+      "message": "Text stroke"
+   },
+   "today": {
+      "message": "Don&#39;t remind today"
+   },
+   "translateButton": {
+      "message": "Translate subtitles"
+   },
+   "translationError": {
+      "message": "The automatic translation service is interrupted, please try again later."
+   },
+   "translationErrorDetails": {
+      "message": "Automatic translation is temporarily out of order and may resume in a few minutes."
+   },
+   "updateLog": {
+      "message": "Release Notes"
+   },
+   "videoButton": {
+      "message": "Video subtitles"
+   },
+   "videoSubtitles": {
+      "message": "Video subtitles"
+   }
+}

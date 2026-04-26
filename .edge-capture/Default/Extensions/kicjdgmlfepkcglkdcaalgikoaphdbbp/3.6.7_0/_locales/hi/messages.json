@@ -1,0 +1,116 @@
+{
+   "autoTranslate": {
+      "message": "ऑटो का अनुवाद"
+   },
+   "background": {
+      "message": "पृष्ठभूमि"
+   },
+   "bilingual": {
+      "message": "द्विभाषिक"
+   },
+   "close": {
+      "message": "बंद करे"
+   },
+   "closeUpgradeTip": {
+      "message": "अपग्रेड रिमाइंडर बंद करें"
+   },
+   "color": {
+      "message": "रंग"
+   },
+   "customStyle": {
+      "message": "कस्टम शैली"
+   },
+   "defaultSubtitles": {
+      "message": "डिफ़ॉल्ट उपशीर्षक"
+   },
+   "description": {
+      "message": "स्वचालित रूप से स्थानीय भाषा, द्विभाषी उपशीर्षक, उपशीर्षक डाउनलोड, उपशीर्षक डबिंग, कस्टम उपशीर्षक शैली पर स्विच करें।"
+   },
+   "dualMode": {
+      "message": "दोहरी उपशीर्षक सेटिंग्स"
+   },
+   "dubbingSettings": {
+      "message": "डबिंग सेटिंग"
+   },
+   "fontFamily": {
+      "message": "फ़ॉन्ट"
+   },
+   "fontSize": {
+      "message": "फ़ॉन्ट आकार"
+   },
+   "functionRemove": {
+      "message": "एक्सटेंशन स्विच फ़ंक्शन हटा दिया गया है"
+   },
+   "goBack": {
+      "message": "अनुवाद सूची प्राप्त करने में त्रुटि"
+   },
+   "hideDubbing": {
+      "message": "बंद कैप्शन डबिंग"
+   },
+   "hideSubtitleDownload": {
+      "message": "उपशीर्षक छुपाएं डाउनलोड"
+   },
+   "learnMore": {
+      "message": "और अधिक जानें"
+   },
+   "lockTips": {
+      "message": "ताज़ा करने के बाद प्रभावी करें"
+   },
+   "name": {
+      "message": "YouTube™ दोहरे उपशीर्षक"
+   },
+   "newFuntcion": {
+      "message": "नई सुविधाएँ जल्द ही आ रही हैं"
+   },
+   "newVersion": {
+      "message": "नया संस्करण"
+   },
+   "requestError": {
+      "message": "कैप्शन अनुरोध में एक त्रुटि थी, कृपया बाद में पुन: प्रयास करें।"
+   },
+   "resetStyle": {
+      "message": "रीसेट शैली"
+   },
+   "rowGap": {
+      "message": "अंतर"
+   },
+   "singleMode": {
+      "message": "एकल उपशीर्षक सेटिंग"
+   },
+   "singleSubtitle": {
+      "message": "एकल उपशीर्षक"
+   },
+   "subtitleDownload": {
+      "message": "उपशीर्षक डाउनलोड"
+   },
+   "subtitleDubbing": {
+      "message": "उपशीर्षक डबिंग"
+   },
+   "swapPosition": {
+      "message": "स्वैप स्थिति"
+   },
+   "textStroke": {
+      "message": "टेक्स्ट स्ट्रोक"
+   },
+   "today": {
+      "message": "आज याद मत दिलाना"
+   },
+   "translateButton": {
+      "message": "उपशीर्षक का अनुवाद करें"
+   },
+   "translationError": {
+      "message": "स्वचालित अनुवाद सेवा बाधित है, कृपया बाद में पुन: प्रयास करें।"
+   },
+   "translationErrorDetails": {
+      "message": "स्वचालित अनुवाद अस्थायी रूप से क्रम से बाहर है और कुछ ही मिनटों में फिर से शुरू हो सकता है।"
+   },
+   "updateLog": {
+      "message": "रिलीज नोट्स"
+   },
+   "videoButton": {
+      "message": "वीडियो उपशीर्षक"
+   },
+   "videoSubtitles": {
+      "message": "वीडियो उपशीर्षक"
+   }
+}

@@ -1,0 +1,16 @@
+2026/04/26-15:26:35.952 b3f0 Reusing MANIFEST C:\Users\dengc\Desktop\cs artificial intelligence\2026semester1\hankathon\web3uoa\.edge-capture\Default\IndexedDB\chrome-extension_eeebmbjgheefdiedpldnnmeaebkhhjfg_0.indexeddb.leveldb/MANIFEST-000001
+2026/04/26-15:26:35.954 b3f0 Recovering log #4
+2026/04/26-15:26:35.957 b3f0 Reusing old log C:\Users\dengc\Desktop\cs artificial intelligence\2026semester1\hankathon\web3uoa\.edge-capture\Default\IndexedDB\chrome-extension_eeebmbjgheefdiedpldnnmeaebkhhjfg_0.indexeddb.leveldb/000004.log 
+2026/04/26-15:26:36.698 3634 Manual compaction at level-0 from '\x00\x06\x00\x00\x00' @ 72057594037927935 : 1 .. '\x00\x07\x00\x00\x00' @ 0 : 0; will stop at (end)
+2026/04/26-15:27:09.675 ad1c Level-0 table #8: started
+2026/04/26-15:27:09.682 ad1c Level-0 table #8: 6626 bytes OK
+2026/04/26-15:27:09.690 ad1c Delete type=0 #4
+2026/04/26-15:27:09.693 ad1c Manual compaction at level-0 from (begin) .. (end); will stop at (end)
+2026/04/26-15:27:09.693 ad1c Manual compaction at level-1 from (begin) .. (end); will stop at '\x00\x06\x00\x00\x05' @ 237 : 1
+2026/04/26-15:27:09.693 ad1c Compacting 1@1 + 1@2 files
+2026/04/26-15:27:09.700 ad1c Generated table #9@1: 50 keys, 2701 bytes
+2026/04/26-15:27:09.701 ad1c Compacted 1@1 + 1@2 files => 2701 bytes
+2026/04/26-15:27:09.706 ad1c compacted to: files[ 0 0 1 0 0 0 0 ]
+2026/04/26-15:27:09.709 ad1c Delete type=2 #5
+2026/04/26-15:27:09.709 ad1c Delete type=2 #8
+2026/04/26-15:27:09.713 ad1c Manual compaction at level-1 from '\x00\x06\x00\x00\x05' @ 237 : 1 .. (end); will stop at (end)

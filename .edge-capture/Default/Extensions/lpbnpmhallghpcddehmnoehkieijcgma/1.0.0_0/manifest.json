@@ -1,0 +1,29 @@
+{
+   "action": {
+      "default_title": "Open blacklist"
+   },
+   "background": {
+      "service_worker": "background.js"
+   },
+   "content_scripts": [ {
+      "js": [ "content.js" ],
+      "matches": [ "https://www.youtube.com/*", "https://m.youtube.com/*" ],
+      "run_at": "document_start"
+   } ],
+   "default_locale": "en",
+   "description": "__MSG_extDesc__",
+   "host_permissions": [ "https://www.youtube.com/*", "https://m.youtube.com/*" ],
+   "icons": {
+      "128": "icons/128.png",
+      "16": "icons/16.png",
+      "48": "icons/48.png"
+   },
+   "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAsh1ogZ99VthoKg6A+pBtxsT/hX+mzmnPfH8kg/+E5Au/G4ShykZRQahFICNTsw/0F93EzdLk1A9uvGT5fvF904x3/1mxQZfS5U2tgfIDQvEItUD8D+f3deh/U2FVcf7w7gy8a1K6YR+Ac5YAhR2+esv4qKqXHTQqJoP3hpFJQNvnJou5Rjl4JsijCdeEH2jEk2D8qNt9eiMwEXP6RVvRJkr1Si6cmnqYOIbE/3YfL17Pxd2vjKVbYmTHVwefCxGS+98ekOsgpUWv/+sBjcSGKB1T4LbOp9rosqlozQQW2L6NJ3BRwdSinKBy2zDahA4LUINExvc+Rv4LOenEerTUHQIDAQAB",
+   "manifest_version": 3,
+   "name": "__MSG_extName__",
+   "options_page": "options.html",
+   "permissions": [ "storage", "contextMenus", "scripting", "activeTab" ],
+   "short_name": "__MSG_extShortName__",
+   "update_url": "https://edge.microsoft.com/extensionwebstorebase/v1/crx",
+   "version": "1.0.0"
+}

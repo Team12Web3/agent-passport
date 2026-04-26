@@ -1,0 +1,116 @@
+{
+   "autoTranslate": {
+      "message": "Samodejno prevedi"
+   },
+   "background": {
+      "message": "ozadje"
+   },
+   "bilingual": {
+      "message": "Dvojezično"
+   },
+   "close": {
+      "message": "Zapri"
+   },
+   "closeUpgradeTip": {
+      "message": "Izklopite opomnike za nadgradnjo"
+   },
+   "color": {
+      "message": "barva"
+   },
+   "customStyle": {
+      "message": "Slog po meri"
+   },
+   "defaultSubtitles": {
+      "message": "Privzeti podnapisi"
+   },
+   "description": {
+      "message": "Samodejni preklop na lokalni jezik, dvojezične podnapise, prenos podnapisov, sinhronizacijo podnapisov, slog podnapisov po meri."
+   },
+   "dualMode": {
+      "message": "Nastavitve dvojnih podnapisov"
+   },
+   "dubbingSettings": {
+      "message": "Nastavitve presnemanja"
+   },
+   "fontFamily": {
+      "message": "Pisava"
+   },
+   "fontSize": {
+      "message": "Velikost pisave"
+   },
+   "functionRemove": {
+      "message": "Funkcija stikala za razširitve je odstranjena"
+   },
+   "goBack": {
+      "message": "Napaka pri pridobivanju seznama prevodov"
+   },
+   "hideDubbing": {
+      "message": "Sinhroniziranje podnapisov"
+   },
+   "hideSubtitleDownload": {
+      "message": "Skrij prenos podnapisov"
+   },
+   "learnMore": {
+      "message": "Nauči se več"
+   },
+   "lockTips": {
+      "message": "Začeti veljati po osvežitvi"
+   },
+   "name": {
+      "message": "YouTube ™ dvojni podnapisi"
+   },
+   "newFuntcion": {
+      "message": "Kmalu prihajajo nove funkcije"
+   },
+   "newVersion": {
+      "message": "nova različica"
+   },
+   "requestError": {
+      "message": "Pri zahtevi za napis je prišlo do napake. Poskusite znova pozneje."
+   },
+   "resetStyle": {
+      "message": "ponastavi slog"
+   },
+   "rowGap": {
+      "message": "razmik"
+   },
+   "singleMode": {
+      "message": "Nastavitev enega podnapisa"
+   },
+   "singleSubtitle": {
+      "message": "Posamezni podnapisi"
+   },
+   "subtitleDownload": {
+      "message": "Prenos podnapisov"
+   },
+   "subtitleDubbing": {
+      "message": "Sinhronizacija podnapisov"
+   },
+   "swapPosition": {
+      "message": "Zamenjajte položaj"
+   },
+   "textStroke": {
+      "message": "Besedilni udarec"
+   },
+   "today": {
+      "message": "Ne spomni danes"
+   },
+   "translateButton": {
+      "message": "Prevedi podnapise"
+   },
+   "translationError": {
+      "message": "Storitev samodejnega prevajanja je prekinjena, poskusite znova pozneje."
+   },
+   "translationErrorDetails": {
+      "message": "Samodejno prevajanje začasno ne deluje in se lahko nadaljuje čez nekaj minut."
+   },
+   "updateLog": {
+      "message": "Opombe ob izdaji"
+   },
+   "videoButton": {
+      "message": "Video podnapisi"
+   },
+   "videoSubtitles": {
+      "message": "Video podnapisi"
+   }
+}

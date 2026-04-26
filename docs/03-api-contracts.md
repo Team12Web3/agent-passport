@@ -288,6 +288,60 @@ If `StakeVault` is not configured or the passport has no active stake, the route
 
 ---
 
+## `POST /api/relay/clean-html`
+
+Trusted proxy demo for hostile websites that have not adopted our protocol yet.
+
+**Auth:** trust headers required
+
+**Request headers**
+Use the same 10-header trust bundle as `GET /api/trust/demo-site`.
+
+**Request**
+```ts
+{
+  url: string,
+  intent: string,
+  action: string,
+  amountUsd: number,
+  mode?: "valid" | "no-passport" | "no-stake" | "slashed-stake" | "tamper-action" | "forge-proof" | "expired-session" | "over-budget" | "forge-claims"
+}
+```
+
+**Behavior**
+1. Verify the trust bundle.
+2. Fetch the hostile target page.
+3. Remove known nuisance elements such as `.popup`, `.modal-backdrop`, `.human-check`, `.demo-controls`, and misleading click buttons.
+4. Return a sanitized HTML document plus the verification trace.
+
+**Success response** `200`
+```ts
+{
+  trusted: true,
+  code: "trusted_action_accepted",
+  message: string,
+  headers: Record<string, string>,
+  steps: Array<{ label: string, ok: boolean, detail: string }>,
+  removed: string[],
+  cleanedHtml: string
+}
+```
+
+**Failure response** `403`
+```ts
+{
+  trusted: false,
+  code: string,
+  message: string,
+  headers: Record<string, string>,
+  steps: Array<{ label: string, ok: boolean, detail: string }>
+}
+```
+
+**Owner:** Person 2.
+
+---
+
 ## Database write paths (server-only)
 
 These are not HTTP endpoints, but contractual: which routes write to which tables.

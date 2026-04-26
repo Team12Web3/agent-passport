@@ -1,0 +1,116 @@
+{
+   "autoTranslate": {
+      "message": "Käännä automaattisesti"
+   },
+   "background": {
+      "message": "tausta"
+   },
+   "bilingual": {
+      "message": "Kaksikielinen"
+   },
+   "close": {
+      "message": "kiinni"
+   },
+   "closeUpgradeTip": {
+      "message": "Poista päivitysmuistutukset käytöstä"
+   },
+   "color": {
+      "message": "väri"
+   },
+   "customStyle": {
+      "message": "Mukautettu tyyli"
+   },
+   "defaultSubtitles": {
+      "message": "Oletustekstit"
+   },
+   "description": {
+      "message": "Vaihda automaattisesti paikalliseen kieleen, kaksikielisiin tekstityksiin, tekstityksen lataamiseen, tekstityksen jälkiäänitykseen, mukautettuun tekstitystyyliin."
+   },
+   "dualMode": {
+      "message": "Kaksoistekstitysasetukset"
+   },
+   "dubbingSettings": {
+      "message": "Kopiointiasetukset"
+   },
+   "fontFamily": {
+      "message": "Fontti"
+   },
+   "fontSize": {
+      "message": "Fonttikoko"
+   },
+   "functionRemove": {
+      "message": "Laajennuskytkintoiminto on poistettu"
+   },
+   "goBack": {
+      "message": "Käännösluetteloa haettaessa tapahtui virhe"
+   },
+   "hideDubbing": {
+      "message": "Tekstityksen jälkiäänitys"
+   },
+   "hideSubtitleDownload": {
+      "message": "Piilota tekstityksen lataus"
+   },
+   "learnMore": {
+      "message": "Lisätietoja"
+   },
+   "lockTips": {
+      "message": "Tulee voimaan päivityksen jälkeen"
+   },
+   "name": {
+      "message": "YouTube ™ kaksoistekstitys"
+   },
+   "newFuntcion": {
+      "message": "Uusia ominaisuuksia tulossa pian"
+   },
+   "newVersion": {
+      "message": "uusi versio"
+   },
+   "requestError": {
+      "message": "Tekstityspyynnössä tapahtui virhe. Yritä myöhemmin uudelleen."
+   },
+   "resetStyle": {
+      "message": "nollaa tyyli"
+   },
+   "rowGap": {
+      "message": "välilyönti"
+   },
+   "singleMode": {
+      "message": "Yksittäinen tekstitysasetus"
+   },
+   "singleSubtitle": {
+      "message": "Yksittäiset tekstitykset"
+   },
+   "subtitleDownload": {
+      "message": "Tekstityksen lataus"
+   },
+   "subtitleDubbing": {
+      "message": "Tekstityksen jälkiäänitys"
+   },
+   "swapPosition": {
+      "message": "Vaihda asentoa"
+   },
+   "textStroke": {
+      "message": "Tekstin viiva"
+   },
+   "today": {
+      "message": "Älä muistuta tänään"
+   },
+   "translateButton": {
+      "message": "Käännä tekstitykset"
+   },
+   "translationError": {
+      "message": "Automaattinen käännöspalvelu on keskeytetty. Yritä myöhemmin uudelleen."
+   },
+   "translationErrorDetails": {
+      "message": "Automaattinen käännös on väliaikaisesti poissa käytöstä ja saattaa jatkua muutamassa minuutissa."
+   },
+   "updateLog": {
+      "message": "Julkaisutiedot"
+   },
+   "videoButton": {
+      "message": "Videon tekstitykset"
+   },
+   "videoSubtitles": {
+      "message": "Videon tekstitys"
+   }
+}

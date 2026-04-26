@@ -1,0 +1,116 @@
+{
+   "autoTranslate": {
+      "message": "Automaatne tõlkimine"
+   },
+   "background": {
+      "message": "taustal"
+   },
+   "bilingual": {
+      "message": "Kakskeelne"
+   },
+   "close": {
+      "message": "Sulge"
+   },
+   "closeUpgradeTip": {
+      "message": "Lülitage versiooniuuenduse meeldetuletused välja"
+   },
+   "color": {
+      "message": "värvi"
+   },
+   "customStyle": {
+      "message": "Kohandatud stiil"
+   },
+   "defaultSubtitles": {
+      "message": "Vaikimisi subtiitrid"
+   },
+   "description": {
+      "message": "Lülituge automaatselt kohalikule keelele, kakskeelsetele subtiitritele, subtiitrite allalaadimisele, subtiitrite dubleerimisele, kohandatud subtiitrite stiilile."
+   },
+   "dualMode": {
+      "message": "Topeltsubtiitrite seaded"
+   },
+   "dubbingSettings": {
+      "message": "Dubleerimise seaded"
+   },
+   "fontFamily": {
+      "message": "Font"
+   },
+   "fontSize": {
+      "message": "Fondi suurus"
+   },
+   "functionRemove": {
+      "message": "Laienduste lüliti funktsioon on eemaldatud"
+   },
+   "goBack": {
+      "message": "Tõlkeloendi hankimisel tekkis viga"
+   },
+   "hideDubbing": {
+      "message": "Subtiitrite dubleerimine"
+   },
+   "hideSubtitleDownload": {
+      "message": "Peida subtiitrite allalaadimine"
+   },
+   "learnMore": {
+      "message": "Lisateave"
+   },
+   "lockTips": {
+      "message": "Jõustub pärast värskendamist"
+   },
+   "name": {
+      "message": "YouTube ™ kaks subtiitrit"
+   },
+   "newFuntcion": {
+      "message": "Uued funktsioonid on varsti saadaval"
+   },
+   "newVersion": {
+      "message": "uus versioon"
+   },
+   "requestError": {
+      "message": "Tiitritaotluses ilmnes viga, proovige hiljem uuesti."
+   },
+   "resetStyle": {
+      "message": "lähtesta stiil"
+   },
+   "rowGap": {
+      "message": "vahekaugus"
+   },
+   "singleMode": {
+      "message": "Üks subtiitrite seadistus"
+   },
+   "singleSubtitle": {
+      "message": "Üksikud subtiitrid"
+   },
+   "subtitleDownload": {
+      "message": "Subtiitrite allalaadimine"
+   },
+   "subtitleDubbing": {
+      "message": "Subtiitrite dubleerimine"
+   },
+   "swapPosition": {
+      "message": "Vahetage asendit"
+   },
+   "textStroke": {
+      "message": "Tekstijoon"
+   },
+   "today": {
+      "message": "Ära tuleta seda täna meelde"
+   },
+   "translateButton": {
+      "message": "Tõlgi subtiitrid"
+   },
+   "translationError": {
+      "message": "Automaatne tõlketeenus on katkestatud, proovige hiljem uuesti."
+   },
+   "translationErrorDetails": {
+      "message": "Automaatne tõlkimine on ajutiselt korrast ära ja võib mõne minuti pärast jätkuda."
+   },
+   "updateLog": {
+      "message": "Väljalaskemärkmed"
+   },
+   "videoButton": {
+      "message": "Video subtiitrid"
+   },
+   "videoSubtitles": {
+      "message": "Video subtiitrid"
+   }
+}

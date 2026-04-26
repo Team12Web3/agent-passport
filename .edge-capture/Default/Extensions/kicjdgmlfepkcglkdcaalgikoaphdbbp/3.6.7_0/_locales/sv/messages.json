@@ -1,0 +1,116 @@
+{
+   "autoTranslate": {
+      "message": "Auto-översätt"
+   },
+   "background": {
+      "message": "bakgrund"
+   },
+   "bilingual": {
+      "message": "Tvåspråkig"
+   },
+   "close": {
+      "message": "Stänga"
+   },
+   "closeUpgradeTip": {
+      "message": "Stäng av uppgraderingspåminnelser"
+   },
+   "color": {
+      "message": "Färg"
+   },
+   "customStyle": {
+      "message": "Anpassad stil"
+   },
+   "defaultSubtitles": {
+      "message": "Standardtexter"
+   },
+   "description": {
+      "message": "Byt automatiskt till lokalt språk, tvåspråkig undertext, nedladdning av undertexter, dubbning av undertexter, anpassad undertextstil."
+   },
+   "dualMode": {
+      "message": "Dubbla undertextinställningar"
+   },
+   "dubbingSettings": {
+      "message": "Dubbningsinställningar"
+   },
+   "fontFamily": {
+      "message": "Font"
+   },
+   "fontSize": {
+      "message": "Textstorlek"
+   },
+   "functionRemove": {
+      "message": "Förlängningsomkopplarfunktionen har tagits bort"
+   },
+   "goBack": {
+      "message": "Det gick inte att hämta översättningslistan"
+   },
+   "hideDubbing": {
+      "message": "Dold bildtext dubbning"
+   },
+   "hideSubtitleDownload": {
+      "message": "Göm nedladdning av undertexter"
+   },
+   "learnMore": {
+      "message": "Läs mer"
+   },
+   "lockTips": {
+      "message": "Träder i kraft efter uppdatering"
+   },
+   "name": {
+      "message": "YouTube ™ dubbla undertexter"
+   },
+   "newFuntcion": {
+      "message": "Nya funktioner kommer snart"
+   },
+   "newVersion": {
+      "message": "ny version"
+   },
+   "requestError": {
+      "message": "Det uppstod ett fel i textningsbegäran. Försök igen senare."
+   },
+   "resetStyle": {
+      "message": "återställ stil"
+   },
+   "rowGap": {
+      "message": "mellanrum"
+   },
+   "singleMode": {
+      "message": "Enkel undertextinställning"
+   },
+   "singleSubtitle": {
+      "message": "Enstaka undertexter"
+   },
+   "subtitleDownload": {
+      "message": "Undertexter nedladdning"
+   },
+   "subtitleDubbing": {
+      "message": "Dubbning av undertexter"
+   },
+   "swapPosition": {
+      "message": "Byt position"
+   },
+   "textStroke": {
+      "message": "Textlinje"
+   },
+   "today": {
+      "message": "Kom inte ihåg idag"
+   },
+   "translateButton": {
+      "message": "Översätt undertexter"
+   },
+   "translationError": {
+      "message": "Den automatiska översättningstjänsten avbryts. Försök igen senare."
+   },
+   "translationErrorDetails": {
+      "message": "Automatisk översättning är tillfälligt ur funktion och kan återupptas om några minuter."
+   },
+   "updateLog": {
+      "message": "Release Notes"
+   },
+   "videoButton": {
+      "message": "Video undertexter"
+   },
+   "videoSubtitles": {
+      "message": "Video undertexter"
+   }
+}

@@ -1,0 +1,116 @@
+{
+   "autoTranslate": {
+      "message": "Terjemahkan secara automatik"
+   },
+   "background": {
+      "message": "latar belakang"
+   },
+   "bilingual": {
+      "message": "Dwibahasa"
+   },
+   "close": {
+      "message": "Tutup"
+   },
+   "closeUpgradeTip": {
+      "message": "Matikan peringatan naik taraf"
+   },
+   "color": {
+      "message": "warna"
+   },
+   "customStyle": {
+      "message": "Gaya tersuai"
+   },
+   "defaultSubtitles": {
+      "message": "Sari kata lalai"
+   },
+   "description": {
+      "message": "Tukar secara automatik kepada bahasa tempatan, sari kata dwibahasa, muat turun sari kata, alih suara sari kata, gaya sari kata tersuai."
+   },
+   "dualMode": {
+      "message": "Tetapan sari kata dua"
+   },
+   "dubbingSettings": {
+      "message": "Tetapan alih suara"
+   },
+   "fontFamily": {
+      "message": "fon"
+   },
+   "fontSize": {
+      "message": "Saiz huruf"
+   },
+   "functionRemove": {
+      "message": "Fungsi suis pelanjutan telah dikeluarkan"
+   },
+   "goBack": {
+      "message": "Ralat semasa mendapatkan senarai terjemahan"
+   },
+   "hideDubbing": {
+      "message": "Alih suara kapsyen tertutup"
+   },
+   "hideSubtitleDownload": {
+      "message": "Sembunyikan muat turun Sari kata"
+   },
+   "learnMore": {
+      "message": "Ketahui lebih lanjut"
+   },
+   "lockTips": {
+      "message": "Berkuat kuasa selepas segar semula"
+   },
+   "name": {
+      "message": "Sari kata ganda YouTube ™"
+   },
+   "newFuntcion": {
+      "message": "Ciri baru tidak lama lagi"
+   },
+   "newVersion": {
+      "message": "versi baru"
+   },
+   "requestError": {
+      "message": "Terdapat ralat dalam permintaan kapsyen, sila cuba sebentar lagi."
+   },
+   "resetStyle": {
+      "message": "set semula gaya"
+   },
+   "rowGap": {
+      "message": "jarak"
+   },
+   "singleMode": {
+      "message": "Tetapan sari kata tunggal"
+   },
+   "singleSubtitle": {
+      "message": "Sarikata tunggal"
+   },
+   "subtitleDownload": {
+      "message": "Muat turun sari kata"
+   },
+   "subtitleDubbing": {
+      "message": "Pengalihan suara sari kata"
+   },
+   "swapPosition": {
+      "message": "Tukar kedudukan"
+   },
+   "textStroke": {
+      "message": "Sapuan teks"
+   },
+   "today": {
+      "message": "Jangan ingatkan hari ini"
+   },
+   "translateButton": {
+      "message": "Terjemah sari kata"
+   },
+   "translationError": {
+      "message": "Perkhidmatan terjemahan automatik terganggu, sila cuba sebentar lagi."
+   },
+   "translationErrorDetails": {
+      "message": "Terjemahan automatik tidak berfungsi buat sementara waktu dan mungkin akan disambung dalam masa beberapa minit."
+   },
+   "updateLog": {
+      "message": "Nota Keluaran"
+   },
+   "videoButton": {
+      "message": "Sari kata video"
+   },
+   "videoSubtitles": {
+      "message": "Sari kata video"
+   }
+}

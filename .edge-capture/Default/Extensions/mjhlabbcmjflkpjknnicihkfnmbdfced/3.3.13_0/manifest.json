@@ -1,0 +1,105 @@
+{
+   "action": {
+      "default_popup": "popup.html"
+   },
+   "background": {
+      "service_worker": "background.js",
+      "type": "module"
+   },
+   "commands": {
+      "commandA": {
+         "description": "command A"
+      },
+      "commandB": {
+         "description": "command B"
+      },
+      "commandC": {
+         "description": "command C"
+      },
+      "commandD": {
+         "description": "command D"
+      },
+      "commandE": {
+         "description": "command E"
+      },
+      "commandF": {
+         "description": "command F"
+      },
+      "commandG": {
+         "description": "command G"
+      },
+      "commandH": {
+         "description": "command H"
+      },
+      "commandI": {
+         "description": "command I"
+      },
+      "commandJ": {
+         "description": "command J"
+      },
+      "commandK": {
+         "description": "command K"
+      },
+      "commandL": {
+         "description": "command L"
+      },
+      "commandM": {
+         "description": "command M"
+      },
+      "commandN": {
+         "description": "command N"
+      },
+      "commandO": {
+         "description": "command O"
+      },
+      "commandP": {
+         "description": "command P"
+      },
+      "commandQ": {
+         "description": "command Q"
+      },
+      "commandR": {
+         "description": "command R"
+      },
+      "commandS": {
+         "description": "command S"
+      }
+   },
+   "content_scripts": [ {
+      "all_frames": true,
+      "exclude_matches": [ "https://*.ubs.com/*", "https://*.591.com.tw/*", "https://*.91huayi.com/*" ],
+      "js": [ "isolated.js" ],
+      "match_about_blank": true,
+      "matches": [ "https://*/*", "http://*/*", "file://*/*" ],
+      "run_at": "document_start"
+   }, {
+      "all_frames": true,
+      "exclude_matches": [ "https://*.ubs.com/*", "https://*.591.com.tw/*", "https://*.91huayi.com/*" ],
+      "js": [ "main.js" ],
+      "match_about_blank": true,
+      "matches": [ "https://*/*", "http://*/*", "file://*/*" ],
+      "run_at": "document_start",
+      "world": "MAIN"
+   } ],
+   "default_locale": "en",
+   "description": "__MSG_appDesc__",
+   "host_permissions": [ "https://*/*", "http://*/*", "file://*/*" ],
+   "icons": {
+      "128": "images/128.png"
+   },
+   "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAzO+uSHZZuRFVl16rKzDEMPIwMvN/Uij9xvKl1JZLPyBlGsut/plitikzTrgRSHplauDg8qDBuDpwYZ550aY1LVOc/bqrjjSD54YTIefERl3WmcXqy7QYV82X25FeOQPfZqe/nySYJC6JKuzLOfz5c8LWKutsYgS/qdnD4gimvZTcq16n1mxvnN31t7fDh8xox6ceXBaeHC47Wl1bAOKEcGKwS3dtMlVzarO8XVgxfK9HEsa3L6WBEkIDg7nnyLkJfBkJ3xOKz9gILEOmju7ChLuMUbUPlmoKspLEvJCu3y9iiyTHGaw9103f5CSF7KxxoJfICTgUMvUMR3OYIXIYeQIDAQAB",
+   "manifest_version": 3,
+   "name": "__MSG_appName__",
+   "options_ui": {
+      "open_in_tab": true,
+      "page": "options.html"
+   },
+   "permissions": [ "storage", "tabCapture", "webNavigation", "scripting", "offscreen", "userScripts", "contextMenus" ],
+   "short_name": "Global Speed",
+   "update_url": "https://edge.microsoft.com/extensionwebstorebase/v1/crx",
+   "version": "3.3.13",
+   "web_accessible_resources": [ {
+      "matches": [ "http://*/*", "https://*/*" ],
+      "resources": [ "circles/*.svg" ]
+   } ]
+}

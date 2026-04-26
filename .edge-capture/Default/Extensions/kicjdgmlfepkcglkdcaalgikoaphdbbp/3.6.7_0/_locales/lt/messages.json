@@ -1,0 +1,116 @@
+{
+   "autoTranslate": {
+      "message": "Automatinis vertimas"
+   },
+   "background": {
+      "message": "fone"
+   },
+   "bilingual": {
+      "message": "Dvikalbis"
+   },
+   "close": {
+      "message": "Uždaryti"
+   },
+   "closeUpgradeTip": {
+      "message": "Išjunkite atnaujinimo priminimus"
+   },
+   "color": {
+      "message": "spalva"
+   },
+   "customStyle": {
+      "message": "Individualus stilius"
+   },
+   "defaultSubtitles": {
+      "message": "Numatytieji subtitrai"
+   },
+   "description": {
+      "message": "Automatiškai perjunkite į vietinę kalbą, dvikalbius subtitrus, subtitrų atsisiuntimą, subtitrų dubliavimą, pasirinktinį subtitrų stilių."
+   },
+   "dualMode": {
+      "message": "Dviejų subtitrų nustatymai"
+   },
+   "dubbingSettings": {
+      "message": "Dubliavimo nustatymai"
+   },
+   "fontFamily": {
+      "message": "Šriftas"
+   },
+   "fontSize": {
+      "message": "Šrifto dydis"
+   },
+   "functionRemove": {
+      "message": "Pailginimo jungiklio funkcija pašalinta"
+   },
+   "goBack": {
+      "message": "Gaunant vertimų sąrašą įvyko klaida"
+   },
+   "hideDubbing": {
+      "message": "Subtitrų dubliavimas"
+   },
+   "hideSubtitleDownload": {
+      "message": "Slėpti atsisiuntimo subtitrus"
+   },
+   "learnMore": {
+      "message": "Sužinokite daugiau"
+   },
+   "lockTips": {
+      "message": "Įsigalioti po atnaujinimo"
+   },
+   "name": {
+      "message": "„YouTube ™“ dvigubi subtitrai"
+   },
+   "newFuntcion": {
+      "message": "Naujos funkcijos netrukus pasirodys"
+   },
+   "newVersion": {
+      "message": "nauja versija"
+   },
+   "requestError": {
+      "message": "Užrašų užklausoje įvyko klaida. Bandykite dar kartą vėliau."
+   },
+   "resetStyle": {
+      "message": "iš naujo nustatyti stilių"
+   },
+   "rowGap": {
+      "message": "tarpai"
+   },
+   "singleMode": {
+      "message": "Vieno subtitrų nustatymas"
+   },
+   "singleSubtitle": {
+      "message": "Vieni subtitrai"
+   },
+   "subtitleDownload": {
+      "message": "Subtitrų atsisiuntimas"
+   },
+   "subtitleDubbing": {
+      "message": "Subtitrų įgarsinimas"
+   },
+   "swapPosition": {
+      "message": "Sukeisti poziciją"
+   },
+   "textStroke": {
+      "message": "Teksto brūkšnys"
+   },
+   "today": {
+      "message": "Šiandien neprimink"
+   },
+   "translateButton": {
+      "message": "Išversti subtitrus"
+   },
+   "translationError": {
+      "message": "Automatinio vertimo paslauga nutraukta, bandykite dar kartą vėliau."
+   },
+   "translationErrorDetails": {
+      "message": "Automatinis vertimas laikinai neveikia ir gali būti atnaujintas po kelių minučių."
+   },
+   "updateLog": {
+      "message": "Išleidimo pastabos"
+   },
+   "videoButton": {
+      "message": "Video subtitrai"
+   },
+   "videoSubtitles": {
+      "message": "Vaizdo įrašų subtitrai"
+   }
+}

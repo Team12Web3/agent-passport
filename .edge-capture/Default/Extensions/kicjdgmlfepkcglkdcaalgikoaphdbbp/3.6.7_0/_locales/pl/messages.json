@@ -1,0 +1,116 @@
+{
+   "autoTranslate": {
+      "message": "Przetłumacz automatycznie"
+   },
+   "background": {
+      "message": "tło"
+   },
+   "bilingual": {
+      "message": "Dwujęzyczny"
+   },
+   "close": {
+      "message": "Blisko"
+   },
+   "closeUpgradeTip": {
+      "message": "Wyłącz przypomnienia o aktualizacjach"
+   },
+   "color": {
+      "message": "kolor"
+   },
+   "customStyle": {
+      "message": "Niestandardowy styl"
+   },
+   "defaultSubtitles": {
+      "message": "Domyślne napisy"
+   },
+   "description": {
+      "message": "Automatyczne przełączanie na język lokalny, dwujęzyczne napisy, pobieranie napisów, kopiowanie napisów, niestandardowy styl napisów."
+   },
+   "dualMode": {
+      "message": "Ustawienia dwóch napisów"
+   },
+   "dubbingSettings": {
+      "message": "Ustawienia kopiowania"
+   },
+   "fontFamily": {
+      "message": "Czcionka"
+   },
+   "fontSize": {
+      "message": "Rozmiar czcionki"
+   },
+   "functionRemove": {
+      "message": "Funkcja przełącznika rozszerzeń została usunięta"
+   },
+   "goBack": {
+      "message": "Błąd podczas pobierania listy tłumaczeń"
+   },
+   "hideDubbing": {
+      "message": "Kopiowanie napisów kodowanych"
+   },
+   "hideSubtitleDownload": {
+      "message": "Ukryj pobieranie napisów"
+   },
+   "learnMore": {
+      "message": "Ucz się więcej"
+   },
+   "lockTips": {
+      "message": "Zacznij działać po odświeżeniu"
+   },
+   "name": {
+      "message": "Podwójne napisy YouTube™"
+   },
+   "newFuntcion": {
+      "message": "Nowe funkcje już wkrótce"
+   },
+   "newVersion": {
+      "message": "Nowa wersja"
+   },
+   "requestError": {
+      "message": "Wystąpił błąd w prośbie o napisy, spróbuj ponownie później."
+   },
+   "resetStyle": {
+      "message": "zresetuj styl"
+   },
+   "rowGap": {
+      "message": "rozstaw"
+   },
+   "singleMode": {
+      "message": "Ustawienie pojedynczych napisów"
+   },
+   "singleSubtitle": {
+      "message": "Pojedyncze napisy"
+   },
+   "subtitleDownload": {
+      "message": "Pobieranie napisów"
+   },
+   "subtitleDubbing": {
+      "message": "Kopiowanie napisów"
+   },
+   "swapPosition": {
+      "message": "Zamień pozycję"
+   },
+   "textStroke": {
+      "message": "Obrys tekstu"
+   },
+   "today": {
+      "message": "Nie przypominaj dzisiaj"
+   },
+   "translateButton": {
+      "message": "Przetłumacz napisy"
+   },
+   "translationError": {
+      "message": "Usługa tłumaczenia automatycznego została przerwana, spróbuj ponownie później."
+   },
+   "translationErrorDetails": {
+      "message": "Tłumaczenie automatyczne jest chwilowo nieczynne i może zostać wznowione za kilka minut."
+   },
+   "updateLog": {
+      "message": "Informacje o wydaniu"
+   },
+   "videoButton": {
+      "message": "Napisy do filmów"
+   },
+   "videoSubtitles": {
+      "message": "Napisy do filmów"
+   }
+}

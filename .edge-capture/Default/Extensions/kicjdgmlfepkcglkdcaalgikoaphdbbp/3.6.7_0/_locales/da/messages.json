@@ -1,0 +1,116 @@
+{
+   "autoTranslate": {
+      "message": "Automatisk oversættelse"
+   },
+   "background": {
+      "message": "baggrund"
+   },
+   "bilingual": {
+      "message": "Tosproget"
+   },
+   "close": {
+      "message": "Tæt"
+   },
+   "closeUpgradeTip": {
+      "message": "Slå opgraderingspåmindelser fra"
+   },
+   "color": {
+      "message": "farve"
+   },
+   "customStyle": {
+      "message": "Brugerdefineret stil"
+   },
+   "defaultSubtitles": {
+      "message": "Standard undertekster"
+   },
+   "description": {
+      "message": "Skift automatisk til lokalt sprog, tosprogede undertekster, download af undertekster, eftersynkronisering af undertekster, tilpasset undertekststil."
+   },
+   "dualMode": {
+      "message": "Dobbelt undertekstindstillinger"
+   },
+   "dubbingSettings": {
+      "message": "Dubbing indstillinger"
+   },
+   "fontFamily": {
+      "message": "Skrifttype"
+   },
+   "fontSize": {
+      "message": "Skriftstørrelse"
+   },
+   "functionRemove": {
+      "message": "Udvidelsesomskifterfunktion er blevet fjernet"
+   },
+   "goBack": {
+      "message": "Fejl ved hentning af oversættelsesliste"
+   },
+   "hideDubbing": {
+      "message": "Overspilning af lukket billedtekst"
+   },
+   "hideSubtitleDownload": {
+      "message": "Skjul download af undertekster"
+   },
+   "learnMore": {
+      "message": "Lær mere"
+   },
+   "lockTips": {
+      "message": "Træder i kraft efter opdatering"
+   },
+   "name": {
+      "message": "YouTube ™ dobbelte undertekster"
+   },
+   "newFuntcion": {
+      "message": "Nye funktioner kommer snart"
+   },
+   "newVersion": {
+      "message": "ny version"
+   },
+   "requestError": {
+      "message": "Der opstod en fejl i anmodningen om billedtekst. Prøv igen senere."
+   },
+   "resetStyle": {
+      "message": "nulstil stil"
+   },
+   "rowGap": {
+      "message": "mellemrum"
+   },
+   "singleMode": {
+      "message": "Enkelt undertekstindstilling"
+   },
+   "singleSubtitle": {
+      "message": "Enkelt undertekster"
+   },
+   "subtitleDownload": {
+      "message": "Undertekster downloades"
+   },
+   "subtitleDubbing": {
+      "message": "Eftersynkronisering af undertekster"
+   },
+   "swapPosition": {
+      "message": "Byt stilling"
+   },
+   "textStroke": {
+      "message": "Tekststrøg"
+   },
+   "today": {
+      "message": "Husk det ikke i dag"
+   },
+   "translateButton": {
+      "message": "Oversæt undertekster"
+   },
+   "translationError": {
+      "message": "Den automatiske oversættelsestjeneste afbrydes. Prøv igen senere."
+   },
+   "translationErrorDetails": {
+      "message": "Automatisk oversættelse er midlertidigt ude af drift og kan genoptages om få minutter."
+   },
+   "updateLog": {
+      "message": "Udgivelses noter"
+   },
+   "videoButton": {
+      "message": "Video undertekster"
+   },
+   "videoSubtitles": {
+      "message": "Video undertekster"
+   }
+}

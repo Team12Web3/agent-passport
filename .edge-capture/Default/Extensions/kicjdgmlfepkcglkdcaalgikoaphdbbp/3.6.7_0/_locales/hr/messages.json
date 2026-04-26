@@ -1,0 +1,116 @@
+{
+   "autoTranslate": {
+      "message": "Automatski prevedi"
+   },
+   "background": {
+      "message": "pozadini"
+   },
+   "bilingual": {
+      "message": "Bilingvalni"
+   },
+   "close": {
+      "message": "Zatvoriti"
+   },
+   "closeUpgradeTip": {
+      "message": "Isključite podsjetnike za nadogradnju"
+   },
+   "color": {
+      "message": "boja"
+   },
+   "customStyle": {
+      "message": "Prilagođeni stil"
+   },
+   "defaultSubtitles": {
+      "message": "Zadani titlovi"
+   },
+   "description": {
+      "message": "Automatski se prebacite na lokalni jezik, dvojezične titlove, preuzimanje titlova, presnimavanje titlova, prilagođeni stil titlova."
+   },
+   "dualMode": {
+      "message": "Dvostruke postavke titlova"
+   },
+   "dubbingSettings": {
+      "message": "Postavke presnimavanja"
+   },
+   "fontFamily": {
+      "message": "Font"
+   },
+   "fontSize": {
+      "message": "Veličina fonta"
+   },
+   "functionRemove": {
+      "message": "Uklonjena je funkcija prekidača proširenja"
+   },
+   "goBack": {
+      "message": "Pogreška pri dohvaćanju popisa za prijevod"
+   },
+   "hideDubbing": {
+      "message": "Sinkronizacija zatvorenih titlova"
+   },
+   "hideSubtitleDownload": {
+      "message": "Sakrij preuzimanje titlova"
+   },
+   "learnMore": {
+      "message": "Saznajte više"
+   },
+   "lockTips": {
+      "message": "Stupa na snagu nakon osvježavanja"
+   },
+   "name": {
+      "message": "YouTube ™ dvostruki titlovi"
+   },
+   "newFuntcion": {
+      "message": "Uskoro nove značajke"
+   },
+   "newVersion": {
+      "message": "nova verzija"
+   },
+   "requestError": {
+      "message": "Došlo je do pogreške u zahtjevu za titlove, pokušajte ponovo kasnije."
+   },
+   "resetStyle": {
+      "message": "stil resetiranja"
+   },
+   "rowGap": {
+      "message": "razmak"
+   },
+   "singleMode": {
+      "message": "Postavka jednog titla"
+   },
+   "singleSubtitle": {
+      "message": "Pojedinačni titlovi"
+   },
+   "subtitleDownload": {
+      "message": "Preuzimanje titlova"
+   },
+   "subtitleDubbing": {
+      "message": "Sinkronizacija titlova"
+   },
+   "swapPosition": {
+      "message": "Zamijenite poziciju"
+   },
+   "textStroke": {
+      "message": "Potez teksta"
+   },
+   "today": {
+      "message": "Ne podsjećaj danas"
+   },
+   "translateButton": {
+      "message": "Prevedi titlove"
+   },
+   "translationError": {
+      "message": "Usluga automatskog prevođenja je prekinuta, pokušajte ponovo kasnije."
+   },
+   "translationErrorDetails": {
+      "message": "Automatski prijevod privremeno nije u redu i može se nastaviti za nekoliko minuta."
+   },
+   "updateLog": {
+      "message": "Bilješke o izdanju"
+   },
+   "videoButton": {
+      "message": "Video titlovi"
+   },
+   "videoSubtitles": {
+      "message": "Video titlovi"
+   }
+}

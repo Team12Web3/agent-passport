@@ -1,0 +1,116 @@
+{
+   "autoTranslate": {
+      "message": "യാന്ത്രികമായി വിവർത്തനം ചെയ്യുക"
+   },
+   "background": {
+      "message": "പശ്ചാത്തലം"
+   },
+   "bilingual": {
+      "message": "ദ്വിഭാഷ"
+   },
+   "close": {
+      "message": "അടയ്‌ക്കുക"
+   },
+   "closeUpgradeTip": {
+      "message": "നവീകരണ ഓർമ്മപ്പെടുത്തലുകൾ ഓഫാക്കുക"
+   },
+   "color": {
+      "message": "നിറം"
+   },
+   "customStyle": {
+      "message": "ഇഷ്ടാനുസൃത ശൈലി"
+   },
+   "defaultSubtitles": {
+      "message": "സ്ഥിരസ്ഥിതി സബ്ടൈറ്റിലുകൾ"
+   },
+   "description": {
+      "message": "പ്രാദേശിക ഭാഷ, ദ്വിഭാഷാ സബ്‌ടൈറ്റിലുകൾ, സബ്‌ടൈറ്റിൽ ഡൗൺലോഡ്, സബ്‌ടൈറ്റിൽ ഡബ്ബിംഗ്, ഇഷ്‌ടാനുസൃത സബ്‌ടൈറ്റിൽ ശൈലി എന്നിവയിലേക്ക് സ്വയമേവ മാറുക."
+   },
+   "dualMode": {
+      "message": "ഇരട്ട സബ്‌ടൈറ്റിൽ ക്രമീകരണങ്ങൾ"
+   },
+   "dubbingSettings": {
+      "message": "ഡബ്ബിംഗ് ക്രമീകരണങ്ങൾ"
+   },
+   "fontFamily": {
+      "message": "ഫോണ്ട്"
+   },
+   "fontSize": {
+      "message": "അക്ഷര വലിപ്പം"
+   },
+   "functionRemove": {
+      "message": "വിപുലീകരണ സ്വിച്ച് പ്രവർത്തനം നീക്കംചെയ്‌തു"
+   },
+   "goBack": {
+      "message": "വിവർത്തന പട്ടിക ലഭിക്കുന്നതിൽ പിശക്"
+   },
+   "hideDubbing": {
+      "message": "അടഞ്ഞ അടിക്കുറിപ്പ് ഡബ്ബിംഗ്"
+   },
+   "hideSubtitleDownload": {
+      "message": "സബ്‌ടൈറ്റിലുകൾ ഡൗൺലോഡ് മറയ്‌ക്കുക"
+   },
+   "learnMore": {
+      "message": "കൂടുതലറിവ് നേടുക"
+   },
+   "lockTips": {
+      "message": "പുതുക്കിയ ശേഷം പ്രാബല്യത്തിൽ വരിക"
+   },
+   "name": {
+      "message": "YouTube ഇരട്ട സബ്‌ടൈറ്റിലുകൾ"
+   },
+   "newFuntcion": {
+      "message": "പുതിയ സവിശേഷതകൾ ഉടൻ വരുന്നു"
+   },
+   "newVersion": {
+      "message": "പുതിയ പതിപ്പ്"
+   },
+   "requestError": {
+      "message": "അടിക്കുറിപ്പ് അഭ്യർത്ഥനയിൽ ഒരു പിശക് ഉണ്ടായിരുന്നു, ദയവായി പിന്നീട് വീണ്ടും ശ്രമിക്കുക."
+   },
+   "resetStyle": {
+      "message": "ശൈലി പുനഃസജ്ജമാക്കുക"
+   },
+   "rowGap": {
+      "message": "അകലം"
+   },
+   "singleMode": {
+      "message": "ഒറ്റ സബ്ടൈറ്റിൽ ക്രമീകരണം"
+   },
+   "singleSubtitle": {
+      "message": "ഒറ്റ സബ്‌ടൈറ്റിലുകൾ"
+   },
+   "subtitleDownload": {
+      "message": "സബ്‌ടൈറ്റിലുകൾ ഡൗൺലോഡുചെയ്യുക"
+   },
+   "subtitleDubbing": {
+      "message": "സബ്ടൈറ്റിൽ ഡബ്ബിംഗ്"
+   },
+   "swapPosition": {
+      "message": "സ്ഥാനം മാറ്റുക"
+   },
+   "textStroke": {
+      "message": "ടെക്സ്റ്റ് സ്ട്രോക്ക്"
+   },
+   "today": {
+      "message": "ഇന്ന് ഓർമ്മപ്പെടുത്തരുത്"
+   },
+   "translateButton": {
+      "message": "സബ്ടൈറ്റിലുകൾ വിവർത്തനം ചെയ്യുക"
+   },
+   "translationError": {
+      "message": "യാന്ത്രിക വിവർത്തന സേവനം തടസ്സപ്പെട്ടു, ദയവായി പിന്നീട് വീണ്ടും ശ്രമിക്കുക."
+   },
+   "translationErrorDetails": {
+      "message": "യാന്ത്രിക വിവർത്തനം താൽക്കാലികമായി ക്രമരഹിതമാണ്, കുറച്ച് മിനിറ്റിനുള്ളിൽ ഇത് പുനരാരംഭിച്ചേക്കാം."
+   },
+   "updateLog": {
+      "message": "റിലീസ് കുറിപ്പുകൾ"
+   },
+   "videoButton": {
+      "message": "വീഡിയോ സബ്ടൈറ്റിലുകൾ"
+   },
+   "videoSubtitles": {
+      "message": "വീഡിയോ സബ്ടൈറ്റിലുകൾ"
+   }
+}

@@ -1,0 +1,24 @@
+[
+  {
+    "description": "treehash per file",
+    "signed_content": {
+      "payload": "eyJpdGVtX2lkIjoibHBibnBtaGFsbGdocGNkZGVobW5vZWhraWVpamNnbWEiLCJpdGVtX3ZlcnNpb24iOiIxLjAuMCIsInByb3RvY29sX3ZlcnNpb24iOjEsImNvbnRlbnRfaGFzaGVzIjpbeyJmb3JtYXQiOiJ0cmVlaGFzaCIsImRpZ2VzdCI6InNoYTI1NiIsImJsb2NrX3NpemUiOjQwOTYsImhhc2hfYmxvY2tfc2l6ZSI6NDA5NiwiZmlsZXMiOlt7InBhdGgiOiJfbG9jYWxlcy9lbi9tZXNzYWdlcy5qc29uIiwicm9vdF9oYXNoIjoiYjlLZ3A0XzNIekNBMmc3S2JhRnFaRzNQM3BTVHdGMmtMUmh5SFFJd1JkSSJ9LHsicGF0aCI6ImJhY2tncm91bmQuanMiLCJyb290X2hhc2giOiJ1WEtnZE5KaVV4U193YkJFenpPZWNENExUWHQtdm5JdzY1YnJOTmVhNzQ0In0seyJwYXRoIjoiY29udGVudC5qcyIsInJvb3RfaGFzaCI6IkU1TG04ZzJUcExtSE5qTHB4cHFqUEVzaFdBbGxwWGJzYkhvMHN5RFlRbzgifSx7InBhdGgiOiJpY29ucy8xMjgucG5nIiwicm9vdF9oYXNoIjoiT2h5Vy1YX2RmMURGUER6OVZkc3hoaExJSEZjd3h4UERDUk52a3dYd1BDRSJ9LHsicGF0aCI6Imljb25zLzE2LnBuZyIsInJvb3RfaGFzaCI6IlJkakpzQkpDYmREOExSTl9KZDFmUDd2QzRKSzdFTnBBU2ZpYXVqU0RlTVUifSx7InBhdGgiOiJpY29ucy80OC5wbmciLCJyb290X2hhc2giOiJhQ250QzItNU4yV0tZVHVXMzRNWk9iV2dyRExhTWJlSGlVRjZtdDF2MkpRIn0seyJwYXRoIjoibWFuaWZlc3QuanNvbiIsInJvb3RfaGFzaCI6IkpVRENVUGNGaXhRUFhkRG40R1hPeEtJdDFaUjlEYXM1NFZUMmw3aDg2bHMifSx7InBhdGgiOiJvcHRpb25zLmh0bWwiLCJyb290X2hhc2giOiJlWFk2MzdLR1dxSU01QndQdkktbVhhTlJuZGk1Z1BVRUJwTmk5VEVIVHY0In0seyJwYXRoIjoib3B0aW9ucy5qcyIsInJvb3RfaGFzaCI6ImpFOTVzTmJYZU9wM2hsWkhRRmNDU1FsVk54NE9xTENHM3JXdmtpeU91X00ifV19XX0",
+      "signatures": [
+        {
+          "header": {
+            "kid": "publisher"
+          },
+          "protected": "eyJhbGciOiJSUzI1NiJ9",
+          "signature": "pfw4ksdUkQWmsofePzbZ65Vpc5EDrTjHT1vEQJaZo-Rw41K1M-3z2WlsBw6vIDfTjXJVXUELlyRqOLUZpeT1ZL_Bs-AkUr4kgsHk_G0fcVdroveGtW1Ps5U_mqM30i8reKjP_1tjaAasoQ3zW2IHZaTWzT10JEkarF09yDVZbJadL84JyVkyhh3OJgKCRdv1OjzpHaUUXIClkIskfFGptPGHe5UgaBiQuwM68OST1gD-RdKwsX8MuJsDjHdjkdYmyu55EU5VHU2WrGkyMoXxygIeWlypHkjQOo2I7V8iiaHKdDPqcj7c7peu61q8m77P_UYG9eirJkfi4NGnjqGBwA"
+        },
+        {
+          "header": {
+            "kid": "webstore"
+          },
+          "protected": "eyJhbGciOiJSUzI1NiJ9",
+          "signature": "iiJT302Cq668vsELlK1j7gi-oHIkKpvwyMs_kD2fwzk_-b8uenQHrSS3BP3uibUn5_-urlI0GsuxBV8KNM1WwovsJ0HwZbtDQROA-6mIYsX4PrOG-uxJsHTrhGedAKj5ZMLJuJDpTBFboXgV0KgcGEwUHKlRbJ3LaOfK0F3qQzypd0lOL25-Ny09_8DMsmL33gOnlq2o87HfXbepl2BDSC1vphxfkf0vFL16bkLgP2WiN3jc_15vxxQrczdSA8ABIe0ltidv3KNkJLxQUTqfdx_JU-4zRx6hHRdsHJT6Cx6iTE4AIu54Gh8aT5poXg6_UXmuoAiOeDVStZSA9TpdBQ"
+        }
+      ]
+    }
+  }
+]
