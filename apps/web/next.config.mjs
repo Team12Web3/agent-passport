@@ -4,11 +4,6 @@ const nextConfig = {
     serverComponentsExternalPackages: ["@supabase/supabase-js"],
   },
   transpilePackages: [],
-  async redirects() {
-    return [
-      { source: "/", destination: "/login", permanent: false },
-    ];
-  },
   webpack: (config) => {
     // Optional deps of pino/WalletConnect — not used at runtime, mark external
     // so webpack stops trying to resolve them.

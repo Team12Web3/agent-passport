@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo } from "react";
 import { ConnectEmbed, useActiveAccount, useActiveWalletConnectionStatus } from "thirdweb/react";
@@ -83,6 +84,10 @@ export default function LoginPage() {
           />
           <span className="text-[14px] font-medium tracking-tight text-fg">Agent Passport</span>
         </div>
+
+        <Link href="/" className="btn btn-ghost focus-ring mb-6 w-fit px-0 hover:bg-transparent">
+          Back to home
+        </Link>
 
         <div>
           <div className="eyebrow">Sign in</div>
