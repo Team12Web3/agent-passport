@@ -9,6 +9,7 @@ import {
 } from "../../_lib/responses";
 import { getSessionUser } from "@/lib/auth/session";
 import { getSupabase } from "@/lib/db/supabase";
+import { createUnsignedAgentClaims, getClaimsDigest } from "@/lib/agent/claims";
 import {
   getPlatformWalletClient,
   getPublicClient,
@@ -89,10 +90,36 @@ export async function POST(req: Request) {
 
     const ownerAddress =
       (session.user.wallet_address as Hex | null) ?? walletAddress;
-    const metadataURI =
-      `data:application/json,${encodeURIComponent(
-        JSON.stringify({ name: body.name, purpose: body.purpose, tools: body.tools }),
-      )}`;
+    const issuedAt = Math.floor(Date.now() / 1000);
+    const unsignedClaims = createUnsignedAgentClaims({
+      passportId: "pending",
+      developer: "Agent Passport Demo",
+      developerWallet: wallet.account!.address,
+      modelPlatform: process.env.NEXT_PUBLIC_DEFAULT_MODEL ?? "Claude 3.5",
+      labels: ["non-crawler", "owner-bound"],
+      complianceClaims: [
+        "developer-signed",
+        "trust-header-compatible",
+        "session-key-ready",
+      ],
+      trustScore: 50,
+      easUid: null,
+      issuedAt,
+      sessionKey: null,
+    });
+    const developerSignature = await wallet.signMessage({
+      account: wallet.account!,
+      message: { raw: getClaimsDigest(unsignedClaims) },
+    });
+    const metadataURI = `data:application/json,${encodeURIComponent(
+      JSON.stringify({
+        ...unsignedClaims,
+        developerSignature,
+        name: body.name,
+        purpose: body.purpose,
+        tools: body.tools,
+      }),
+    )}`;
 
     mintTxHash = (await wallet.writeContract({
       account: wallet.account!,

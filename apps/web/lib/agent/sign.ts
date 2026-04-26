@@ -1,9 +1,21 @@
 import "server-only";
 
-import { keccak256, toBytes, type Hex } from "viem";
 import { privateKeyToAccount } from "viem/accounts";
+import type { Hex, LocalAccount } from "viem";
 
+import type { AgentClaims } from "./claims";
+import type { SessionGrant } from "./session";
 import { decryptAgentKey, getAgentSigner } from "./wallet";
+import {
+  buildActionHash,
+  buildClaimsDigest,
+  buildIntentHash,
+  buildIntentProofDigest,
+  buildSessionProofDigest,
+  buildTrustDigest,
+  encodeHeaderJson,
+  normalizeTermsHash,
+} from "./protocol";
 
 export type TrustHeaders = {
   "X-Agent-Passport-ID": string;
@@ -11,98 +23,38 @@ export type TrustHeaders = {
   "X-Agent-Timestamp": string;
   "X-Agent-Session-Proof": string;
   "X-Agent-Intent-Hash": string;
+  "X-Agent-Action-Hash": string;
+  "X-Agent-Intent-Proof": string;
+  "X-Agent-Session-Grant"?: string;
+  "X-Agent-Claims"?: string;
+  "X-Agent-Claims-Signature"?: string;
 };
 
 export type SignRequestHeadersResult = TrustHeaders;
 
-type TrustMaterialOptions = {
-  passportId: string;
-  url: string;
-  timestamp: string;
-  intentHash: Hex;
-  termsHash?: Hex;
+export type DelegatedSessionMaterial = {
+  sessionAccount: LocalAccount;
+  grant: SessionGrant;
+  ownerProof: Hex;
 };
 
-type SessionMaterialOptions = {
-  passportId: string;
-  timestamp: string;
-  intentHash: Hex;
-  termsHash?: Hex;
-  ownerWallet?: string;
+export type ClaimsPacket = AgentClaims;
+
+export type AdvancedTrustOptions = {
+  delegatedSession?: DelegatedSessionMaterial;
+  claims?: ClaimsPacket;
 };
 
 function normalizePassportId(passportId: bigint | number | string): string {
   return typeof passportId === "string" ? passportId : String(passportId);
 }
-
-function normalizeTermsHash(termsHash?: string): Hex {
-  if (termsHash) {
-    return /^0x[0-9a-fA-F]{64}$/.test(termsHash)
-      ? (termsHash.toLowerCase() as Hex)
-      : keccak256(toBytes(termsHash));
-  }
-
-  return keccak256(
-    toBytes(process.env.AGENT_TERMS_TEXT ?? "agent-passport-demo-terms-v1"),
-  );
-}
-
-function canonicalizeIntent(value: unknown): string {
-  if (value === null || value === undefined) return "null";
-  if (typeof value === "string") return value;
-  if (typeof value === "number" || typeof value === "boolean") return JSON.stringify(value);
-  if (typeof value === "bigint") return value.toString();
-
-  if (Array.isArray(value)) {
-    return `[${value.map((item) => canonicalizeIntent(item)).join(",")}]`;
-  }
-
-  if (typeof value === "object") {
-    const entries = Object.entries(value as Record<string, unknown>).sort(
-      ([left], [right]) => left.localeCompare(right),
-    );
-    return `{${entries
-      .map(([key, nested]) => `${JSON.stringify(key)}:${canonicalizeIntent(nested)}`)
-      .join(",")}}`;
-  }
-
-  return JSON.stringify(String(value));
-}
-
-export function buildIntentHash(intent: unknown): Hex {
-  return keccak256(toBytes(canonicalizeIntent(intent)));
-}
-
-function buildTrustPayload(options: TrustMaterialOptions): string {
-  const termsHash = options.termsHash ?? normalizeTermsHash();
-  return [
-    options.passportId,
-    options.url,
-    options.timestamp,
-    termsHash,
-    options.intentHash,
-  ].join("|");
-}
-
-function buildSessionPayload(options: SessionMaterialOptions): string {
-  const termsHash = options.termsHash ?? normalizeTermsHash();
-  return [
-    "session",
-    options.passportId,
-    options.ownerWallet?.toLowerCase() ?? "unbound",
-    options.timestamp,
-    termsHash,
-    options.intentHash,
-  ].join("|");
-}
-
-export function buildTrustDigest(options: TrustMaterialOptions): Hex {
-  return keccak256(toBytes(buildTrustPayload(options)));
-}
-
-export function buildSessionProofDigest(options: SessionMaterialOptions): Hex {
-  return keccak256(toBytes(buildSessionPayload(options)));
-}
+export {
+  buildActionHash,
+  buildIntentHash,
+  buildIntentProofDigest,
+  buildSessionProofDigest,
+  buildTrustDigest,
+} from "./protocol";
 
 /**
  * Signs the full trust-header bundle for an outbound agent request.
@@ -111,6 +63,8 @@ export function buildSessionProofDigest(options: SessionMaterialOptions): Hex {
  * - `url` must be the exact URL the downstream verifier will check.
  * - `intent` must be the original user instruction or a stable object derived
  *   from it, because verify may recompute the same hash.
+ * - `action` should describe the current operation being authorized. If omitted
+ *   we bind the proof to a stable default `GET|<url>` action.
  * - `ownerWallet` should be the user wallet that owns or authorizes this agent.
  */
 export async function signRequestHeaders(
@@ -120,6 +74,8 @@ export async function signRequestHeaders(
   intent: unknown,
   ownerWallet: string,
   termsHash?: string,
+  action?: unknown,
+  advanced?: AdvancedTrustOptions,
 ): Promise<SignRequestHeadersResult> {
   if (!String(url).trim()) {
     throw new Error("signRequestHeaders requires a non-empty url");
@@ -135,14 +91,17 @@ export async function signRequestHeaders(
   const timestamp = Math.floor(Date.now() / 1000).toString();
   const normalizedTermsHash = normalizeTermsHash(termsHash);
   const intentHash = buildIntentHash(intent);
+  const actionHash = buildActionHash(action ?? `GET|${url}`);
   const wallet = await getAgentSigner(agentId);
+  const signerAccount =
+    advanced?.delegatedSession?.sessionAccount ?? wallet.account;
 
-  if (!wallet.account) {
+  if (!signerAccount) {
     throw new Error(`Agent signer for ${agentId} is missing an account`);
   }
 
   const signature = await wallet.signMessage({
-    account: wallet.account,
+    account: signerAccount,
     message: {
       raw: buildTrustDigest({
         passportId: normalizedPassportId,
@@ -154,26 +113,62 @@ export async function signRequestHeaders(
     },
   });
 
-  const sessionProof = await wallet.signMessage({
-    account: wallet.account,
+  const sessionProof = advanced?.delegatedSession
+    ? advanced.delegatedSession.ownerProof
+    : await wallet.signMessage({
+        account: wallet.account!,
+        message: {
+          raw: buildSessionProofDigest({
+            passportId: normalizedPassportId,
+            timestamp,
+            intentHash,
+            termsHash: normalizedTermsHash,
+            ownerWallet,
+          }),
+        },
+      });
+
+  const intentProof = await wallet.signMessage({
+    account: signerAccount,
     message: {
-      raw: buildSessionProofDigest({
+      raw: buildIntentProofDigest({
         passportId: normalizedPassportId,
         timestamp,
         intentHash,
+        actionHash,
         termsHash: normalizedTermsHash,
         ownerWallet,
       }),
     },
   });
 
-  return {
+  const result: SignRequestHeadersResult = {
     "X-Agent-Passport-ID": normalizedPassportId,
     "X-Agent-Signature": signature,
     "X-Agent-Timestamp": timestamp,
     "X-Agent-Session-Proof": sessionProof,
     "X-Agent-Intent-Hash": intentHash,
+    "X-Agent-Action-Hash": actionHash,
+    "X-Agent-Intent-Proof": intentProof,
   };
+
+  if (advanced?.delegatedSession) {
+    result["X-Agent-Session-Grant"] = encodeHeaderJson(
+      advanced.delegatedSession.grant,
+    );
+  }
+
+  if (advanced?.claims) {
+    const { developerSignature, ...unsignedClaims } = advanced.claims;
+    result["X-Agent-Claims"] = encodeHeaderJson(advanced.claims);
+    result["X-Agent-Claims-Signature"] = developerSignature;
+
+    // Keep the digest builder referenced here so callers can safely source
+    // claims from a common packet without recomputing header shapes.
+    void buildClaimsDigest(unsignedClaims);
+  }
+
+  return result;
 }
 
 /**
@@ -187,13 +182,18 @@ export async function buildTrustHeaders(opts: {
   encryptedKey: string;
   intent?: unknown;
   termsHash?: string;
+  action?: unknown;
+  delegatedSession?: DelegatedSessionMaterial;
+  claims?: ClaimsPacket;
 }): Promise<TrustHeaders> {
   const timestamp = Math.floor(Date.now() / 1000).toString();
   const normalizedTermsHash = normalizeTermsHash(opts.termsHash);
   const intentHash = buildIntentHash(opts.intent ?? opts.url);
+  const actionHash = buildActionHash(opts.action ?? `GET|${opts.url}`);
   const account = privateKeyToAccount(decryptAgentKey(opts.encryptedKey));
+  const signerAccount = opts.delegatedSession?.sessionAccount ?? account;
 
-  const signature = await account.signMessage({
+  const signature = await signerAccount.signMessage({
     message: {
       raw: buildTrustDigest({
         passportId: opts.passportId,
@@ -206,22 +206,49 @@ export async function buildTrustHeaders(opts: {
   });
 
   // Compatibility path for the current verify.ts and /api/run usage.
-  const sessionProof = await account.signMessage({
+  const sessionProof = opts.delegatedSession?.ownerProof
+    ? opts.delegatedSession.ownerProof
+    : await account.signMessage({
+        message: {
+          raw: buildSessionProofDigest({
+            passportId: opts.passportId,
+            timestamp,
+            intentHash,
+            termsHash: normalizedTermsHash,
+          }),
+        },
+      });
+
+  const intentProof = await signerAccount.signMessage({
     message: {
-      raw: buildSessionProofDigest({
+      raw: buildIntentProofDigest({
         passportId: opts.passportId,
         timestamp,
         intentHash,
+        actionHash,
         termsHash: normalizedTermsHash,
       }),
     },
   });
 
-  return {
+  const result: TrustHeaders = {
     "X-Agent-Passport-ID": opts.passportId,
     "X-Agent-Signature": signature,
     "X-Agent-Timestamp": timestamp,
     "X-Agent-Session-Proof": sessionProof,
     "X-Agent-Intent-Hash": intentHash,
+    "X-Agent-Action-Hash": actionHash,
+    "X-Agent-Intent-Proof": intentProof,
   };
+
+  if (opts.delegatedSession) {
+    result["X-Agent-Session-Grant"] = encodeHeaderJson(opts.delegatedSession.grant);
+  }
+
+  if (opts.claims) {
+    result["X-Agent-Claims"] = encodeHeaderJson(opts.claims);
+    result["X-Agent-Claims-Signature"] = opts.claims.developerSignature;
+  }
+
+  return result;
 }

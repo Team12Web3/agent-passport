@@ -263,22 +263,30 @@ Implement `apps/web/lib/agent/sign.ts` for the full trust-header bundle:
 - `X-Agent-Passport-ID`
 - `X-Agent-Signature`
 - `X-Agent-Timestamp`
+- `X-Agent-Session-Grant`
 - `X-Agent-Session-Proof`
+- `X-Agent-Claims`
+- `X-Agent-Claims-Signature`
 - `X-Agent-Intent-Hash`
+- `X-Agent-Action-Hash`
+- `X-Agent-Intent-Proof`
 
 CONSTRAINTS:
 - Add `import "server-only"` at the top.
 - Export:
-  `signRequestHeaders(passportId, url, agentId, intent, ownerWallet, termsHash?)`
+  `signRequestHeaders(passportId, url, agentId, intent, ownerWallet, termsHash?, action?, advanced?)`
 - Timestamp must be unix seconds.
 - Signature must use viem `signMessage`.
 - `intentHash` should be stable and JSON-safe.
-- `sessionProof` should prove that the signing agent belongs to the owner wallet.
+- `actionHash` should be stable and JSON-safe.
+- `sessionProof` should support an owner-signed delegated session grant so the demo can show ERC-4337-style session-key semantics.
+- The helper should support an optional signed JSON-LD claims packet for developer, model platform, labels, and trust score.
+- `intentProof` may be simulated with ECDSA for the hackathon demo; do not hand-write ZK circuits.
 - Return only plain strings so the result can be serialized into HTTP headers.
 - Keep a compatibility path for existing runtime code that still signs from an encrypted key.
 
 ACCEPTANCE:
-- The returned object contains all five headers.
+- The returned object contains the full trust-header bundle, including session grant and claims headers when provided.
 - The message format matches the verification path.
 - No `bigint`, `Buffer`, or unserializable values leak into headers.
 ```
@@ -327,7 +335,7 @@ CONTEXT:
   - apps/web/lib/agent/verify.ts
 
 TASK:
-Implement `verifyAgentHeaders({ headers, url, expectedIntent? })` so Person 1 can use it inside `/api/trust/demo-site`.
+Implement `verifyAgentHeaders({ headers, url, expectedIntent?, expectedAction?, expectedAmountUsd?, requireStake? })` so Person 1 can use it inside `/api/trust/demo-site`.
 
 CONSTRAINTS:
 - Validate in this order:
@@ -337,8 +345,12 @@ CONSTRAINTS:
   4. read `AgentPassport.getPassport(passportId)`
   5. confirm recovered signer matches the expected agent wallet or authorized session key
   6. confirm passport is active
-  7. validate session proof
-  8. validate intent hash and nonce if provided
+  7. validate active stake when `requireStake` is enabled and `StakeVault` is configured
+  8. validate delegated session grant or legacy session proof
+  9. validate session scope (time, origin, action, amount) when present
+  10. validate signed claims / attestation packet when present
+  11. validate intent hash, action hash, and intent proof
+  12. validate nonce if provided
 - Return a typed union:
   - `{ ok: true, passport, attributes }`
   - `{ ok: false, reason }`
@@ -347,7 +359,7 @@ CONSTRAINTS:
 ACCEPTANCE:
 - The verifier is reusable from API routes.
 - It reads the on-chain passport via Person 1's provided files.
-- It supports the expanded trust-header protocol.
+- It supports the expanded trust-header protocol, including the hackathon-safe ECDSA intent-proof flow.
 ```
 
 ## 12. Trust-header round-trip tests
@@ -371,6 +383,7 @@ CONSTRAINTS:
   2. stale timestamp failure
   3. bad signature failure
   4. invalid session proof failure
+  5. tampered action hash or forged intent proof failure
 - Keep the test small and deterministic.
 
 ACCEPTANCE:
@@ -378,7 +391,54 @@ ACCEPTANCE:
 - The failure reasons are explicit and typed.
 ```
 
-## 13. Wallet and payment tests
+## 13. Visual trust-lab demo
+
+```text
+CONTEXT:
+- Read:
+  - docs/06-integration-plan.md
+  - docs/07-demo-script.md
+- Existing protocol helpers:
+  - apps/web/lib/agent/protocol.ts
+  - apps/web/lib/agent/sign.ts
+  - apps/web/lib/agent/verify.ts
+  - apps/web/lib/agent/staking.ts
+
+TASK:
+Create a visual demo page, for example `apps/web/app/trust-lab/page.tsx`, that demonstrates the trust premium across:
+- Staking Mechanism
+- Session Keys
+- Open Box Attestation
+- Bound AA Wallet semantics
+- Verifiable Intents
+
+CONSTRAINTS:
+- The page should visually show scenarios for the new protocol layers:
+  1. No Passport
+  2. All trust layers valid
+  3. No active stake
+  4. Slashed stake
+  5. Expired session key
+  6. Over-budget delegated session
+  7. Tampered action hash
+  8. Forged intent proof
+  9. Forged attestation
+- Show:
+  - generated headers
+  - step-by-step verification status
+  - final blocked / trusted outcome
+- Emphasize:
+  - without Passport -> blocked by CAPTCHA
+  - with Passport + active stake + signed claims + delegated session key + intent proof -> trusted instantly
+- Do not build custom ZK circuits. Use the ECDSA-simulated proof flow for the demo.
+
+ACCEPTANCE:
+- The page is easy to demo live.
+- Judges can see the difference between identity trust and action trust.
+- The narrative lands "trust by signature, not by CAPTCHA."
+```
+
+## 14. Wallet and payment tests
 
 ```text
 CONTEXT:
@@ -404,7 +464,7 @@ ACCEPTANCE:
 - The tests prove the current "pre-authorized payment" layer works for ActionLog fee deduction.
 ```
 
-## 14. Agent wallet dashboard panel
+## 15. Agent wallet dashboard panel
 
 ```text
 CONTEXT:
@@ -434,7 +494,7 @@ ACCEPTANCE:
 - No secrets or private-key logic are in the component.
 ```
 
-## 15. Final integration cleanup for Person 1
+## 16. Final integration cleanup for Person 1
 
 ```text
 CONTEXT:
@@ -465,7 +525,7 @@ ACCEPTANCE:
 - Person 1 can wire `/api/agents/create`, `/api/run`, and `/api/trust/demo-site` without reading all implementation details.
 ```
 
-## 16. Final QA command set
+## 17. Final QA command set
 
 Use these commands after completing the prompts above:
 
@@ -482,4 +542,3 @@ If you want one combined test run:
 ```powershell
 corepack pnpm --filter web exec vitest run lib/crypto/kms.test.ts lib/agent/sign.verify.test.ts lib/agent/wallet.test.ts app/api/log/submit/route.test.ts
 ```
-

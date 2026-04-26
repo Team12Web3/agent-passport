@@ -4,11 +4,14 @@ import type { Hex } from "viem";
 
 type Deployment = { address: Hex; abi: unknown[] };
 
+const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000" as Hex;
+
 const dep = deployments as unknown as {
   network: string;
   chainId: number;
   AgentPassport: Deployment;
   ActionLog: Deployment;
+  StakeVault?: Deployment;
   USDC: { address: Hex };
 };
 
@@ -22,6 +25,41 @@ export const ActionLog = {
   abi: dep.ActionLog.abi as readonly unknown[],
 } as const;
 
+export const StakeVault = {
+  address: dep.StakeVault?.address ?? ZERO_ADDRESS,
+  abi: [
+    {
+      type: "function",
+      name: "depositStake",
+      stateMutability: "payable",
+      inputs: [{ name: "passportId", type: "uint256" }],
+      outputs: [],
+    },
+    {
+      type: "function",
+      name: "slashStake",
+      stateMutability: "nonpayable",
+      inputs: [
+        { name: "passportId", type: "uint256" },
+        { name: "amount", type: "uint256" },
+        { name: "evidenceHash", type: "bytes32" },
+      ],
+      outputs: [],
+    },
+    {
+      type: "function",
+      name: "getStake",
+      stateMutability: "view",
+      inputs: [{ name: "passportId", type: "uint256" }],
+      outputs: [
+        { name: "activeStake", type: "uint256" },
+        { name: "totalSlashed", type: "uint256" },
+        { name: "lastStakeAt", type: "uint64" },
+      ],
+    },
+  ] as const,
+} as const;
+
 export const USDC = {
   address: dep.USDC.address,
   abi: [
@@ -31,7 +69,7 @@ export const USDC = {
       stateMutability: "nonpayable",
       inputs: [
         { name: "spender", type: "address" },
-        { name: "amount",  type: "uint256" },
+        { name: "amount", type: "uint256" },
       ],
       outputs: [{ name: "", type: "bool" }],
     },
@@ -40,7 +78,7 @@ export const USDC = {
       name: "allowance",
       stateMutability: "view",
       inputs: [
-        { name: "owner",   type: "address" },
+        { name: "owner", type: "address" },
         { name: "spender", type: "address" },
       ],
       outputs: [{ name: "", type: "uint256" }],
@@ -50,7 +88,7 @@ export const USDC = {
       name: "transfer",
       stateMutability: "nonpayable",
       inputs: [
-        { name: "to",     type: "address" },
+        { name: "to", type: "address" },
         { name: "amount", type: "uint256" },
       ],
       outputs: [{ name: "", type: "bool" }],
@@ -68,16 +106,19 @@ export const USDC = {
 export const NETWORK = dep.network;
 export const CHAIN_ID = dep.chainId;
 
+export function hasStakeVaultConfigured(): boolean {
+  return StakeVault.address.toLowerCase() !== ZERO_ADDRESS;
+}
+
 export function assertContractsDeployed(): void {
-  const zero = "0x0000000000000000000000000000000000000000";
-  if (AgentPassport.address.toLowerCase() === zero) {
+  if (AgentPassport.address.toLowerCase() === ZERO_ADDRESS) {
     throw new Error(
-      "AgentPassport address is zero — run `pnpm contracts:deploy` and update deployments.json",
+      "AgentPassport address is zero - run `pnpm contracts:deploy` and update deployments.json",
     );
   }
-  if (ActionLog.address.toLowerCase() === zero) {
+  if (ActionLog.address.toLowerCase() === ZERO_ADDRESS) {
     throw new Error(
-      "ActionLog address is zero — run `pnpm contracts:deploy` and update deployments.json",
+      "ActionLog address is zero - run `pnpm contracts:deploy` and update deployments.json",
     );
   }
 }

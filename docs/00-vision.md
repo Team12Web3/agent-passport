@@ -33,12 +33,16 @@ Every outbound HTTP request from an agent carries a trust-header bundle. Any web
 
 - `X-Agent-Passport-ID` resolves to an EAS credential and tells the site which developer, model stack, and labels are attached to the agent
 - `X-Agent-Signature` plus `X-Agent-Timestamp` proves identity, freshness, and agreement to the current Terms of Service
-- `X-Agent-Session-Proof` proves the runtime key was authorized on-chain by the owner's main wallet
-- Extended `X-Agent-Intent-Hash` can prove the current action is derived from the user's original intent
+- `X-Agent-Session-Grant` plus `X-Agent-Session-Proof` act like an employee ID: the owner wallet delegates a time-limited, permission-restricted session key for the agent
+- `X-Agent-Claims` plus `X-Agent-Claims-Signature` turn the agent from a black box into an open box by carrying a signed JSON-LD claims packet with developer, model stack, labels, and trust score
+- `X-Agent-Intent-Hash` binds the request to the user's original command
+- `X-Agent-Action-Hash` identifies the concrete action currently being approved
+- `X-Agent-Intent-Proof` cryptographically binds the action back to the original intent; for the hackathon demo this proof is simulated with ECDSA rather than a full zkVM receipt
+- `StakeVault` gives the protocol crypto-economic consequences: high-value access can require active stake, and obvious abuse can trigger a slash against that passport ID
 
 In return, the website opens a "green channel": no CAPTCHA, clean data, possibly a paid API tier.
 
-We ship a **reference implementation** of a trusting site as part of the demo, so judges can see the whole loop work.
+We ship a **reference implementation** of a trusting site as part of the demo, plus a `/trust-lab` visual explainer for staking, session keys, open-box attestation, and verifiable intents, so judges can see the whole loop work.
 
 ## Why this wins two prize tracks
 

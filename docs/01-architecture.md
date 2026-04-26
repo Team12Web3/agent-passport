@@ -178,37 +178,45 @@ Full specs in [04-onchain-contracts.md](./04-onchain-contracts.md).
 
 ## Trust protocol
 
-Five headers matter on every outbound agent request:
+Ten headers matter on every outbound agent request:
 
 ```
 X-Agent-Passport-ID:    42
 X-Agent-Signature:      0xabc123...
 X-Agent-Timestamp:      1729980000
-X-Agent-Session-Proof:  0xsessionproof...
+X-Agent-Session-Grant:  eyJ0eXBlIjoiYWdlbnQtcGFzc3BvcnQvc2Vzc2lvbi1ncmFudCIsLi4ufQ
+X-Agent-Session-Proof:  0xownersignature...
+X-Agent-Claims:         eyJAY29udGV4dCI6Imh0dHBzOi8vYWdlbnRwYXNzcG9ydC5kZXYvY2xhaW1zL3YxIiwuLi59
+X-Agent-Claims-Signature: 0xdevelopersignature...
 X-Agent-Intent-Hash:    0xintenthash...
+X-Agent-Action-Hash:    0xactionhash...
+X-Agent-Intent-Proof:   0xintentproof...
 ```
 
 **Verification (any website can implement in ~30 lines):**
 
 1. All required headers present? Else 403.
 2. Timestamp within ±60 seconds of now? Else 403 stale.
-3. Resolve `X-Agent-Passport-ID` to the on-chain passport record and its EAS credential (or a cache of that credential).
-4. Read the attested attributes: developer, platform/model, and labels such as `non-crawler`.
+3. Resolve `X-Agent-Passport-ID` to the on-chain passport record and its EAS-compatible credential pointer (or a cache of that credential).
+4. Read the signed JSON-LD claims packet: developer, platform/model, labels such as `non-crawler`, and trust score.
 5. Recover signer from `X-Agent-Signature` over `keccak256(passportId || url || timestamp || termsHash || intentHash)`.
-6. Verify the signature was made by a valid session key that the owner's main wallet authorized on-chain.
-7. Verify the request is tied to the current Terms of Service.
-8. Optionally verify a ZK proof that the current action is derived from `X-Agent-Intent-Hash`.
+6. Verify `X-Agent-Session-Grant` plus `X-Agent-Session-Proof` as an owner-authorized, time-limited, permission-restricted session key.
+7. Enforce the session scope: allowed origins, allowed actions, and maximum amount.
+8. Verify the request is tied to the current Terms of Service.
+9. If the `StakeVault` companion contract is deployed, require the passport to maintain the minimum active stake before returning high-value data.
+10. Verify that `X-Agent-Action-Hash` matches the current action being approved.
+11. Verify that `X-Agent-Intent-Proof` was signed by the same trusted session signer over `(passportId, timestamp, intentHash, actionHash)`.
 
-If a site later detects obvious abuse, the same signed payload can be submitted as evidence to a staking/slashing flow tied to that passport ID.
+If a site later detects obvious abuse, the same signed payload can be submitted as evidence to a staking/slashing flow tied to that passport ID. The demo companion contract is `StakeVault`, and the website-side helper route is `/api/trust/report-abuse`.
 
-Our reference implementation lives at `/api/trust/demo-site` and is the basis for the demo's kill-shot.
+For the hackathon, the proof-of-execution layer is simulated with ECDSA signatures rather than a full zkVM backend, and the session-key layer simulates ERC-4337 semantics with owner-signed delegated grants rather than a full smart-account module. Our reference implementation lives at `/api/trust/demo-site`, and the visual explainer lives at `/trust-lab`.
 
 ## Why we cut things
 
 | Cut                                  | Why                                                      |
 |--------------------------------------|----------------------------------------------------------|
-| ERC-4337 smart wallets               | 1–2 day integration; demo gain ≈ 0                       |
-| Production-grade ZK circuits         | Keep the intent-proof interface; heavy proving work can wait |
+| Full ERC-4337 smart-account modules  | Keep the session-key flow, but simulate AA semantics with owner-signed delegated session grants |
+| Production-grade ZK circuits         | Keep the intent-proof interface; simulate the proof flow with ECDSA for the demo |
 | Full dispute-resolution UI for slashing | The smart-contract path matters more than appeals UX for the demo |
 | Per-action on-chain transactions     | 8 actions × 2s confirms = 16s of dead air on stage       |
 | Real-world scrape target             | Anti-bot, JS-heavy, geo-gated → fails on stage            |
