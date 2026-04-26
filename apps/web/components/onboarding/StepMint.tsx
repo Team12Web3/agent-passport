@@ -16,12 +16,15 @@ export function StepMint({
   const defaultLabel = `${username}-agent-1`;
   const [label, setLabel] = useState(defaultLabel);
   const [persistError, setPersistError] = useState<string | null>(null);
+  const [mintCompleted, setMintCompleted] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
 
   const mintHook = useMintPassport(client!);
   const { phase, message } = mintHook.state;
 
-  const isWorking =
+  const isMinting =
     phase === "generating" || phase === "deploying" || phase === "minting" || phase === "confirming";
+  const isWorking = isMinting || isSaving;
 
   const phaseLabel: Record<typeof phase, string> = {
     idle: "Mint passport",
@@ -35,9 +38,15 @@ export function StepMint({
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
+    if (isWorking) return;
     setPersistError(null);
     try {
-      await mintHook.mint(label.trim() || defaultLabel);
+      // Skip the mint on retry — the on-chain passport already exists.
+      if (!mintCompleted) {
+        await mintHook.mint(label.trim() || defaultLabel);
+        setMintCompleted(true);
+      }
+      setIsSaving(true);
       const r = await fetch("/api/onboarding/complete", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -52,8 +61,18 @@ export function StepMint({
       const msg =
         err instanceof Error ? err.message : "Could not finish onboarding. Please try again.";
       setPersistError(msg);
+    } finally {
+      setIsSaving(false);
     }
   }
+
+  const buttonLabel = isMinting
+    ? phaseLabel[phase]
+    : isSaving
+      ? "Saving…"
+      : phase === "error" || persistError
+        ? "Retry"
+        : "Mint passport";
 
   return (
     <form className="p-6" onSubmit={handleSubmit}>
@@ -70,7 +89,7 @@ export function StepMint({
         value={label}
         onChange={(e) => setLabel(e.target.value)}
         className="input focus-ring mt-1.5"
-        disabled={isWorking}
+        disabled={isWorking || mintCompleted}
       />
 
       <div className="mt-2 h-4 text-[11.5px] text-muted">
@@ -85,7 +104,7 @@ export function StepMint({
 
       <div className="mt-6 flex justify-end gap-2">
         <button type="submit" disabled={isWorking} className="btn btn-primary focus-ring">
-          {isWorking ? phaseLabel[phase] : phase === "error" ? "Retry" : "Mint passport"}
+          {buttonLabel}
         </button>
       </div>
     </form>
