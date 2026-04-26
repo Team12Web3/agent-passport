@@ -25,9 +25,16 @@
         "SUPABASE_URL",
         "SUPABASE_ANON_KEY",
         "SUPABASE_SERVICE_ROLE_KEY",
+        "SUPABASE_DB_URL",
         "AGENT_KEY_SECRET",
         "FAUCET_PRIVATE_KEY",
-        "PLATFORM_PRIVATE_KEY"
+        "PLATFORM_PRIVATE_KEY",
+        "THIRDWEB_SECRET_KEY",
+        "OPENAI_API_KEY",
+        "PLATFORM_ADDRESS",
+        "USDC_ADDRESS",
+        "SNOWTRACE_API_KEY",
+        "AUTH_PRIVATE_KEY"
       ]
     }
   }

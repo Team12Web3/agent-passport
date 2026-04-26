@@ -7,7 +7,6 @@ import { getSupabase } from "@/lib/db/supabase";
 import { getPublicClient } from "@/lib/chain/client";
 import {
   ActionLog,
-  USDC,
   assertContractsDeployed,
 } from "@/lib/chain/contracts";
 import { getSignerFromEncryptedKey } from "@/lib/agent/wallet";
@@ -19,7 +18,7 @@ const Body = z.object({
   runId:       z.string().uuid(),
   taskHash:    z.string().regex(/^0x[0-9a-fA-F]{64}$/),
   actionsRoot: z.string().regex(/^0x[0-9a-fA-F]{64}$/),
-  feeAmount:   z.string().regex(/^[0-9]+$/),
+  feeAmount:   z.literal("0"),
   beneficiary: z.string().regex(/^0x[0-9a-fA-F]{40}$/),
 });
 
@@ -58,28 +57,6 @@ export async function POST(req: Request) {
 
   const { account, wallet } = getSignerFromEncryptedKey(a.encrypted_private_key);
   const pub = getPublicClient();
-  const fee = BigInt(body.feeAmount);
-
-  if (fee > 0n) {
-    const allowance = (await pub.readContract({
-      address: USDC.address,
-      abi: USDC.abi,
-      functionName: "allowance",
-      args: [account.address, ActionLog.address],
-    })) as bigint;
-
-    if (allowance < fee) {
-      const approveTx = await wallet.writeContract({
-        account,
-        chain: wallet.chain!,
-        address: USDC.address,
-        abi: USDC.abi,
-        functionName: "approve",
-        args: [ActionLog.address, 2n ** 256n - 1n],
-      });
-      await pub.waitForTransactionReceipt({ hash: approveTx });
-    }
-  }
 
   const txHash = (await wallet.writeContract({
     account,
@@ -91,7 +68,7 @@ export async function POST(req: Request) {
       BigInt(a.passport_id),
       body.taskHash as Hex,
       body.actionsRoot as Hex,
-      fee,
+      0n,
       body.beneficiary as Hex,
     ],
   })) as Hex;

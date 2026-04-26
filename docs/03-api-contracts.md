@@ -27,7 +27,7 @@ Provision a new agent end-to-end: wallet, funding, on-chain passport mint, DB ro
   agentId: string,                // uuid
   passportId: string,             // bigint as string
   walletAddress: `0x${string}`,
-  fundingTxHash: `0x${string}`,   // AVAX/USDC funding tx
+  fundingTxHash: `0x${string}`,   // AVAX funding tx
   mintTxHash: `0x${string}`       // passport mint tx
 }
 ```
@@ -164,7 +164,7 @@ Submit an `ActionLog` tx for a run that already happened. Used internally by the
   runId: string,
   taskHash: `0x${string}`,        // keccak256(prompt || url)
   actionsRoot: `0x${string}`,     // keccak256(JSON.stringify(actions))
-  feeAmount: string,              // USDC, 6-decimal string ("100000" = 0.10 USDC)
+  feeAmount: "0",                 // zero-fee log; gas is paid with AVAX
   beneficiary: `0x${string}`
 }
 ```

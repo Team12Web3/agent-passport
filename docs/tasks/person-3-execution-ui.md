@@ -1,10 +1,10 @@
 # Person 3 — Agent Execution UI
 
-> **You're building what judges actually look at.** The split-screen run view, the streaming terminal, and the trust-protocol kill-shot are the demo. Make it juicy.
+> **You're building the most visible part of the demo.** The split-screen run view, the streaming terminal, and the trust-protocol kill-shot are the demo. Make it juicy.
 
 ## Mission
 
-Build the most demo-visible page in the entire app: the agent execution view. Live SSE streaming, hacker-style terminal, split-screen comparison, and a red→green trust-protocol animation that judges will remember.
+Build the most demo-visible page in the entire app: the agent execution view. Live SSE streaming, hacker-style terminal, split-screen comparison, and a red→green trust-protocol animation that users will remember.
 
 ## Files you own
 
@@ -230,7 +230,7 @@ Export a fixture for testing:
     { type: "tool", name: "summarize", input: { focus: "main themes" } },
     { type: "logging", txHash: "0xab12cd34" },
     { type: "logged", txHash: "0xab12cd34", blockNumber: 42424242 },
-    { type: "done", result: { summary: "...", actionsCount: 3, txHash: "0xab12cd34", feeUsd: 0.10 } },
+    { type: "done", result: { summary: "...", actionsCount: 3, txHash: "0xab12cd34", feeUsd: 0 } },
   ];
 ```
 

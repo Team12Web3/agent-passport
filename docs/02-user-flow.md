@@ -111,7 +111,7 @@ Bottom status bar pulses green.
 Result card appears below split-screen:
 - Summary text
 - Actions: 3
-- Fee: 0.10 USDC
+- Fee: none
 - **View on Snowtrace →** (clickable)
 - Copy tx hash
 

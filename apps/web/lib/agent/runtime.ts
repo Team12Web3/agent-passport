@@ -1,18 +1,16 @@
 import "server-only";
 import {
   keccak256,
-  parseUnits,
   toBytes,
   type Hex,
 } from "viem";
-import { streamText } from "ai";
-import { cheapModel } from "./llm";
 import { getPublicClient } from "../chain/client";
-import { ActionLog, AgentPassport, USDC, assertContractsDeployed } from "../chain/contracts";
+import { ActionLog, AgentPassport, assertContractsDeployed } from "../chain/contracts";
 import { getSupabase, type AgentRow } from "../db/supabase";
 import { getSignerFromEncryptedKey } from "./wallet";
 import { buildTrustHeaders } from "./sign";
 import { cleanMarkdown } from "./clean";
+import { runTaskActions } from "./actions";
 
 export type AgentEvent =
   | { type: "started";   runId: string; passportId: string }
@@ -37,7 +35,7 @@ type Action = {
   ts: number;
 };
 
-const FEE_USDC_6 = parseUnits("0.10", 6);                      // 100000n
+const ACTION_LOG_FEE = 0n;
 const PLATFORM_BENEFICIARY = (process.env.PLATFORM_ADDRESS ?? "0x0000000000000000000000000000000000000000") as Hex;
 
 export async function runAgentTask(
@@ -140,16 +138,30 @@ export async function runAgentTask(
   emit({ type: "cleaned", chars: cleaned.length });
   pushAction("clean", { chars: raw.length }, { chars: cleaned.length });
 
-  // 4. LLM via Anthropic streaming
-  const { textStream, fullText } = await streamLLM({
+  // 4. LLM task execution via OpenAI-backed AI SDK actions
+  const summary = await runTaskActions({
     prompt: args.prompt,
+    url: args.url,
     page: cleaned,
-    onDelta: (delta) => emit({ type: "thinking", delta }),
+    onEvent: (event) => {
+      if (event.type === "text") {
+        emit({ type: "thinking", delta: event.delta });
+        return;
+      }
+
+      if (event.type === "tool") {
+        emit({ type: "tool", name: event.name, input: event.input });
+        return;
+      }
+
+      emit({
+        type: "tool_result",
+        name: event.name,
+        output: event.output,
+      });
+      pushAction(event.name, event.input, event.output);
+    },
   });
-  for await (const _ of textStream) {
-    // consumption is required to drive the stream
-  }
-  const summary = await fullText;
   pushAction("llm", { prompt: args.prompt }, { summary });
 
   // 5. Hash + submit ActionLog tx from agent's signer
@@ -158,25 +170,6 @@ export async function runAgentTask(
 
   const { account, wallet } = getSignerFromEncryptedKey(a.encrypted_private_key);
   const pub = getPublicClient();
-
-  // Approve USDC if needed (one-shot infinite)
-  const allowance = (await pub.readContract({
-    address: USDC.address,
-    abi: USDC.abi,
-    functionName: "allowance",
-    args: [account.address, ActionLog.address],
-  })) as bigint;
-  if (allowance < FEE_USDC_6) {
-    const approveTx = await wallet.writeContract({
-      account,
-      chain: wallet.chain!,
-      address: USDC.address,
-      abi: USDC.abi,
-      functionName: "approve",
-      args: [ActionLog.address, 2n ** 256n - 1n],
-    });
-    await pub.waitForTransactionReceipt({ hash: approveTx });
-  }
 
   const txHash = (await wallet.writeContract({
     account,
@@ -188,7 +181,7 @@ export async function runAgentTask(
       BigInt(a.passport_id),
       taskHash,
       actionsRoot,
-      FEE_USDC_6,
+      ACTION_LOG_FEE,
       PLATFORM_BENEFICIARY,
     ],
   })) as Hex;
@@ -205,18 +198,18 @@ export async function runAgentTask(
       result: {
         summary,
         actionsCount: actions.length,
-        feeUsd: 0.10,
+        feeUsd: 0,
       },
       actions,
       actions_root: actionsRoot,
       log_tx_hash: txHash,
-      fee_amount: FEE_USDC_6.toString(),
+      fee_amount: ACTION_LOG_FEE.toString(),
     })
     .eq("id", runId);
 
   emit({
     type: "done",
-    result: { summary, actionsCount: actions.length, txHash, feeUsd: 0.10 },
+    result: { summary, actionsCount: actions.length, txHash, feeUsd: 0 },
   });
 
   return { runId, txHash, summary };
@@ -265,33 +258,3 @@ async function scrapeJina(url: string, trustHeaders?: Record<string, string>): P
   }
   return await res.text();
 }
-
-async function streamLLM(opts: {
-  prompt: string;
-  page: string;
-  onDelta: (chunk: string) => void;
-}) {
-  const result = await streamText({
-    model: cheapModel(),
-    system:
-      "You are an analyst. Answer the user's prompt based on the page content provided. Be concise — 4–6 sentences. Cite specific items where useful.",
-    messages: [
-      {
-        role: "user",
-        content: `# Prompt\n${opts.prompt}\n\n# Page content\n${opts.page}`,
-      },
-    ],
-  });
-
-  // Wrap textStream so we can pipe deltas to the emit() callback while
-  // still allowing the caller to drive the stream itself.
-  const wrapped = (async function* () {
-    for await (const delta of result.textStream) {
-      opts.onDelta(delta);
-      yield delta;
-    }
-  })();
-
-  return { textStream: wrapped, fullText: result.text };
-}
-

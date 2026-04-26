@@ -42,7 +42,7 @@ Every outbound HTTP request from an agent carries a trust-header bundle. Any web
 
 In return, the website opens a "green channel": no CAPTCHA, clean data, possibly a paid API tier.
 
-We ship a **reference implementation** of a trusting site as part of the demo, plus a `/trust-lab` visual explainer for staking, session keys, open-box attestation, and verifiable intents, so judges can see the whole loop work.
+We ship a **reference implementation** of a trusting site as part of the demo, so anyone can see the whole loop work.
 
 ## Why this wins two prize tracks
 
@@ -55,7 +55,7 @@ One mechanism, two narratives. The same `ActionLogged` event powers both: it's t
 
 ## North star
 
-**A judge clicks our Snowtrace link and sees a real on-chain audit trail of an AI agent doing real work.**
+**Anyone can click our Snowtrace link and see a real on-chain audit trail of an AI agent doing real work.**
 
 That moment — "wait, the agent itself signed this tx?" — is what we're optimizing the entire build for.
 
@@ -63,7 +63,7 @@ That moment — "wait, the agent itself signed this tx?" — is what we're optim
 
 - 90 seconds, no live failures
 - Login → create agent → run task → on-chain proof → trust protocol kill-shot
-- Judge can independently verify every claim by clicking a Snowtrace link
+- Anyone can independently verify every claim by clicking a Snowtrace link
 - Audience understands the pitch in one sentence: *"trust by signature, not by CAPTCHA"*
 
 ## What success does NOT require

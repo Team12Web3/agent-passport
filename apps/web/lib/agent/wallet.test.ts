@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { maxUint256, parseEther, parseUnits } from "viem";
+import { parseEther } from "viem";
 
 vi.mock("server-only", () => ({}));
 
@@ -91,12 +91,7 @@ describe("agent wallet helpers", () => {
     expect(createWalletClientMock).toHaveBeenCalledTimes(1);
   });
 
-  it("funds the agent wallet and pre-approves ActionLog spending", async () => {
-    const { encrypt } = await import("../crypto/kms");
-    const encryptedKey = encrypt(
-      "0x1111111111111111111111111111111111111111111111111111111111111111",
-    );
-
+  it("funds the agent wallet with AVAX only", async () => {
     const faucetWallet = {
       account: {
         address: "0x8fd379246834eac74b8419ffda202cf8051f7a03",
@@ -105,45 +100,14 @@ describe("agent wallet helpers", () => {
       sendTransaction: vi
         .fn()
         .mockResolvedValue("0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"),
-      writeContract: vi
-        .fn()
-        .mockResolvedValue("0xbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"),
-    };
-    const agentWallet = {
-      account: {
-        address: "0x19E7E376E7C213B7E7E7E46CC70A5DD086DAFF2A",
-      },
-      chain: { id: 43113 },
-      writeContract: vi
-        .fn()
-        .mockResolvedValue("0xcccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"),
+      writeContract: vi.fn(),
     };
 
-    createWalletClientMock
-      .mockReturnValueOnce(faucetWallet)
-      .mockReturnValueOnce(agentWallet);
+    createWalletClientMock.mockReturnValue(faucetWallet);
 
     getPublicClientMock.mockReturnValue({
       getBalance: vi.fn().mockResolvedValue(parseEther("1")),
-      readContract: vi.fn().mockResolvedValue(parseUnits("20", 6)),
       waitForTransactionReceipt: vi.fn().mockResolvedValue({}),
-    });
-
-    getSupabaseMock.mockReturnValue({
-      from: () => ({
-        select: () => ({
-          ilike: () => ({
-            maybeSingle: async () => ({
-              data: {
-                encrypted_private_key: encryptedKey,
-                agent_wallet_address:
-                  "0x19E7E376E7C213B7E7E7E46CC70A5DD086DAFF2A",
-              },
-              error: null,
-            }),
-          }),
-        }),
-      }),
     });
 
     const { fundAgentWallet } = await import("./wallet");
@@ -152,37 +116,14 @@ describe("agent wallet helpers", () => {
     );
 
     expect(faucetWallet.sendTransaction).toHaveBeenCalledOnce();
-    expect(faucetWallet.writeContract).toHaveBeenCalledWith(
-      expect.objectContaining({
-        functionName: "transfer",
-        args: [
-          "0x19E7E376E7C213B7E7E7E46CC70A5DD086DAFF2A",
-          parseUnits("5", 6),
-        ],
-      }),
-    );
-    expect(agentWallet.writeContract).toHaveBeenCalledWith(
-      expect.objectContaining({
-        functionName: "approve",
-        args: [
-          "0x00000000000000000000000000000000000000aa",
-          maxUint256,
-        ],
-      }),
-    );
+    expect(faucetWallet.writeContract).not.toHaveBeenCalled();
     expect(result).toEqual({
       address: "0x19E7E376E7C213B7E7E7E46CC70A5DD086DAFF2A",
       avaxAmount: "0.05",
-      usdcAmount: "5",
-      actionLogAddress: "0x00000000000000000000000000000000000000aa",
       fundingTxHash:
         "0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
       avaxTxHash:
         "0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-      usdcTxHash:
-        "0xbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
-      approveTxHash:
-        "0xcccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
     });
   });
 
@@ -199,7 +140,6 @@ describe("agent wallet helpers", () => {
     createWalletClientMock.mockReturnValue(faucetWallet);
     getPublicClientMock.mockReturnValue({
       getBalance: vi.fn().mockResolvedValue(parseEther("0.01")),
-      readContract: vi.fn().mockResolvedValue(parseUnits("20", 6)),
       waitForTransactionReceipt: vi.fn(),
     });
 

@@ -17,8 +17,9 @@ export type AgentRecord = {
   passportId: string;
   /// EOA address of the agent (== `agentWallet` on-chain).
   agentAddress: string;
-  /// 0x-prefixed 32-byte private key. NEVER leaves the browser.
-  privateKey: `0x${string}`;
+  /// 0x-prefixed 32-byte private key. Present only for legacy browser-managed
+  /// agents; backend-managed agents keep this encrypted server-side.
+  privateKey?: `0x${string}`;
   /// Owner address that minted this passport (lowercase).
   ownerAddress: string;
   /// Display label, also written into the passport's metadataURI.
@@ -95,6 +96,7 @@ export function removeAgent(owner: string, passportId: string) {
 /// private key, so users should treat the file as sensitive.
 export function downloadAgentBackup(record: AgentRecord, contractAddress?: string) {
   if (!isBrowser()) return;
+  if (!record.privateKey) return;
   const payload = {
     schema: "agent-passport-backup",
     version: SCHEMA_VERSION,
@@ -116,9 +118,10 @@ export function downloadAgentBackup(record: AgentRecord, contractAddress?: strin
 
 // ---------- Contract address persistence ----------
 //
-// We let users either set NEXT_PUBLIC_AGENT_PASSPORT_ADDRESS at build time OR
-// deploy from the UI and stash the address in localStorage. The dashboard
-// prefers env first, then localStorage.
+// We let users set NEXT_PUBLIC_AGENT_PASSPORT_ADDRESS at build time, use the
+// checked-in deployment address, or deploy from the UI and stash the address in
+// localStorage. The dashboard prefers env, then deployments.json, then
+// localStorage.
 
 export function getStoredContractAddress(): string | null {
   if (!isBrowser()) return null;

@@ -3,11 +3,14 @@
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import type { Hex } from "viem";
+import { useRouter } from "next/navigation";
+import { motion } from "framer-motion";
 import type { Passport } from "@/lib/agentPassport";
 import { shortenAddress, clamp } from "@/lib/utils";
 import { avatarInitials, avatarStyle } from "@/lib/avatar";
 import { useAgentBalances } from "@/hooks/useAgentBalances";
 import { useOnChainLog } from "@/hooks/useOnChainLog";
+import { fadeUp, useMotionVariant } from "@/lib/motion";
 import { TrustReport } from "./TrustReport";
 
 type Props = {
@@ -42,6 +45,7 @@ export function AgentCard({
   passportId,
   agentPrivateKey,
 }: Props) {
+  const router = useRouter();
   const [open, setOpen] = useState(false);
   const [stake, setStake] = useState<StakeSummary | null>(null);
 
@@ -123,20 +127,23 @@ export function AgentCard({
     };
   }, [stake]);
 
+  const cardVariant = useMotionVariant(fadeUp);
+  const runHref = `/agents/${encodeURIComponent(agentId)}/run`;
   return (
-    <div
+    <motion.div
+      variants={cardVariant}
+      whileHover={{ y: -2, scale: 1.01 }}
+      transition={{ type: "spring", stiffness: 280, damping: 24 }}
       className={[
         "card card-hover group w-full min-w-0 max-w-full overflow-hidden p-4 transition",
-        open
-          ? "ring-1 ring-emerald-400/20 border-emerald-400/20"
-          : "",
+        open ? "ring-1 ring-emerald-400/20 border-emerald-400/20" : "",
       ].join(" ")}
     >
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}
         aria-expanded={open}
-        className="block w-full min-w-0 text-left focus-ring rounded-md"
+        className="block w-full min-w-0 rounded-md text-left outline-none focus-visible:ring-1 focus-visible:ring-[var(--accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--surface)]"
       >
         {/* Header: avatar + name + score */}
         <div className="flex items-center gap-3">
@@ -292,7 +299,10 @@ export function AgentCard({
           Detail
         </Link>
         <Link
-          href={`/agents/${encodeURIComponent(agentId)}/run`}
+          href={runHref}
+          prefetch
+          onMouseEnter={() => router.prefetch(runHref)}
+          onFocus={() => router.prefetch(runHref)}
           onClick={(e) => e.stopPropagation()}
           className="inline-flex items-center gap-1.5 rounded-md border border-white/[0.08] bg-white/[0.03] px-2.5 py-1 text-[11.5px] font-medium text-muted transition hover:border-white/15 hover:bg-white/[0.06] hover:text-fg"
         >
@@ -300,7 +310,7 @@ export function AgentCard({
           <span aria-hidden>→</span>
         </Link>
       </div>
-    </div>
+    </motion.div>
   );
 }
 

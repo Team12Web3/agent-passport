@@ -8,7 +8,7 @@
 
 1. Demo laptop on the lectern, on ethernet.
 2. Browser open on **preview URL**, marketing page loaded.
-3. Second tab: **Snowtrace** (testnet.snowtrace.io) at our `AgentPassport` contract address — judges can verify this is real if they ask.
+3. Second tab: **Snowtrace** (testnet.snowtrace.io) at our `AgentPassport` contract address — anyone can verify this is real if they ask.
 4. Third tab: backup video as YouTube unlisted, ready to play if anything breaks.
 5. Phone hotspot ready.
 
@@ -51,7 +51,7 @@ Watch the progress: *Generating wallet… Funding wallet… Minting passport on 
 
 > "I name my agent. Tell it what to do. Pick its tools. Three checkboxes."
 
-> "When I click Create, three things happen on Avalanche Fuji: the agent gets its own crypto wallet — with its own private key. The platform funds it with test AVAX and USDC. And we mint an on-chain passport binding this agent to me, on Avalanche."
+> "When I click Create, three things happen on Avalanche Fuji: the agent gets its own crypto wallet — with its own private key. The platform funds it with test AVAX for gas. And we mint an on-chain passport binding this agent to me, on Avalanche."
 
 > "Three transactions, eight seconds, zero crypto knowledge required from the user."
 
@@ -157,7 +157,7 @@ Animation: red → "Verifying passport..." → green pulse. Iframe morphs into c
 - ❌ Don't navigate Snowtrace too long — it's a verification flash, not a tour.
 - ❌ Don't apologize for what's missing. Talk about what's there.
 - ❌ Don't say "we ran out of time." Say "we focused on…"
-- ❌ Don't use jargon judges might not know — say "Avalanche" not "C-Chain"; say "wallet" not "EOA"; say "audit trail" not "Merkle root".
+- ❌ Don't use jargon the audience might not know — say "Avalanche" not "C-Chain"; say "wallet" not "EOA"; say "audit trail" not "Merkle root".
 
 ## What to do
 

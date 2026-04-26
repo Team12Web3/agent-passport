@@ -1,6 +1,4 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { maxUint256 } from "viem";
-
 vi.mock("server-only", () => ({}));
 
 const {
@@ -50,7 +48,7 @@ describe("POST /api/log/submit", () => {
     vi.clearAllMocks();
   });
 
-  it("auto-approves and submits an ActionLog payment without user re-signing", async () => {
+  it("submits a zero-fee ActionLog entry without USDC approval", async () => {
     getSessionUserMock.mockResolvedValue({
       user: { id: "user-1" },
     });
@@ -97,9 +95,6 @@ describe("POST /api/log/submit", () => {
       .fn()
       .mockResolvedValueOnce(
         "0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-      )
-      .mockResolvedValueOnce(
-        "0xbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
       );
 
     getSignerFromEncryptedKeyMock.mockReturnValue({
@@ -113,7 +108,6 @@ describe("POST /api/log/submit", () => {
     });
 
     getPublicClientMock.mockReturnValue({
-      readContract: vi.fn().mockResolvedValue(0n),
       waitForTransactionReceipt: vi
         .fn()
         .mockResolvedValue({ blockNumber: 123n }),
@@ -134,7 +128,7 @@ describe("POST /api/log/submit", () => {
             "0x1111111111111111111111111111111111111111111111111111111111111111",
           actionsRoot:
             "0x2222222222222222222222222222222222222222222222222222222222222222",
-          feeAmount: "100000",
+          feeAmount: "0",
           beneficiary: "0x3333333333333333333333333333333333333333",
         }),
       }),
@@ -143,29 +137,19 @@ describe("POST /api/log/submit", () => {
     expect(response.status).toBe(200);
     await expect(response.json()).resolves.toEqual({
       txHash:
-        "0xbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
       blockNumber: 123,
     });
 
-    expect(writeContractMock).toHaveBeenNthCalledWith(
-      1,
-      expect.objectContaining({
-        functionName: "approve",
-        args: [
-          "0x00000000000000000000000000000000000000aa",
-          maxUint256,
-        ],
-      }),
-    );
-    expect(writeContractMock).toHaveBeenNthCalledWith(
-      2,
+    expect(writeContractMock).toHaveBeenCalledOnce();
+    expect(writeContractMock).toHaveBeenCalledWith(
       expect.objectContaining({
         functionName: "logAction",
         args: [
           42n,
           "0x1111111111111111111111111111111111111111111111111111111111111111",
           "0x2222222222222222222222222222222222222222222222222222222222222222",
-          100000n,
+          0n,
           "0x3333333333333333333333333333333333333333",
         ],
       }),

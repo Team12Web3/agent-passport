@@ -34,16 +34,23 @@ function getHostFromHeaders(): string | null {
 }
 
 export function getThirdwebAuthDomain(): string {
+  const host = getHostFromHeaders();
   const configured =
     process.env.NEXT_PUBLIC_THIRDWEB_AUTH_DOMAIN ??
     process.env.NEXT_PUBLIC_APP_URL ??
     process.env.VERCEL_URL;
 
+  // In local dev the app can move from 3000 to 3001 when the default port is
+  // occupied. SIWE domains must match the actual request host, so prefer the
+  // live localhost host over a stale env value.
+  if (host && /^(localhost|127\.0\.0\.1)(:\d+)?$/.test(host)) {
+    return stripProtocol(host);
+  }
+
   if (configured) {
     return stripProtocol(configured);
   }
 
-  const host = getHostFromHeaders();
   if (!host) {
     throw new Error(
       "Missing auth domain. Set NEXT_PUBLIC_THIRDWEB_AUTH_DOMAIN or NEXT_PUBLIC_APP_URL.",

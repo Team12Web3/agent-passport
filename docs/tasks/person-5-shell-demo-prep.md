@@ -13,7 +13,7 @@ apps/web/
 ├── app/
 │   ├── (marketing)/
 │   │   ├── layout.tsx               ← marketing-specific layout (no auth required)
-│   │   ├── page.tsx                 ← landing page  (THE FIRST THING JUDGES SEE)
+│   │   ├── page.tsx                 ← landing page  (THE FIRST THING VISITORS SEE)
 │   │   └── about/
 │   │       └── page.tsx             ← "How it works"
 │   ├── login/
@@ -51,7 +51,7 @@ You are blocked by very little. Most of your work is independent.
 - [ ] "How it works" 3-step explainer
 - [ ] Footer with GitHub link + hackathon credit
 - [ ] Mobile-responsive (single-column collapse)
-- [ ] Looks polished — judges might browse it during pitch
+- [ ] Looks polished — visitors will browse it during the demo
 
 ### About page (`/about`)
 
@@ -295,13 +295,13 @@ Rehearsals 1–3 (90 seconds each, 30-min cycle):
 
 Rehearsal 4: **Recorded** — phone on tripod, full audio, full video. This is your **backup tape**.
 
-Rehearsal 5: live in front of a teammate playing "judge". They ask one of the [anticipated questions](../07-demo-script.md#handling-questions). You answer.
+Rehearsal 5: live in front of a teammate playing the audience. They ask one of the [anticipated questions](../07-demo-script.md#handling-questions). You answer.
 
 If anything in rehearsal 5 fails, fix it and run rehearsal 6.
 
 ## Common pitfalls
 
-- **Marketing page over-engineering.** It's the first thing judges see, but they'll see it for 5 seconds. Don't spend 8 hours on it.
+- **Marketing page over-engineering.** It's the first thing visitors see, but they'll see it for 5 seconds. Don't spend 8 hours on it.
 - **Architecture diagram perfectionism.** Hand-drawn boxes with arrows is fine. Stop polishing.
 - **The "About" page no one will read.** Write it once, move on.
 - **README sprawl.** Link out to /docs; don't restate everything inline.

@@ -1,12 +1,9 @@
 import {
   createPublicClient,
   createWalletClient,
-  erc20Abi,
   formatEther,
-  formatUnits,
   http,
   parseEther,
-  parseUnits,
 } from "viem";
 import { privateKeyToAccount } from "viem/accounts";
 import { avalancheFuji } from "viem/chains";
@@ -14,12 +11,17 @@ import { avalancheFuji } from "viem/chains";
 type CliOptions = {
   topupAddress?: `0x${string}`;
   avaxAmount?: string;
-  usdcAmount?: string;
 };
 
 function getRequiredEnv(name: string): string {
   const value = process.env[name];
   if (!value) throw new Error(`Missing ${name}`);
+  return value;
+}
+
+function getEnvWithFallback(name: string, fallbackName: string): string {
+  const value = process.env[name] ?? process.env[fallbackName];
+  if (!value) throw new Error(`Missing ${name} (or ${fallbackName} fallback)`);
   return value;
 }
 
@@ -42,7 +44,6 @@ function parseArgs(argv: string[]): CliOptions {
     }
 
     if (arg === "--usdc") {
-      options.usdcAmount = argv[index + 1];
       index += 1;
     }
   }
@@ -61,10 +62,7 @@ function assertHexAddress(
 
 async function printBalances() {
   const rpcUrl = getRequiredEnv("NEXT_PUBLIC_FUJI_RPC");
-  const usdcAddress = getRequiredEnv("NEXT_PUBLIC_USDC_ADDRESS");
-  const faucetPrivateKey = getRequiredEnv("FAUCET_PRIVATE_KEY");
-
-  assertHexAddress("NEXT_PUBLIC_USDC_ADDRESS", usdcAddress);
+  const faucetPrivateKey = getEnvWithFallback("FAUCET_PRIVATE_KEY", "PLATFORM_PRIVATE_KEY");
 
   const faucetAccount = privateKeyToAccount(faucetPrivateKey as `0x${string}`);
   const publicClient = createPublicClient({
@@ -72,27 +70,18 @@ async function printBalances() {
     transport: http(rpcUrl),
   });
 
-  const [avaxBalance, usdcBalance] = await Promise.all([
-    publicClient.getBalance({ address: faucetAccount.address }),
-    publicClient.readContract({
-      address: usdcAddress,
-      abi: erc20Abi,
-      functionName: "balanceOf",
-      args: [faucetAccount.address],
-    }),
-  ]);
+  const avaxBalance = await publicClient.getBalance({
+    address: faucetAccount.address,
+  });
 
   console.log(`Faucet address: ${faucetAccount.address}`);
   console.log(`AVAX balance:   ${formatEther(avaxBalance)} AVAX`);
-  console.log(`USDC balance:   ${formatUnits(usdcBalance, 6)} USDC`);
 }
 
-async function topUpWallet(options: Required<CliOptions>) {
+async function topUpWallet(options: Required<Pick<CliOptions, "topupAddress" | "avaxAmount">>) {
   const rpcUrl = getRequiredEnv("NEXT_PUBLIC_FUJI_RPC");
-  const usdcAddress = getRequiredEnv("NEXT_PUBLIC_USDC_ADDRESS");
-  const faucetPrivateKey = getRequiredEnv("FAUCET_PRIVATE_KEY");
+  const faucetPrivateKey = getEnvWithFallback("FAUCET_PRIVATE_KEY", "PLATFORM_PRIVATE_KEY");
 
-  assertHexAddress("NEXT_PUBLIC_USDC_ADDRESS", usdcAddress);
   assertHexAddress("--topup", options.topupAddress);
 
   const faucetAccount = privateKeyToAccount(faucetPrivateKey as `0x${string}`);
@@ -118,20 +107,6 @@ async function topUpWallet(options: Required<CliOptions>) {
     confirmations: 1,
   });
   console.log(`AVAX tx hash:   ${avaxHash}`);
-
-  console.log(`Sending USDC:   ${options.usdcAmount}`);
-
-  const usdcHash = await walletClient.writeContract({
-    address: usdcAddress,
-    abi: erc20Abi,
-    functionName: "transfer",
-    args: [options.topupAddress, parseUnits(options.usdcAmount, 6)],
-  });
-  await publicClient.waitForTransactionReceipt({
-    hash: usdcHash,
-    confirmations: 1,
-  });
-  console.log(`USDC tx hash:   ${usdcHash}`);
 }
 
 async function main() {
@@ -142,14 +117,13 @@ async function main() {
     return;
   }
 
-  if (!options.avaxAmount || !options.usdcAmount) {
-    throw new Error("Top-up mode requires --avax <amount> and --usdc <amount>");
+  if (!options.avaxAmount) {
+    throw new Error("Top-up mode requires --avax <amount>");
   }
 
   await topUpWallet({
     topupAddress: options.topupAddress,
     avaxAmount: options.avaxAmount,
-    usdcAmount: options.usdcAmount,
   });
 }
 

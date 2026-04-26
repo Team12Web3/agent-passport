@@ -15,7 +15,11 @@ import {
   getPublicClient,
 } from "@/lib/chain/client";
 import { AgentPassport, assertContractsDeployed } from "@/lib/chain/contracts";
-import { createAgentWallet, fundAgentWallet } from "@/lib/agent/wallet";
+import {
+  AgentFundingError,
+  createAgentWallet,
+  fundAgentWallet,
+} from "@/lib/agent/wallet";
 
 export const runtime = "nodejs";
 
@@ -37,6 +41,11 @@ export async function POST(req: Request) {
   } catch (err) {
     if (err instanceof z.ZodError) return validationError(err);
     return json({ error: "invalid_json" }, { status: 400 });
+  }
+
+  const ownerAddress = (session.user.wallet_address as Hex | null);
+  if (!ownerAddress) {
+    return json({ error: "missing_wallet" }, { status: 400 });
   }
 
   // 1. Provision wallet
@@ -78,6 +87,13 @@ export async function POST(req: Request) {
   } catch (err) {
     console.error("[agents/create] funding step", err);
     await supabase.from("agents").delete().eq("id", draftAgent.id);
+    if (err instanceof AgentFundingError) {
+      return provisioningFailed("funding", {
+        reason: err.code,
+        available: err.available,
+        required: err.required,
+      });
+    }
     return provisioningFailed("funding");
   }
 
@@ -88,8 +104,6 @@ export async function POST(req: Request) {
     const wallet = getPlatformWalletClient();
     const pub    = getPublicClient();
 
-    const ownerAddress =
-      (session.user.wallet_address as Hex | null) ?? walletAddress;
     const issuedAt = Math.floor(Date.now() / 1000);
     const unsignedClaims = createUnsignedAgentClaims({
       passportId: "pending",
@@ -172,3 +186,4 @@ export async function POST(req: Request) {
     { status: 201 },
   );
 }
+
