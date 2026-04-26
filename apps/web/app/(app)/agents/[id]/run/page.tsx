@@ -1,8 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { AnimatePresence, motion } from "framer-motion";
-import { fadeUp, stagger, useMotionVariant } from "@/lib/motion";
 import { useAgentRun } from "@/hooks/useAgentRun";
 import { RunControls, DEMO_URL, DEMO_PROMPT } from "@/components/run/RunControls";
 import { SplitView } from "@/components/run/SplitView";
