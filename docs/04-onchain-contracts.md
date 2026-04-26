@@ -93,6 +93,8 @@ For the trust protocol, the `passportId` can resolve not just to the wallet bind
 
 That is what powers `X-Agent-Passport-ID` as an attribute-proof header.
 
+For the hackathon demo, the passport's `metadataURI` may carry a signed JSON-LD claims packet directly. The request can also repeat that packet in `X-Agent-Claims` plus `X-Agent-Claims-Signature` so a website can compare the request-level attestation with the passport-linked metadata.
+
 ---
 
 ## `ActionLog.sol`
@@ -153,14 +155,15 @@ After deploy, call `AgentPassport.setActionLog(address)` (a one-shot setter) so 
 
 ## Staking / slashing companion flow
 
-To prevent malicious agents, the protocol can pair the passport with a simple stake vault:
+To prevent malicious agents, the protocol now pairs the passport with a simple `StakeVault` companion contract keyed by `passportId`:
 
 ```solidity
 function depositStake(uint256 passportId) external payable;
-function slashStake(uint256 passportId, uint256 amount, bytes calldata evidence) external;
+function slashStake(uint256 passportId, uint256 amount, bytes32 evidenceHash) external;
+function getStake(uint256 passportId) external view returns (uint256 activeStake, uint256 totalSlashed, uint64 lastStakeAt);
 ```
 
-The website can submit signed request evidence when it detects obvious abuse such as a DDoS pattern. A demo-friendly default is `0.1 ETH` staked per passport ID. Once the evidence is verified, that stake can be slashed.
+The website can submit signed request evidence when it detects obvious abuse such as a DDoS pattern. A demo-friendly default is `0.1 ETH` staked per passport ID. Once the evidence is verified, that stake can be slashed. The same stake summary can also be checked in middleware before high-value content is returned.
 
 This is what gives `X-Agent-Signature` economic consequences rather than just identity value.
 
@@ -178,6 +181,13 @@ function isAuthorizedSessionKey(uint256 passportId, address sessionKey) external
 
 When the middleware verifies `X-Agent-Signature`, it can recover the signer and then confirm that the signer is a valid session key authorized by the owner's main wallet.
 
+For the hackathon demo, we simulate these ERC-4337-style semantics with:
+
+- `X-Agent-Session-Grant` - an owner-scoped delegation document carrying `sessionKey`, `expiresAt`, `allowedOrigins`, `allowedActions`, and `maxAmountUsd`
+- `X-Agent-Session-Proof` - the owner wallet's signature over that delegation document
+
+That gives us the "employee ID" behavior without wiring a full smart-account validator module under time pressure.
+
 ---
 
 ## ZK intent-proof companion flow
@@ -193,7 +203,14 @@ function verifyIntentProof(
 ) external view returns (bool);
 ```
 
-The demo can stub the proof backend if needed, but the header surface should still support the extended `X-Agent-Intent-Hash` flow.
+For the hackathon demo, the proof backend can be stubbed with an ECDSA-signed proof flow instead of a full zkVM:
+
+- keep `X-Agent-Intent-Hash`
+- add `X-Agent-Action-Hash`
+- add `X-Agent-Intent-Proof`
+- sign `(passportId, timestamp, intentHash, actionHash)` with the trusted agent/session signer
+
+That gives us a clear "Verifiable Intents" logic flow without hand-writing custom ZK circuits under time pressure. A production version can swap this proof payload for a real RISC Zero receipt later without changing the higher-level header story.
 
 ---
 

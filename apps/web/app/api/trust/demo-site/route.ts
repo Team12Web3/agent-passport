@@ -24,7 +24,10 @@ function deny(
     | "stale_timestamp"
     | "bad_signature"
     | "invalid_session_key"
+    | "insufficient_stake"
     | "invalid_intent_proof"
+    | "invalid_attestation"
+    | "session_scope_violation"
     | "replayed_nonce"
     | "untrusted_agent",
   message: string,
@@ -43,6 +46,7 @@ export async function GET(req: Request) {
   const result = await verifyAgentHeaders({
     headers: req.headers,
     url: req.url,
+    requireStake: true,
   });
 
   if (!result.ok) {

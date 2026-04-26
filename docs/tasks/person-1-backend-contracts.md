@@ -87,9 +87,10 @@ Tick each off as you go. **All must pass for the demo to work.**
 
 ### Mock trusting site (`/api/trust/demo-site`)
 
-- [ ] Returns 403 if any of three trust headers missing
+- [ ] Returns 403 if any required trust headers are missing
 - [ ] Returns 403 if timestamp >60s stale
 - [ ] Returns 403 if signature recovers to wrong address
+- [ ] Returns 403 if session proof, intent proof, or action-hash validation fails
 - [ ] Returns 403 if passport inactive
 - [ ] Returns 200 + clean JSON when all checks pass
 - [ ] All 403s include `captchaPlaceholder: true` for UI
@@ -250,14 +251,33 @@ Verify the agent belongs to the current user before running.
 ```
 Create app/api/trust/demo-site/route.ts. GET handler.
 
-Read X-Agent-Passport-ID, X-Agent-Signature, X-Agent-Timestamp from
-request.headers. If any missing, return:
+Read the full trust-header bundle from request.headers:
+  - X-Agent-Passport-ID
+  - X-Agent-Signature
+  - X-Agent-Timestamp
+  - X-Agent-Session-Grant
+  - X-Agent-Session-Proof
+  - X-Agent-Claims
+  - X-Agent-Claims-Signature
+  - X-Agent-Intent-Hash
+  - X-Agent-Action-Hash
+  - X-Agent-Intent-Proof
+
+If any required headers are missing, return:
   Response.json({ error: "captcha_required",
                   message: "This site only accepts verified agents.",
                   captchaPlaceholder: true }, { status: 403 });
 
-Then call lib/agent/verify.ts verifyAgentHeaders({ headers, url: request.url }).
-Trap the specific failure: stale_timestamp, bad_signature, untrusted_agent.
+Then call lib/agent/verify.ts verifyAgentHeaders({
+  headers,
+  url: request.url,
+  expectedIntent,
+  expectedAction,
+  requireStake: true,
+}).
+Trap the specific failure: stale_timestamp, bad_signature, invalid_session_key,
+insufficient_stake, session_scope_violation, invalid_attestation, invalid_intent_proof,
+invalid_action_proof, replayed_nonce, untrusted_agent.
 Return 403 with the matching error code and captchaPlaceholder: true.
 
 On success, return 200:
@@ -268,6 +288,11 @@ On success, return 200:
       { name: "Scout journal", price: "$28" },
       { name: "Brass compass", price: "$65" } ],
     trustScore: passport.trustScore }
+
+For the hackathon demo, the proof-of-execution step may be simulated with
+ECDSA. The route should still enforce the same trust flow: no passport gets
+blocked, a valid passport plus active stake plus proof gets the green channel,
+and a tampered action, forged proof, or empty stake pool gets rejected.
 ```
 
 ## Common pitfalls

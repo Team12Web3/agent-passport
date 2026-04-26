@@ -2,22 +2,43 @@ import "server-only";
 
 import { recoverMessageAddress, type Hex } from "viem";
 
+import {
+  decodeClaims,
+  verifyClaimsSignature,
+  type AgentClaims,
+} from "./claims";
 import { getPublicClient } from "../chain/client";
 import { AgentPassport, assertContractsDeployed } from "../chain/contracts";
 import { getSupabase } from "../db/supabase";
 import { isNonceUsed, markNonceUsed } from "./nonces";
 import {
+  decodeSessionGrant,
+  isActionAllowed,
+  isAmountAllowed,
+  isOriginAllowed,
+  isSessionGrantActive,
+  verifySessionGrantOwnerProof,
+  type SessionGrant,
+} from "./session";
+import { getPassportStakeSummary } from "./staking";
+import {
+  buildActionHash,
   buildIntentHash,
+  buildIntentProofDigest,
   buildSessionProofDigest,
   buildTrustDigest,
 } from "./sign";
 
 export type PassportAttributes = {
   developer: string | null;
+  developerWallet: Hex | null;
   modelPlatform: string | null;
   labels: string[];
+  complianceClaims: string[];
   source: "metadata_uri" | "unresolved";
   easUid: string | null;
+  claimsVerified: boolean;
+  claimsType: string | null;
 };
 
 export type VerifiedPassport = {
@@ -35,7 +56,10 @@ export type VerifyFailureReason =
   | "stale_timestamp"
   | "bad_signature"
   | "invalid_session_key"
+  | "insufficient_stake"
   | "invalid_intent_proof"
+  | "invalid_attestation"
+  | "session_scope_violation"
   | "replayed_nonce"
   | "untrusted_agent";
 
@@ -59,6 +83,9 @@ export type VerifyAgentHeadersInput = {
   headers: Headers;
   url: string;
   expectedIntent?: unknown;
+  expectedAction?: unknown;
+  expectedAmountUsd?: number;
+  requireStake?: boolean;
 };
 
 type PassportRecord = {
@@ -72,6 +99,11 @@ type PassportRecord = {
 
 const MAX_SKEW_SECONDS = 60;
 const NONCE_HEADER = "X-Agent-Nonce";
+const ACTION_HASH_HEADER = "X-Agent-Action-Hash";
+const INTENT_PROOF_HEADER = "X-Agent-Intent-Proof";
+const SESSION_GRANT_HEADER = "X-Agent-Session-Grant";
+const CLAIMS_HEADER = "X-Agent-Claims";
+const CLAIMS_SIGNATURE_HEADER = "X-Agent-Claims-Signature";
 
 function fail(reason: VerifyFailureReason, message: string): VerifyResult {
   return {
@@ -108,12 +140,16 @@ export async function resolvePassportAttributes(
 
       return {
         developer: parsed.developer ?? null,
+        developerWallet: null,
         modelPlatform: parsed.modelPlatform ?? null,
         labels: Array.isArray(parsed.labels)
           ? parsed.labels.filter((label): label is string => typeof label === "string")
           : [],
+        complianceClaims: [],
         source: "metadata_uri",
         easUid: parsed.easUid ?? null,
+        claimsVerified: false,
+        claimsType: null,
       };
     }
   } catch {
@@ -122,11 +158,40 @@ export async function resolvePassportAttributes(
 
   return {
     developer: null,
+    developerWallet: null,
     modelPlatform: null,
     labels: [],
+    complianceClaims: [],
     source: "unresolved",
     easUid: null,
+    claimsVerified: false,
+    claimsType: null,
   };
+}
+
+async function resolveClaimsFromMetadata(
+  metadataURI: string,
+): Promise<AgentClaims | null> {
+  if (!metadataURI.startsWith("data:application/json,")) {
+    return null;
+  }
+
+  try {
+    const parsed = JSON.parse(
+      decodeURIComponent(metadataURI.slice("data:application/json,".length)),
+    ) as Record<string, unknown>;
+
+    if (
+      parsed["@context"] === "https://agentpassport.dev/claims/v1" &&
+      parsed.type === "AgentPassportClaims"
+    ) {
+      return parsed as unknown as AgentClaims;
+    }
+  } catch {
+    // fall through
+  }
+
+  return null;
 }
 
 async function lookupAgentIdByPassportId(passportId: string): Promise<string | null> {
@@ -197,6 +262,39 @@ async function recoverSessionSignerCandidates(args: {
   return [...candidates];
 }
 
+async function recoverIntentProofSignerCandidates(args: {
+  passportId: string;
+  timestamp: string;
+  intentHash: Hex;
+  actionHash: Hex;
+  intentProof: Hex;
+  ownerWallet: Hex;
+}): Promise<Hex[]> {
+  const candidates = new Set<Hex>();
+
+  for (const ownerWallet of [args.ownerWallet, undefined] as const) {
+    try {
+      const recovered = await recoverMessageAddress({
+        message: {
+          raw: buildIntentProofDigest({
+            passportId: args.passportId,
+            timestamp: args.timestamp,
+            intentHash: args.intentHash,
+            actionHash: args.actionHash,
+            ownerWallet,
+          }),
+        },
+        signature: args.intentProof,
+      });
+      candidates.add(recovered);
+    } catch {
+      // Ignore this candidate and keep trying compatibility fallbacks.
+    }
+  }
+
+  return [...candidates];
+}
+
 /**
  * Verifies the trust-header bundle on an inbound site request.
  *
@@ -222,9 +320,24 @@ export async function verifyAgentHeaders(
     "X-Agent-Session-Proof",
   ) as Hex | null;
   const intentHash = getHeader(args.headers, "X-Agent-Intent-Hash");
+  const actionHash = getHeader(args.headers, ACTION_HASH_HEADER);
+  const intentProof = getHeader(args.headers, INTENT_PROOF_HEADER) as Hex | null;
+  const encodedSessionGrant = getHeader(args.headers, SESSION_GRANT_HEADER);
+  const encodedClaims = getHeader(args.headers, CLAIMS_HEADER);
+  const claimsSignature = getHeader(args.headers, CLAIMS_SIGNATURE_HEADER) as
+    | Hex
+    | null;
   const nonce = getHeader(args.headers, NONCE_HEADER);
 
-  if (!passportId || !signature || !timestamp || !sessionProof || !intentHash) {
+  if (
+    !passportId ||
+    !signature ||
+    !timestamp ||
+    !sessionProof ||
+    !intentHash ||
+    !actionHash ||
+    !intentProof
+  ) {
     return fail("captcha_required", "Missing one or more trust headers.");
   }
 
@@ -240,6 +353,12 @@ export async function verifyAgentHeaders(
     return fail(
       "invalid_intent_proof",
       "Intent hash must be a 32-byte hex string.",
+    );
+  }
+  if (!isHex32(actionHash)) {
+    return fail(
+      "invalid_intent_proof",
+      "Action hash must be a 32-byte hex string.",
     );
   }
 
@@ -270,6 +389,15 @@ export async function verifyAgentHeaders(
     args: [BigInt(passportId)],
   })) as PassportRecord;
 
+  let sessionGrant: SessionGrant | null = null;
+  if (encodedSessionGrant) {
+    try {
+      sessionGrant = decodeSessionGrant(encodedSessionGrant);
+    } catch {
+      return fail("invalid_session_key", "Session grant could not be decoded.");
+    }
+  }
+
   const signerMatchesWallet =
     recoveredSigner.toLowerCase() === passport.agentWallet.toLowerCase();
   const recoveredSessionSigners = await recoverSessionSignerCandidates({
@@ -288,16 +416,69 @@ export async function verifyAgentHeaders(
   }
 
   let signerAuthorized = false;
-  for (const recoveredSessionSigner of recoveredSessionSigners) {
+  if (sessionGrant) {
+    if (sessionGrant.passportId !== passportId) {
+      return fail("invalid_session_key", "Session grant passportId mismatch.");
+    }
     if (
-      await isAuthorizedSessionSigner(
-        passport,
-        recoveredSigner,
-        recoveredSessionSigner,
-      )
+      sessionGrant.ownerWallet.toLowerCase() !== passport.owner.toLowerCase()
     ) {
-      signerAuthorized = true;
-      break;
+      return fail("invalid_session_key", "Session grant owner mismatch.");
+    }
+    if (
+      sessionGrant.sessionKey.toLowerCase() !== recoveredSigner.toLowerCase()
+    ) {
+      return fail(
+        "invalid_session_key",
+        "Request signer does not match the delegated session key.",
+      );
+    }
+    if (
+      !(await verifySessionGrantOwnerProof(sessionGrant, sessionProof))
+    ) {
+      return fail(
+        "invalid_session_key",
+        "Owner authorization proof for the session key is invalid.",
+      );
+    }
+    const now = Math.floor(Date.now() / 1000);
+    if (!isSessionGrantActive(sessionGrant, now)) {
+      return fail(
+        "session_scope_violation",
+        "Session key is expired or not yet active.",
+      );
+    }
+    if (!isOriginAllowed(sessionGrant, args.url)) {
+      return fail(
+        "session_scope_violation",
+        "Session key is not authorized for this origin.",
+      );
+    }
+    if (!isActionAllowed(sessionGrant, args.expectedAction ?? actionHash)) {
+      return fail(
+        "session_scope_violation",
+        "Session key is not authorized for this action.",
+      );
+    }
+    if (!isAmountAllowed(sessionGrant, args.expectedAmountUsd)) {
+      return fail(
+        "session_scope_violation",
+        "Session key exceeds its configured spending limit.",
+      );
+    }
+    signerAuthorized = true;
+  } else {
+    for (const recoveredSessionSigner of recoveredSessionSigners) {
+      if (
+        await isAuthorizedSessionSigner(
+          passport,
+          recoveredSigner,
+          recoveredSessionSigner,
+        )
+      ) {
+        signerAuthorized = true;
+        break;
+      }
     }
   }
 
@@ -319,6 +500,42 @@ export async function verifyAgentHeaders(
     );
   }
 
+  if (args.requireStake) {
+    const stake = await getPassportStakeSummary(passportId);
+    if (stake.stakeVaultEnabled && !stake.hasMinimumStake) {
+      return fail(
+        "insufficient_stake",
+        `Passport ${passportId} does not meet the required stake of ${stake.requiredStakeEth} ETH.`,
+      );
+    }
+  }
+
+  const recoveredIntentProofSigners = await recoverIntentProofSignerCandidates({
+    passportId,
+    timestamp,
+    intentHash,
+    actionHash,
+    intentProof,
+    ownerWallet: passport.owner,
+  });
+  if (recoveredIntentProofSigners.length === 0) {
+    return fail(
+      "invalid_intent_proof",
+      "Could not recover signer from intent proof.",
+    );
+  }
+
+  const normalizedRecoveredSigner = recoveredSigner.toLowerCase();
+  const intentProofMatchesSigner = recoveredIntentProofSigners.some(
+    (candidate) => candidate.toLowerCase() === normalizedRecoveredSigner,
+  );
+  if (!intentProofMatchesSigner) {
+    return fail(
+      "invalid_intent_proof",
+      "Intent proof signer does not match the trusted request signer.",
+    );
+  }
+
   if (
     args.expectedIntent !== undefined &&
     buildIntentHash(args.expectedIntent).toLowerCase() !== intentHash.toLowerCase()
@@ -326,6 +543,16 @@ export async function verifyAgentHeaders(
     return fail(
       "invalid_intent_proof",
       "Intent hash does not match the expected intent.",
+    );
+  }
+
+  if (
+    args.expectedAction !== undefined &&
+    buildActionHash(args.expectedAction).toLowerCase() !== actionHash.toLowerCase()
+  ) {
+    return fail(
+      "invalid_intent_proof",
+      "Action hash does not match the expected action.",
     );
   }
 
@@ -358,7 +585,73 @@ export async function verifyAgentHeaders(
     trustScore: Number(passport.trustScore),
   };
 
-  const attributes = await resolvePassportAttributes(passport);
+  const metadataClaims = await resolveClaimsFromMetadata(passport.metadataURI);
+  let headerClaims: AgentClaims | null = null;
+  if (encodedClaims) {
+    try {
+      headerClaims = decodeClaims(encodedClaims);
+    } catch {
+      return fail("invalid_attestation", "Claims packet could not be decoded.");
+    }
+  }
+  if (headerClaims && claimsSignature) {
+    headerClaims = { ...headerClaims, developerSignature: claimsSignature };
+  }
+
+  if (headerClaims) {
+    const claimsVerified = await verifyClaimsSignature(headerClaims);
+    if (!claimsVerified) {
+      return fail(
+        "invalid_attestation",
+        "Developer signature on the claims packet is invalid.",
+      );
+    }
+    if (headerClaims.passportId !== passportId) {
+      return fail("invalid_attestation", "Claims packet passportId mismatch.");
+    }
+    if (headerClaims.trustScore !== verifiedPassport.trustScore) {
+      return fail(
+        "invalid_attestation",
+        "Claims packet trust score does not match the on-chain passport.",
+      );
+    }
+    if (metadataClaims) {
+      const metadataSignatureOk = await verifyClaimsSignature(metadataClaims);
+      if (!metadataSignatureOk) {
+        return fail(
+          "invalid_attestation",
+          "On-chain claims packet is missing a valid developer signature.",
+        );
+      }
+      if (
+        metadataClaims.developer !== headerClaims.developer ||
+        metadataClaims.modelPlatform !== headerClaims.modelPlatform ||
+        JSON.stringify([...metadataClaims.labels].sort()) !==
+          JSON.stringify([...headerClaims.labels].sort())
+      ) {
+        return fail(
+          "invalid_attestation",
+          "Claims header does not match the on-chain passport attestation.",
+        );
+      }
+    }
+  }
+
+  let attributes = await resolvePassportAttributes(passport);
+  if (metadataClaims) {
+    const claimsVerified = await verifyClaimsSignature(metadataClaims);
+    attributes = {
+      developer: metadataClaims.developer,
+      developerWallet: metadataClaims.developerWallet,
+      modelPlatform: metadataClaims.modelPlatform,
+      labels: metadataClaims.labels,
+      complianceClaims: metadataClaims.complianceClaims,
+      source: "metadata_uri",
+      easUid: metadataClaims.easUid,
+      claimsVerified,
+      claimsType: metadataClaims.type,
+    };
+  }
 
   return {
     ok: true,

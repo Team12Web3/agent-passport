@@ -189,19 +189,30 @@ Submit an `ActionLog` tx for a run that already happened. Used internally by the
 X-Agent-Passport-ID:   <decimal string>
 X-Agent-Signature:     0x<hex>
 X-Agent-Timestamp:     <unix seconds, decimal>
-X-Agent-Session-Proof: 0x<hex or encoded payload>
+X-Agent-Session-Grant: <base64url encoded session grant JSON>
+X-Agent-Session-Proof: 0x<owner authorization signature or legacy proof>
+X-Agent-Claims:        <base64url encoded JSON-LD claims packet>
+X-Agent-Claims-Signature: 0x<developer signature>
 X-Agent-Intent-Hash:   0x<hex>
+X-Agent-Action-Hash:   0x<hex>
+X-Agent-Intent-Proof:  0x<hex>
 ```
 
 **Verification (server-side):**
 1. All required headers present? Else `403 captcha_required`.
 2. `|now - timestamp| <= 60`? Else `403 stale_timestamp`.
-3. Resolve `X-Agent-Passport-ID` to the passport record plus its EAS attestation (or cached attestation data).
-4. Recover signer from `keccak256(passportId || "|" || url || "|" || timestamp || "|" || termsHash || "|" || intentHash)`.
-5. Verify the signer is a valid session key authorized on-chain by the passport owner.
-6. Verify the signature implies acceptance of the current Terms of Service.
-7. Optionally verify that the supplied intent proof shows the current action is derived from `X-Agent-Intent-Hash`.
-8. If the agent later abuses the site, persist the same signed payload as slashable evidence.
+3. Resolve `X-Agent-Passport-ID` to the passport record plus its EAS-compatible attestation pointer (or cached attestation data).
+4. Verify `X-Agent-Claims` and `X-Agent-Claims-Signature` as a signed JSON-LD claims packet for developer, model platform, labels, and trust score.
+5. Recover signer from `keccak256(passportId || "|" || url || "|" || timestamp || "|" || termsHash || "|" || intentHash)`.
+6. Verify `X-Agent-Session-Grant` plus `X-Agent-Session-Proof` as an owner-authorized delegated session key.
+7. Enforce the delegated session scope: time window, origin, action, and amount limit.
+8. Verify the signature implies acceptance of the current Terms of Service.
+9. Verify `X-Agent-Action-Hash` matches the action being approved.
+10. Verify `X-Agent-Intent-Proof` binds `(passportId, timestamp, intentHash, actionHash)` to the same trusted signer.
+11. If the `StakeVault` companion contract is deployed, require the passport to have at least the configured minimum stake before returning high-value data.
+12. If the agent later abuses the site, persist the same signed payload as slashable evidence.
+
+For the hackathon demo, `X-Agent-Intent-Proof` may be simulated with an ECDSA signature instead of a full zkVM proof, and the session-key layer may simulate ERC-4337 semantics with owner-signed delegated session grants instead of a full smart-account module. The goal is to demonstrate the trust logic flow clearly.
 
 **Success response** `200`
 ```ts
@@ -212,8 +223,12 @@ X-Agent-Intent-Hash:   0x<hex>
   trustScore: number,                              // echoed from passport
   attributes: {
     developer: string,
+    developerWallet?: `0x${string}`,
     modelPlatform: string,
-    labels: string[]
+    labels: string[],
+    complianceClaims?: string[],
+    easUid?: string | null,
+    claimsVerified?: boolean
   }
 }
 ```
@@ -226,7 +241,11 @@ X-Agent-Intent-Hash:   0x<hex>
     | "stale_timestamp"
     | "bad_signature"
     | "invalid_session_key"
+    | "insufficient_stake"
     | "invalid_intent_proof"
+    | "invalid_attestation"
+    | "session_scope_violation"
+    | "replayed_nonce"
     | "untrusted_agent",
   message: string,
   captchaPlaceholder: true       // tells our UI to show the fake CAPTCHA overlay
@@ -263,7 +282,9 @@ Website-side helper for submitting signed request evidence into a staking/slashi
 }
 ```
 
-**Owner:** Person 1.
+If `StakeVault` is not configured or the passport has no active stake, the route returns `accepted: false`.
+
+**Owner:** Person 1 (route), Person 2 (staking helper used by the route).
 
 ---
 
