@@ -1,7 +1,8 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState, type FormEvent, type ReactNode } from "react";
-import { useRouter } from "next/navigation";
+import { Suspense, useCallback, useEffect, useMemo, useState, type FormEvent, type ReactNode } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import type { Hex } from "viem";
 import { getContract, prepareContractCall, waitForReceipt, type ThirdwebClient } from "thirdweb";
 import { avalancheFuji } from "thirdweb/chains";
 import { deployContract } from "thirdweb/deploys";
@@ -35,16 +36,20 @@ import {
   type AgentRecord
 } from "@/lib/agentKeys";
 import { AgentCard } from "@/components/agents/AgentCard";
+import { CreateAgentDialog } from "@/components/agents/CreateAgentDialog";
+import { EmptyState } from "@/components/agents/EmptyState";
 import { deterministicPercent, shortenAddress } from "@/lib/utils";
 import { avatarInitials, avatarStyle } from "@/lib/avatar";
 import { getThirdwebClient } from "@/lib/thirdwebClient";
 
 type AgentRow = {
   agentId: string;
+  passportId: string;
   passport: Passport;
   trusted: boolean;
   progressPercent: number;
   sourceLabel: string;
+  agentPrivateKey?: Hex;
 };
 
 const MIN_TRUST_SCORE = 50;
@@ -72,11 +77,18 @@ export default function DashboardPage() {
     );
   }
 
-  return <DashboardShell client={client} />;
+  // useSearchParams() inside DashboardShell forces Next 14 to require a
+  // Suspense boundary at the page level for the static prerender step.
+  return (
+    <Suspense fallback={<FullPageMessage>Loading dashboard…</FullPageMessage>}>
+      <DashboardShell client={client} />
+    </Suspense>
+  );
 }
 
 function DashboardShell({ client }: { client: ThirdwebClient }) {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const account = useActiveAccount();
   const wallet = useActiveWallet();
   const chain = useActiveWalletChain();
@@ -125,6 +137,17 @@ function DashboardShell({ client }: { client: ThirdwebClient }) {
     message: null,
     ok: false
   });
+
+  const [dialogOpen, setDialogOpen] = useState(false);
+
+  // ?onboard=1 deep-link auto-opens the create dialog (per Person 4 spec).
+  // We only fire this once the wallet is connected and the contract is known
+  // so the dialog isn't shown on a screen that can't actually mint.
+  useEffect(() => {
+    if (searchParams?.get("onboard") === "1" && account?.address) {
+      setDialogOpen(true);
+    }
+  }, [searchParams, account?.address]);
 
   const linkedEmail = useMemo(() => {
     const profiles = profilesQuery.data;
@@ -180,10 +203,12 @@ function DashboardShell({ client }: { client: ThirdwebClient }) {
           const passport = toDisplayPassport(raw);
           return {
             agentId: rec.label || `agent-${rec.passportId}`,
+            passportId: rec.passportId,
             passport: { ...passport, agentId: rec.label || passport.agentId },
             trusted: passport.active && Number(passport.score) >= MIN_TRUST_SCORE,
             progressPercent: deterministicPercent(rec.passportId),
-            sourceLabel: `fuji · #${rec.passportId}`
+            sourceLabel: `fuji · #${rec.passportId}`,
+            agentPrivateKey: rec.privateKey
           } satisfies AgentRow;
         }),
         ...orphanIds.map(async (id) => {
@@ -192,6 +217,7 @@ function DashboardShell({ client }: { client: ThirdwebClient }) {
           const passport = toDisplayPassport(raw);
           return {
             agentId: `passport-${id.toString()}`,
+            passportId: id.toString(),
             passport,
             trusted: passport.active && Number(passport.score) >= MIN_TRUST_SCORE,
             progressPercent: deterministicPercent(id.toString()),
@@ -367,6 +393,8 @@ function DashboardShell({ client }: { client: ThirdwebClient }) {
         chainName={chain?.name}
         contractAddress={contractAddress}
         contractSource={contractAddressSource}
+        canCreate={isValidAddress(contractAddress)}
+        onCreate={() => setDialogOpen(true)}
         onProfile={() => setActiveTab("profile")}
         onLogout={handleLogout}
       />
@@ -443,6 +471,18 @@ function DashboardShell({ client }: { client: ThirdwebClient }) {
           />
         )}
       </div>
+
+      <CreateAgentDialog
+        open={dialogOpen}
+        onClose={() => setDialogOpen(false)}
+        client={client}
+        contractAddress={contractAddress}
+        ownerAddress={walletAddress}
+        onCreated={() => {
+          void hydrateOnChainAgents();
+          setActiveTab("monitor");
+        }}
+      />
     </main>
   );
 }
@@ -457,6 +497,8 @@ function Header({
   chainName,
   contractAddress,
   contractSource,
+  canCreate,
+  onCreate,
   onProfile,
   onLogout
 }: {
@@ -467,6 +509,8 @@ function Header({
   chainName: string | undefined;
   contractAddress: string;
   contractSource: "env" | "local" | "none";
+  canCreate: boolean;
+  onCreate: () => void;
   onProfile: () => void;
   onLogout: () => void;
 }) {
@@ -502,6 +546,16 @@ function Header({
         </div>
 
         <div className="ml-auto flex items-center gap-2">
+          {canCreate && (
+            <button
+              onClick={onCreate}
+              className="btn btn-primary focus-ring text-[12px]"
+              title="Mint a new agent passport"
+            >
+              <span aria-hidden className="text-[14px] leading-none">+</span>
+              <span className="hidden sm:inline">New agent</span>
+            </button>
+          )}
           <button onClick={onProfile} className="btn btn-ghost focus-ring">
             <span className="h-5 w-5 rounded-md flex items-center justify-center text-[10px] font-semibold text-white/95 font-mono" style={ownerAvatarStyle}>
               {ownerInitials}
@@ -587,12 +641,14 @@ function MonitorTab({
           <div className="grid gap-3.5 [grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr))]">
             {onChainRows.map((row) => (
               <AgentCard
-                key={`onchain-${row.passport.agentId}`}
+                key={`onchain-${row.passportId}`}
                 agentId={row.agentId}
                 passport={row.passport}
                 trusted={row.trusted}
                 progressPercent={row.progressPercent}
                 sourceLabel={row.sourceLabel}
+                passportId={row.passportId}
+                agentPrivateKey={row.agentPrivateKey}
               />
             ))}
           </div>
@@ -600,26 +656,6 @@ function MonitorTab({
           <EmptyState hasContract={hasContract} />
         )}
       </Section>
-    </div>
-  );
-}
-
-function EmptyState({ hasContract }: { hasContract: boolean }) {
-  return (
-    <div className="card p-8 text-center">
-      <div className="mx-auto h-10 w-10 rounded-xl bg-white/[0.04] border border-white/[0.06] flex items-center justify-center text-muted">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
-          <path d="M12 5v14M5 12h14" strokeLinecap="round" />
-        </svg>
-      </div>
-      <div className="mt-4 text-[14px] text-fg font-medium">
-        {hasContract ? "Mint your first passport" : "Deploy the contract to begin"}
-      </div>
-      <div className="mt-1 text-[12.5px] text-muted">
-        {hasContract
-          ? "A fresh agent wallet is generated in your browser and bound to your owner address on chain."
-          : "One-click deploy to Avalanche Fuji — costs a fraction of a cent in test AVAX."}
-      </div>
     </div>
   );
 }
