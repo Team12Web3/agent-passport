@@ -7,9 +7,11 @@
     "dev": "turbo run dev",
     "build": "turbo run build",
     "start": "pnpm --filter web start",
+
     "lint": "turbo run lint",
     "typecheck": "turbo run typecheck",
     "fund": "tsx scripts/fund.ts",
+
     "db:migrate": "bash supabase/migrate.sh",
     "contracts:install": "cd packages/contracts && forge install",
     "contracts:build": "cd packages/contracts && forge build",
