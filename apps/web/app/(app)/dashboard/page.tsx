@@ -1,6 +1,8 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useState, type FormEvent, type ReactNode } from "react";
+import { motion } from "framer-motion";
+import { stagger } from "@/lib/motion";
 import { useRouter } from "next/navigation";
 import { type ThirdwebClient } from "thirdweb";
 import { avalancheFuji } from "thirdweb/chains";
@@ -443,7 +445,12 @@ function MonitorTab({
         }
       >
         {onChainRows.length > 0 ? (
-          <div className="grid gap-3.5 [grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr))]">
+          <motion.div
+            initial="initial"
+            animate="animate"
+            variants={stagger}
+            className="grid gap-3.5 [grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr))]"
+          >
             {onChainRows.map((row) => (
               <AgentCard
                 key={`onchain-${row.passport.agentId}`}
@@ -454,7 +461,7 @@ function MonitorTab({
                 sourceLabel={row.sourceLabel}
               />
             ))}
-          </div>
+          </motion.div>
         ) : (
           <EmptyState hasContract={hasContract} />
         )}
