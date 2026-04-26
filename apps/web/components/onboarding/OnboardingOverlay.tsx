@@ -6,10 +6,9 @@ import { useRouter } from "next/navigation";
 
 import { fadeIn, scaleIn, slideX, useMotionVariant } from "@/lib/motion";
 import { StepUsername } from "./StepUsername";
-import { StepBalance } from "./StepBalance";
 import { StepMint } from "./StepMint";
 
-type Step = "username" | "balance" | "mint";
+type Step = "username" | "mint";
 
 export function OnboardingOverlay() {
   const router = useRouter();
@@ -44,7 +43,7 @@ export function OnboardingOverlay() {
         <div className="border-b border-white/[0.06] px-6 py-4">
           <div className="eyebrow">Welcome</div>
           <div className="mt-1 text-[13px] text-muted">
-            Three quick steps · {step === "username" ? "1" : step === "balance" ? "2" : "3"} of 3
+            Two quick steps · {step === "username" ? "1" : "2"} of 2
           </div>
         </div>
 
@@ -59,19 +58,9 @@ export function OnboardingOverlay() {
               <StepUsername
                 onNext={(u) => {
                   setUsername(u);
-                  setStep("balance");
+                  setStep("mint");
                 }}
               />
-            </motion.div>
-          )}
-          {step === "balance" && (
-            <motion.div
-              key="balance"
-              initial={slide.initial}
-              animate={slide.animate}
-              exit={slide.exit}
-            >
-              <StepBalance onNext={() => setStep("mint")} />
             </motion.div>
           )}
           {step === "mint" && (
