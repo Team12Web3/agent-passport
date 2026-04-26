@@ -1,8 +1,8 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useState, type FormEvent, type ReactNode } from "react";
-import { motion } from "framer-motion";
-import { stagger } from "@/lib/motion";
+import { AnimatePresence, motion } from "framer-motion";
+import { fadeUp, stagger, useMotionVariant } from "@/lib/motion";
 import { useRouter } from "next/navigation";
 import { type ThirdwebClient } from "thirdweb";
 import { avalancheFuji } from "thirdweb/chains";
@@ -97,6 +97,8 @@ function DashboardShell({ client }: { client: ThirdwebClient }) {
   const [error, setError] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<"monitor" | "create" | "profile">("monitor");
   const [agentLabel, setAgentLabel] = useState("");
+
+  const tabVariant = useMotionVariant(fadeUp);
 
   const linkedEmail = useMemo(() => {
     const profiles = profilesQuery.data;
@@ -264,45 +266,54 @@ function DashboardShell({ client }: { client: ThirdwebClient }) {
           }
         />
 
-        {activeTab === "monitor" && (
-          <MonitorTab
-            onChainRows={onChainRows}
-            walletAddress={walletAddress}
-            onCreate={() => setActiveTab("create")}
-            hasContract={true}
-          />
-        )}
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={activeTab}
+            initial={tabVariant.initial}
+            animate={tabVariant.animate}
+            exit={tabVariant.exit}
+          >
+            {activeTab === "monitor" && (
+              <MonitorTab
+                onChainRows={onChainRows}
+                walletAddress={walletAddress}
+                onCreate={() => setActiveTab("create")}
+                hasContract={true}
+              />
+            )}
 
-        {activeTab === "create" && (
-          <CreateTab
-            walletAddress={walletAddress}
-            agentLabel={agentLabel}
-            setAgentLabel={setAgentLabel}
-            onSubmit={handleCreateAgent}
-            createState={mintHook.state}
-            createdAgents={createdAgents}
-            contractAddress={mintHook.contractAddress}
-          />
-        )}
+            {activeTab === "create" && (
+              <CreateTab
+                walletAddress={walletAddress}
+                agentLabel={agentLabel}
+                setAgentLabel={setAgentLabel}
+                onSubmit={handleCreateAgent}
+                createState={mintHook.state}
+                createdAgents={createdAgents}
+                contractAddress={mintHook.contractAddress}
+              />
+            )}
 
-        {activeTab === "profile" && (
-          <ProfileTab
-            walletAddress={walletAddress}
-            linkedEmail={linkedEmail}
-            chainName={chain?.name}
-            chainId={chain?.id}
-            balanceLoading={walletBalanceQuery.isLoading}
-            balanceText={
-              walletBalanceQuery.data
-                ? `${walletBalanceQuery.data.displayValue} ${walletBalanceQuery.data.symbol}`
-                : null
-            }
-            contractAddress={contractAddress}
-            contractSource={contractAddressSource}
-            ownerAvatarStyle={ownerAvatar}
-            ownerInitials={avatarInitials(walletAddress)}
-          />
-        )}
+            {activeTab === "profile" && (
+              <ProfileTab
+                walletAddress={walletAddress}
+                linkedEmail={linkedEmail}
+                chainName={chain?.name}
+                chainId={chain?.id}
+                balanceLoading={walletBalanceQuery.isLoading}
+                balanceText={
+                  walletBalanceQuery.data
+                    ? `${walletBalanceQuery.data.displayValue} ${walletBalanceQuery.data.symbol}`
+                    : null
+                }
+                contractAddress={contractAddress}
+                contractSource={contractAddressSource}
+                ownerAvatarStyle={ownerAvatar}
+                ownerInitials={avatarInitials(walletAddress)}
+              />
+            )}
+          </motion.div>
+        </AnimatePresence>
       </div>
     </main>
   );
@@ -556,11 +567,21 @@ function CreateTab({
           </div>
         </form>
 
-        {createState.message && (
-          <Notice tone={showError ? "error" : "success"} className="mt-5">
-            {createState.message}
-          </Notice>
-        )}
+        <AnimatePresence>
+          {createState.message && (
+            <motion.div
+              key={createState.message}
+              initial={{ opacity: 0, y: -4 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -4 }}
+              transition={{ duration: 0.18, ease: [0.22, 1, 0.36, 1] }}
+            >
+              <Notice tone={showError ? "error" : "success"} className="mt-5">
+                {createState.message}
+              </Notice>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
         {createState.lastCreated && (
           <LatestPassport record={createState.lastCreated} contractAddress={contractAddress} />
