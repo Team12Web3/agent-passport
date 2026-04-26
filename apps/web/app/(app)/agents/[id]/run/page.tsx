@@ -5,7 +5,6 @@ import { useAgentRun } from "@/hooks/useAgentRun";
 import { RunControls, DEMO_URL, DEMO_PROMPT } from "@/components/run/RunControls";
 import { SplitView } from "@/components/run/SplitView";
 import { ResultCard } from "@/components/run/ResultCard";
-import { TrustProtocolDemo } from "@/components/run/TrustProtocolDemo";
 import { PassportStatusBar } from "@/components/run/PassportStatusBar";
 
 // ─── Fake CAPTCHA + 403 overlay for the main split-view iframe ───────────────
@@ -216,9 +215,6 @@ export default function AgentRunPage({ params }: Props) {
 
         {/* ── Result card (visible once a run completes) ───────────────── */}
         {result && <ResultCard result={result} />}
-
-        {/* ── Trust Protocol kill-shot section ────────────────────────── */}
-        <TrustProtocolDemo agentId={id} />
       </div>
 
       {/* ── Sticky passport status bar ────────────────────────────────── */}
