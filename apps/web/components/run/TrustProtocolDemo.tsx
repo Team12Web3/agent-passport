@@ -106,23 +106,22 @@ export function TrustProtocolDemo({ agentId }: { agentId: string }) {
   const [shaking,      setShaking]      = useState(false);
   const [running,      setRunning]      = useState(false);
 
-  // ── Watch the "without passport" stream for a blocked event ─────────────────
-  // FIX: useEffect reacts properly to React state — setInterval with closures
-  // would always capture the stale initial snapshot and never fire.
+  // ── Detect transitions ────────────────────────────────────────────────────
+  // Effects that only *transition* the phase. We deliberately keep the side
+  // effects (timers) in separate effects below — otherwise the state change
+  // fired here would re-run this effect, whose cleanup would kill its own
+  // freshly scheduled timer before it could fire.
+
+  // running → blocked
   useEffect(() => {
     if (withoutPhase !== "running") return;
     const isBlocked =
       withoutStatus === "blocked" ||
       withoutEvents.some((e) => e.type === "blocked");
-    if (!isBlocked) return;
-
-    setWithoutPhase("blocked");
-    setShaking(true);
-    const t = setTimeout(() => setShaking(false), 500);
-    return () => clearTimeout(t);
+    if (isBlocked) setWithoutPhase("blocked");
   }, [withoutStatus, withoutEvents, withoutPhase]);
 
-  // ── Watch the "with passport" stream for completion ──────────────────────────
+  // running → verifying
   useEffect(() => {
     if (withPhase !== "running") return;
     const isFinished =
@@ -131,16 +130,30 @@ export function TrustProtocolDemo({ agentId }: { agentId: string }) {
       withEvents.some(
         (e) => e.type === "logged" || e.type === "verified" || e.type === "done",
       );
-    if (!isFinished) return;
+    if (isFinished) setWithPhase("verifying");
+  }, [withStatus, withEvents, withPhase]);
 
-    setWithPhase("verifying");
-    // Minimum 1.5 s spinner so the audience can see the verification step
+  // ── Phase-driven timers ───────────────────────────────────────────────────
+  // These only depend on the phase that triggers them, so the cleanup runs
+  // *after* the timer fires (state-change-driven re-render).
+
+  // blocked → trigger 0.5 s shake
+  useEffect(() => {
+    if (withoutPhase !== "blocked") return;
+    setShaking(true);
+    const t = setTimeout(() => setShaking(false), 500);
+    return () => clearTimeout(t);
+  }, [withoutPhase]);
+
+  // verifying → wait 1.5 s minimum, then verified + unblock the button
+  useEffect(() => {
+    if (withPhase !== "verifying") return;
     const t = setTimeout(() => {
       setWithPhase("verified");
       setRunning(false);
     }, 1500);
     return () => clearTimeout(t);
-  }, [withStatus, withEvents, withPhase]);
+  }, [withPhase]);
 
   // ── Start both runs; offset "with" by 1500 ms ────────────────────────────────
   const startDemo = useCallback(async () => {
@@ -289,7 +302,9 @@ export function TrustProtocolDemo({ agentId }: { agentId: string }) {
           disabled={running}
           className="rounded-lg px-8 py-3 text-sm font-semibold text-white transition disabled:cursor-not-allowed disabled:opacity-50"
           style={{
-            background: running ? "#3f3f46" : "linear-gradient(135deg,#E84142 0%,#c0392b 100%)",
+            background: running
+              ? "#3f3f46"
+              : "linear-gradient(135deg,rgb(47, 210, 85) 0%,rgb(46, 212, 52) 100%)",
           }}
         >
           {running ? (

@@ -59,8 +59,23 @@ export default function AgentRunPage({ params }: Props) {
   const { events, status, result, passportId, trustScore, run, reset } =
     useAgentRun();
 
-  // Fetch agent metadata once
+  // Fetch agent metadata once. If the URL id isn't a real UUID (mock-mode
+  // demo path: /agents/test123/run), the API returns 401/404, so we fall
+  // back to demo metadata so the top bar still renders.
   useEffect(() => {
+    const UUID_RE =
+      /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+    const mockMeta: AgentMeta = {
+      name:          "Demo Agent",
+      walletAddress: "0x91B1eE6ACc4f2081Df156618d74EdD74B936A722",
+      passportId:    "42",
+    };
+
+    if (!UUID_RE.test(id)) {
+      setAgent(mockMeta);
+      return;
+    }
+
     fetch(`/api/agents/${id}`)
       .then((r) => r.json())
       .then((data) => {
@@ -70,9 +85,11 @@ export default function AgentRunPage({ params }: Props) {
             walletAddress: data.agent.walletAddress,
             passportId:    data.agent.passportId,
           });
+        } else {
+          setAgent(mockMeta);
         }
       })
-      .catch(() => {});
+      .catch(() => setAgent(mockMeta));
   }, [id]);
 
   // Trigger a one-shot shake on the status bar + overlay when run becomes blocked
