@@ -1,6 +1,8 @@
 "use client";
 import { useState, useRef, useCallback } from "react";
+import { readStreamableValue } from "ai/rsc";
 import type { AgentEvent } from "@/lib/events";
+import { runAgentAction } from "@/app/actions/run";
 
 export type RunStatus = "idle" | "running" | "done" | "error" | "blocked";
 
@@ -158,53 +160,17 @@ export function useAgentRun() {
         return;
       }
 
-      // ── Real SSE path ─────────────────────────────────────────────────
+      // ── Server Action path ────────────────────────────────────────────
       try {
-        const res = await fetch("/api/run", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(input),
-          signal,
-        });
-
-        // Surface non-2xx responses (auth/validation/not-found) instead of
-        // hanging in "running" forever waiting for SSE frames that will
-        // never come.
-        if (!res.ok || !res.body) {
-          let message = `HTTP ${res.status}`;
-          try {
-            const j = (await res.json()) as { error?: string };
-            if (j?.error) message = `${message}: ${j.error}`;
-          } catch {
-            // body may not be JSON; keep the status-only message
-          }
-          applyEvent({ type: "error", message });
-          return;
-        }
-
-        const reader = res.body.getReader();
-        const dec = new TextDecoder();
-        let buf = "";
-
-        while (true) {
-          const { value, done } = await reader.read();
-          if (done) break;
-          buf += dec.decode(value, { stream: true });
-          const parts = buf.split("\n\n");
-          buf = parts.pop() ?? "";
-          for (const p of parts) {
-            if (!p.startsWith("data: ")) continue;
-            try {
-              const ev: AgentEvent = JSON.parse(p.slice(6));
-              applyEvent(ev);
-            } catch {
-              // malformed event — skip
-            }
-          }
+        const streamValue = await runAgentAction(input);
+        for await (const event of readStreamableValue(streamValue)) {
+          if (signal.aborted) break;
+          if (event) applyEvent(event);
         }
       } catch (err) {
-        if (err instanceof Error && err.name === "AbortError") return;
-        setStatus("error");
+        if (signal.aborted) return;
+        const message = err instanceof Error ? err.message : "run_failed";
+        applyEvent({ type: "error", message });
       }
     },
     [applyEvent, playScript],

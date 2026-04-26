@@ -112,8 +112,6 @@ export async function runAgentTask(
   } catch (err) {
     const reason = err instanceof Error ? err.message : "firecrawl failed";
 
-    // The "blocked" path: trust-protocol demo without headers.
-    // We treat any 403 from the upstream as the kill-shot.
     if (reason.includes("403") && !args.withPassport) {
       emit({ type: "blocked", status: 403, error: reason });
       await supabase

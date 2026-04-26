@@ -4,7 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import type { Hex } from "viem";
 import { useRouter } from "next/navigation";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import type { Passport } from "@/lib/agentPassport";
 import { shortenAddress, clamp } from "@/lib/utils";
 import { avatarInitials, avatarStyle } from "@/lib/avatar";
@@ -24,6 +24,8 @@ type Props = {
   passportId?: string;
   /** Local browser-only private key for the agent EOA, if available. */
   agentPrivateKey?: Hex;
+  /** Called after a successful revoke so the parent can refetch its list. */
+  onRevoked?: () => void;
 };
 
 type StakeSummary = {
@@ -158,9 +160,9 @@ export function AgentCard({
             <div className="truncate text-[14px] font-medium text-fg leading-tight">
               {agentId}
             </div>
-            {purpose ? (
-              <div className="mt-0.5 truncate text-[11.5px] text-muted">
-                {purpose}
+            {agentAddr ? (
+              <div className="mt-0.5 truncate font-mono text-[11px] text-muted">
+                {shortenAddress(agentAddr, 5, 4)}
               </div>
             ) : null}
             <div className="mt-1 flex items-center gap-1.5 text-[10.5px] uppercase tracking-[0.12em] text-subtle">
@@ -261,43 +263,54 @@ export function AgentCard({
         <AddressRow label="Agent" value={agentAddr} />
       </dl>
 
-      {/* Expanded content — outside the toggle button so its inner controls
-          don't bubble and collapse the card. */}
-      {open && (
-        <div className="mt-3 space-y-3">
-          <div className="rounded-lg border border-white/[0.06] bg-black/30 p-3 text-[11.5px]">
-            <dl className="space-y-1.5">
-              <DetailRow label="passport.id" value={reportPassportId} />
-              <DetailRow label="owner" value={ownerAddr || "—"} />
-              <DetailRow label="agentWallet" value={agentAddr || "—"} />
-              <DetailRow label="score" value={`${scoreNumber}`} />
-              <DetailRow label="active" value={String(passport.active)} />
-              {passport.metadataURI && (
-                <DetailRow label="metadata" value={passport.metadataURI} wrap />
-              )}
-            </dl>
-          </div>
+      {/* Expanded content — AnimatePresence drives height so the card
+          properly collapses on close, not just hides content. */}
+      <AnimatePresence initial={false}>
+        {open && (
+          <motion.div
+            key="expanded"
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
+            className="overflow-hidden"
+          >
+            <div className="mt-3 space-y-3">
+              <div className="rounded-lg border border-white/[0.06] bg-black/30 p-3 text-[11.5px]">
+                <dl className="space-y-1.5">
+                  <DetailRow label="passport.id" value={reportPassportId} />
+                  <DetailRow label="owner" value={ownerAddr || "—"} />
+                  <DetailRow label="agentWallet" value={agentAddr || "—"} />
+                  <DetailRow label="score" value={`${scoreNumber}`} />
+                  <DetailRow label="active" value={String(passport.active)} />
+                  {passport.metadataURI && (
+                    <DetailRow label="metadata" value={passport.metadataURI} wrap />
+                  )}
+                </dl>
+              </div>
 
-          <TrustReport
-            passportId={reportPassportId}
-            agentAddress={agentAddr}
-            agentPrivateKey={agentPrivateKey}
-            ownerAddress={ownerAddr}
-            trustScore={scoreNumber}
-            active={passport.active}
-            metadataURI={passport.metadataURI}
-          />
-        </div>
-      )}
+              <TrustReport
+                passportId={reportPassportId}
+                agentAddress={agentAddr}
+                agentPrivateKey={agentPrivateKey}
+                ownerAddress={ownerAddr}
+                trustScore={scoreNumber}
+                active={passport.active}
+                metadataURI={passport.metadataURI}
+              />
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       <div className="mt-3 flex items-center justify-end gap-1.5">
-        <Link
-          href={`/agents/${encodeURIComponent(reportPassportId)}`}
-          onClick={(e) => e.stopPropagation()}
+        <button
+          type="button"
+          onClick={() => setOpen((v) => !v)}
           className="inline-flex items-center gap-1.5 rounded-md border border-white/[0.08] bg-white/[0.03] px-2.5 py-1 text-[11.5px] font-medium text-muted transition hover:border-white/15 hover:bg-white/[0.06] hover:text-fg"
         >
-          Detail
-        </Link>
+          {open ? "Collapse" : "Detail"}
+        </button>
         <Link
           href={runHref}
           prefetch
@@ -310,6 +323,7 @@ export function AgentCard({
           <span aria-hidden>→</span>
         </Link>
       </div>
+
     </motion.div>
   );
 }

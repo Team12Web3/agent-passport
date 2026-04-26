@@ -1,7 +1,7 @@
 "use client";
 
-import { Suspense, useCallback, useEffect, useMemo, useState, type FormEvent, type ReactNode } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useCallback, useEffect, useMemo, useState, type FormEvent, type ReactNode } from "react";
+import { useRouter } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
 import { fadeUp, stagger, useMotionVariant } from "@/lib/motion";
 import { type ThirdwebClient } from "thirdweb";
@@ -29,7 +29,6 @@ import {
 } from "@/lib/agentKeys";
 import { useMintPassport, type MintState } from "@/hooks/useMintPassport";
 import { AgentCard } from "@/components/agents/AgentCard";
-import { CreateAgentDialog } from "@/components/agents/CreateAgentDialog";
 import { PassportCreatingLoader } from "@/components/onboarding/PassportCreatingLoader";
 import { deterministicPercent, shortenAddress } from "@/lib/utils";
 import { avatarInitials, avatarStyle } from "@/lib/avatar";
@@ -83,18 +82,11 @@ export default function DashboardPage() {
     );
   }
 
-  // useSearchParams() inside DashboardShell forces Next 14 to require a
-  // Suspense boundary at the page level for the static prerender step.
-  return (
-    <Suspense fallback={<FullPageMessage>Loading dashboard…</FullPageMessage>}>
-      <DashboardShell client={client} />
-    </Suspense>
-  );
+  return <DashboardShell client={client} />;
 }
 
 function DashboardShell({ client }: { client: ThirdwebClient }) {
   const router = useRouter();
-  const searchParams = useSearchParams();
   const account = useActiveAccount();
   const wallet = useActiveWallet();
   const chain = useActiveWalletChain();
@@ -127,17 +119,6 @@ function DashboardShell({ client }: { client: ThirdwebClient }) {
   const [agentLabel, setAgentLabel] = useState("");
 
   const tabVariant = useMotionVariant(fadeUp);
-
-  const [dialogOpen, setDialogOpen] = useState(false);
-
-  // ?onboard=1 deep-link auto-opens the create dialog (per Person 4 spec).
-  // We only fire this once the wallet is connected and the contract is known
-  // so the dialog isn't shown on a screen that can't actually mint.
-  useEffect(() => {
-    if (searchParams?.get("onboard") === "1" && account?.address) {
-      setDialogOpen(true);
-    }
-  }, [searchParams, account?.address]);
 
   const linkedEmail = useMemo(() => {
     const profiles = profilesQuery.data;
@@ -203,7 +184,7 @@ function DashboardShell({ client }: { client: ThirdwebClient }) {
                   agentWallet: agent.walletAddress,
                 };
             return {
-              agentId: agent.agentId,
+              agentId: agent.name || agent.agentId,
               passportId: agent.passportId,
               passport: { ...passport, agentId: agent.name || passport.agentId },
               trusted: passport.active && Number(passport.score) >= MIN_TRUST_SCORE,
@@ -230,6 +211,7 @@ function DashboardShell({ client }: { client: ThirdwebClient }) {
           const raw = await fetchPassportById(contractAddress, id);
           if (!raw) return null;
           const passport = toDisplayPassport(raw);
+          if (!passport.active) return null;
           return {
             agentId: `passport-${id.toString()}`,
             passportId: id.toString(),
@@ -253,7 +235,7 @@ function DashboardShell({ client }: { client: ThirdwebClient }) {
         backendAgents
           .filter((agent) => agent.passportId)
           .map((agent) => ({
-            agentId: agent.agentId,
+            agentId: agent.name || agent.agentId,
             passportId: agent.passportId,
             passport: {
               owner: ownerAddress,
@@ -284,7 +266,6 @@ function DashboardShell({ client }: { client: ThirdwebClient }) {
     try {
       await mintHook.mint(agentLabel);
       setAgentLabel("");
-      setActiveTab("monitor");
       await hydrateOnChainAgents();
     } catch {
       // mintHook.state already carries the error message
@@ -328,7 +309,7 @@ function DashboardShell({ client }: { client: ThirdwebClient }) {
         contractAddress={contractAddress}
         contractSource={contractAddressSource}
         canCreate={isValidAddress(contractAddress)}
-        onCreate={() => setDialogOpen(true)}
+        onCreate={() => setActiveTab("create")}
         onProfile={() => setActiveTab("profile")}
         onLogout={handleLogout}
       />
@@ -374,6 +355,7 @@ function DashboardShell({ client }: { client: ThirdwebClient }) {
                 onCreate={() => setActiveTab("create")}
                 hasContract={true}
                 isLoading={isHydratingAgents}
+                onRevoked={hydrateOnChainAgents}
               />
             )}
 
@@ -385,6 +367,7 @@ function DashboardShell({ client }: { client: ThirdwebClient }) {
                 onSubmit={handleCreateAgent}
                 createState={mintHook.state}
                 contractAddress={mintHook.contractAddress}
+                onGoToMonitor={() => setActiveTab("monitor")}
               />
             )}
 
@@ -410,17 +393,6 @@ function DashboardShell({ client }: { client: ThirdwebClient }) {
         </AnimatePresence>
       </div>
 
-      <CreateAgentDialog
-        open={dialogOpen}
-        onClose={() => setDialogOpen(false)}
-        client={client}
-        contractAddress={contractAddress}
-        ownerAddress={walletAddress}
-        onCreated={() => {
-          void hydrateOnChainAgents();
-          setActiveTab("monitor");
-        }}
-      />
     </main>
   );
 }
@@ -496,16 +468,6 @@ function Header({
         </div>
 
         <div className="ml-auto flex items-center gap-2">
-          {canCreate && (
-            <button
-              onClick={onCreate}
-              className="btn btn-primary focus-ring text-[12px]"
-              title="Mint a new agent passport"
-            >
-              <span aria-hidden className="text-[14px] leading-none">+</span>
-              <span className="hidden sm:inline">New agent</span>
-            </button>
-          )}
           <button onClick={onProfile} className="btn btn-ghost focus-ring">
             <AvalancheIcon />
             <span className="h-5 w-5 rounded-md flex items-center justify-center text-[10px] font-semibold text-white/95 font-mono" style={ownerAvatarStyle}>
@@ -583,13 +545,15 @@ function MonitorTab({
   walletAddress,
   onCreate,
   hasContract,
-  isLoading
+  isLoading,
+  onRevoked,
 }: {
   onChainRows: AgentRow[];
   walletAddress: string;
   onCreate: () => void;
   hasContract: boolean;
   isLoading: boolean;
+  onRevoked?: () => void;
 }) {
   const hasRows = onChainRows.length > 0;
   return (
@@ -635,6 +599,7 @@ function MonitorTab({
                 sourceLabel={row.sourceLabel}
                 passportId={row.passportId}
                 agentPrivateKey={row.agentPrivateKey}
+                onRevoked={onRevoked}
               />
             ))}
           </motion.div>
@@ -727,13 +692,20 @@ function EmptyState({ hasContract, onCreate }: { hasContract: boolean; onCreate:
 }
 // ───────────────────────────── Create ─────────────────────────────
 
+const CREATE_TAB_TOOL_OPTIONS: { value: string; label: string }[] = [
+  { value: "scraper", label: "Scraper" },
+  { value: "summarizer", label: "Summarizer" },
+  { value: "logger", label: "Logger" },
+];
+
 function CreateTab({
   walletAddress,
   agentLabel,
   setAgentLabel,
   onSubmit,
   createState,
-  contractAddress
+  contractAddress,
+  onGoToMonitor
 }: {
   walletAddress: string;
   agentLabel: string;
@@ -741,8 +713,12 @@ function CreateTab({
   onSubmit: (e: FormEvent<HTMLFormElement>) => void;
   createState: MintState;
   contractAddress: string;
+  onGoToMonitor: () => void;
 }) {
   const noticeVariant = useMotionVariant(fadeUp);
+  // Visual-only: kept here for the demo form but not submitted anywhere.
+  const [purpose, setPurpose] = useState("");
+  const [tools, setTools] = useState<string[]>(["scraper"]);
   const isWorking =
     createState.phase !== "idle" &&
     createState.phase !== "success" &&
@@ -752,6 +728,12 @@ function CreateTab({
     createState.phase === "creating"
       ? "Creating passport…"
       : "Create passport";
+
+  const toggleTool = (value: string) => {
+    setTools((prev) =>
+      prev.includes(value) ? prev.filter((t) => t !== value) : [...prev, value],
+    );
+  };
 
   return (
     <div className="mt-8 grid gap-6">
@@ -776,6 +758,58 @@ function CreateTab({
             />
             <p className="mt-1.5 text-[11.5px] text-faint">
               Optional — stored in <span className="font-mono">metadataURI</span>. Leave blank to auto-name.
+            </p>
+          </div>
+
+          <div>
+            <label htmlFor="agentPurpose" className="block text-[12px] text-subtle mb-1.5">
+              Purpose
+            </label>
+            <textarea
+              id="agentPurpose"
+              value={purpose}
+              onChange={(e) => setPurpose(e.target.value)}
+              placeholder="Summarize trending repos every morning and post to #standup."
+              rows={3}
+              className="input focus-ring resize-y min-h-[72px]"
+            />
+            <p className="mt-1.5 text-[11.5px] text-faint">
+              What this agent does. Surfaced in trust reports and audit logs.
+            </p>
+          </div>
+
+          <div>
+            <span className="block text-[12px] text-subtle mb-1.5">Tools</span>
+            <div className="flex flex-wrap gap-1.5">
+              {CREATE_TAB_TOOL_OPTIONS.map((opt) => {
+                const selected = tools.includes(opt.value);
+                return (
+                  <button
+                    key={opt.value}
+                    type="button"
+                    onClick={() => toggleTool(opt.value)}
+                    aria-pressed={selected}
+                    className={[
+                      "inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[11.5px] font-medium border transition focus-ring",
+                      selected
+                        ? "border-emerald-400/40 bg-emerald-500/[0.10] text-emerald-200"
+                        : "border-white/[0.08] bg-white/[0.03] text-muted hover:border-white/15 hover:text-fg",
+                    ].join(" ")}
+                  >
+                    <span
+                      className={[
+                        "h-1.5 w-1.5 rounded-full",
+                        selected ? "bg-emerald-400" : "bg-white/20",
+                      ].join(" ")}
+                      aria-hidden
+                    />
+                    {opt.label}
+                  </button>
+                );
+              })}
+            </div>
+            <p className="mt-1.5 text-[11.5px] text-faint">
+              Which capabilities the agent advertises.
             </p>
           </div>
 
@@ -817,14 +851,14 @@ function CreateTab({
         )}
 
         {createState.lastCreated && (
-          <LatestPassport record={createState.lastCreated} contractAddress={contractAddress} />
+          <LatestPassport record={createState.lastCreated} contractAddress={contractAddress} onGoToMonitor={onGoToMonitor} />
         )}
       </div>
     </div>
   );
 }
 
-function LatestPassport({ record, contractAddress }: { record: AgentRecord; contractAddress: string }) {
+function LatestPassport({ record, contractAddress, onGoToMonitor }: { record: AgentRecord; contractAddress: string; onGoToMonitor: () => void }) {
   return (
     <div className="mt-5 rounded-xl border border-white/[0.06] bg-black/30 p-4">
       <div className="flex items-center gap-3">
@@ -840,14 +874,22 @@ function LatestPassport({ record, contractAddress }: { record: AgentRecord; cont
           </div>
           <div className="font-mono text-[11.5px] text-faint">{shortenAddress(record.agentAddress)}</div>
         </div>
-        {record.privateKey && (
+        <div className="flex items-center gap-2">
+          {record.privateKey && (
+            <button
+              onClick={() => downloadAgentBackup(record, contractAddress)}
+              className="btn btn-secondary focus-ring text-[11.5px] py-1.5 px-2.5"
+            >
+              Download backup
+            </button>
+          )}
           <button
-            onClick={() => downloadAgentBackup(record, contractAddress)}
+            onClick={onGoToMonitor}
             className="btn btn-secondary focus-ring text-[11.5px] py-1.5 px-2.5"
           >
-            Download backup
+            View agents →
           </button>
-        )}
+        </div>
       </div>
       {record.mintTxHash && (
         <div className="mt-3 text-[11.5px] text-faint font-mono">
