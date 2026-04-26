@@ -2,9 +2,8 @@
 
 import { useCallback, useEffect, useMemo, useState, type FormEvent, type ReactNode } from "react";
 import { useRouter } from "next/navigation";
-import { getContract, prepareContractCall, waitForReceipt, type ThirdwebClient } from "thirdweb";
+import { type ThirdwebClient } from "thirdweb";
 import { avalancheFuji } from "thirdweb/chains";
-import { deployContract } from "thirdweb/deploys";
 import {
   useActiveAccount,
   useActiveWallet,
@@ -12,28 +11,20 @@ import {
   useActiveWalletConnectionStatus,
   useDisconnect,
   useProfiles,
-  useSendTransaction,
-  useSwitchActiveWalletChain,
   useWalletBalance
 } from "thirdweb/react";
 import {
-  AGENT_PASSPORT_ABI,
-  AGENT_PASSPORT_BYTECODE,
   fetchPassportById,
   fetchPassportsOf,
-  parsePassportMintedFromLogs,
   toDisplayPassport,
   type Passport
 } from "@/lib/agentPassport";
 import {
   downloadAgentBackup,
-  generateAgent,
-  getStoredContractAddress,
   listAgents,
-  saveAgent,
-  setStoredContractAddress,
   type AgentRecord
 } from "@/lib/agentKeys";
+import { useMintPassport, type MintState } from "@/hooks/useMintPassport";
 import { AgentCard } from "@/components/agents/AgentCard";
 import { deterministicPercent, shortenAddress } from "@/lib/utils";
 import { avatarInitials, avatarStyle } from "@/lib/avatar";
@@ -48,7 +39,6 @@ type AgentRow = {
 };
 
 const MIN_TRUST_SCORE = 50;
-const FUJI_FAUCET_URL = "https://core.app/tools/testnet-faucet/?subnet=c&token=c";
 
 function isValidAddress(addr: string | null | undefined): addr is string {
   return !!addr && addr.startsWith("0x") && addr.length === 42;
@@ -82,8 +72,6 @@ function DashboardShell({ client }: { client: ThirdwebClient }) {
   const chain = useActiveWalletChain();
   const walletStatus = useActiveWalletConnectionStatus();
   const { disconnect } = useDisconnect();
-  const switchChain = useSwitchActiveWalletChain();
-  const { mutateAsync: sendTx } = useSendTransaction({ payModal: false });
   const profilesQuery = useProfiles({ client });
   const walletBalanceQuery = useWalletBalance({
     client,
@@ -91,20 +79,14 @@ function DashboardShell({ client }: { client: ThirdwebClient }) {
     chain: chain ?? avalancheFuji
   });
 
-  // Contract address resolution: env > localStorage (post-deploy) > none.
+  const mintHook = useMintPassport(client);
+  const { contractAddress } = mintHook;
+
+  // Derive contract address source for display purposes (env vs locally stored vs none).
   const envContractAddress = process.env.NEXT_PUBLIC_AGENT_PASSPORT_ADDRESS || "";
-  const [storedContractAddress, setStoredContractAddressState] = useState<string | null>(null);
-  useEffect(() => {
-    setStoredContractAddressState(getStoredContractAddress());
-  }, []);
-  const contractAddress = useMemo(() => {
-    if (isValidAddress(envContractAddress)) return envContractAddress;
-    if (isValidAddress(storedContractAddress)) return storedContractAddress;
-    return "";
-  }, [envContractAddress, storedContractAddress]);
   const contractAddressSource: "env" | "local" | "none" = isValidAddress(envContractAddress)
     ? "env"
-    : isValidAddress(storedContractAddress)
+    : isValidAddress(contractAddress)
       ? "local"
       : "none";
 
@@ -113,18 +95,6 @@ function DashboardShell({ client }: { client: ThirdwebClient }) {
   const [error, setError] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<"monitor" | "create" | "profile">("monitor");
   const [agentLabel, setAgentLabel] = useState("");
-  const [createState, setCreateState] = useState<{
-    loading: boolean;
-    message: string | null;
-    ok: boolean;
-    lastCreated?: AgentRecord;
-  }>({ loading: false, message: null, ok: false });
-
-  const [deployState, setDeployState] = useState<{ loading: boolean; message: string | null; ok: boolean }>({
-    loading: false,
-    message: null,
-    ok: false
-  });
 
   const linkedEmail = useMemo(() => {
     const profiles = profilesQuery.data;
@@ -213,120 +183,15 @@ function DashboardShell({ client }: { client: ThirdwebClient }) {
     });
   }, [hydrateOnChainAgents]);
 
-  async function ensureFujiChain(): Promise<void> {
-    if (chain?.id === avalancheFuji.id) return;
-    try {
-      await switchChain(avalancheFuji);
-    } catch {
-      throw new Error("Could not switch network to Avalanche Fuji (43113). Please switch in your wallet and try again.");
-    }
-  }
-
-  async function handleDeployContract() {
-    if (!account) {
-      setDeployState({ loading: false, message: "Connect a wallet first.", ok: false });
-      return;
-    }
-    try {
-      setDeployState({ loading: true, message: "Confirm the deploy in your wallet…", ok: true });
-      await ensureFujiChain();
-      const address = await deployContract({
-        client,
-        chain: avalancheFuji,
-        account,
-        abi: AGENT_PASSPORT_ABI as never,
-        bytecode: AGENT_PASSPORT_BYTECODE as `0x${string}`,
-        constructorParams: {}
-      });
-      setStoredContractAddress(address);
-      setStoredContractAddressState(address);
-      setDeployState({
-        loading: false,
-        message: `Contract deployed at ${address}.`,
-        ok: true
-      });
-    } catch (e) {
-      const msg =
-        e instanceof Error
-          ? e.message
-          : "Deploy failed. You may need a small amount of Fuji AVAX for gas.";
-      setDeployState({ loading: false, message: msg, ok: false });
-    }
-  }
-
   async function handleCreateAgent(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    if (!account) {
-      setCreateState({ loading: false, message: "Connect a wallet first.", ok: false });
-      return;
-    }
-    if (!isValidAddress(contractAddress)) {
-      setCreateState({
-        loading: false,
-        message: "No AgentPassport contract is set yet. Deploy it first.",
-        ok: false
-      });
-      return;
-    }
-
-    const label = agentLabel.trim() || `agent-${Date.now().toString(36)}`;
-
     try {
-      setCreateState({ loading: true, message: "Generating agent keypair…", ok: true });
-      const generated = generateAgent();
-
-      await ensureFujiChain();
-
-      setCreateState({ loading: true, message: "Confirm the mint in your wallet…", ok: true });
-
-      const contract = getContract({
-        address: contractAddress,
-        chain: avalancheFuji,
-        client
-      });
-
-      const tx = prepareContractCall({
-        contract,
-        method: "function mintPassport(address agentWallet, string metadataURI) returns (uint256)",
-        params: [generated.address, JSON.stringify({ label, createdAt: new Date().toISOString() })]
-      });
-
-      const sent = await sendTx(tx);
-
-      setCreateState({ loading: true, message: "Waiting for Fuji confirmation…", ok: true });
-      const receipt = await waitForReceipt({
-        client,
-        chain: avalancheFuji,
-        transactionHash: sent.transactionHash
-      });
-
-      const minted = parsePassportMintedFromLogs(receipt.logs ?? [], contractAddress);
-      if (!minted) {
-        throw new Error("Mint succeeded but PassportMinted event was not found in receipt logs.");
-      }
-
-      const record = saveAgent({
-        passportId: minted.id.toString(),
-        agentAddress: generated.address,
-        privateKey: generated.privateKey,
-        ownerAddress: account.address,
-        label,
-        mintTxHash: receipt.transactionHash
-      });
-
-      await hydrateOnChainAgents();
-
-      setCreateState({
-        loading: false,
-        message: `Passport #${record.passportId} minted for ${label}.`,
-        ok: true,
-        lastCreated: record
-      });
+      await mintHook.mint(agentLabel);
       setAgentLabel("");
       setActiveTab("monitor");
-    } catch (e) {
-      const msg = e instanceof Error ? e.message : "Mint failed, was rejected, or you may need Fuji AVAX for gas.";
-      setCreateState({ loading: false, message: msg, ok: false });
+      await hydrateOnChainAgents();
+    } catch {
+      // mintHook.state already carries the error message
     }
   }
 
@@ -355,7 +220,6 @@ function DashboardShell({ client }: { client: ThirdwebClient }) {
   const walletAddress = account.address;
   const onFuji = chain?.id === avalancheFuji.id;
   const ownerAvatar = avatarStyle(walletAddress);
-  const showDeployBox = contractAddressSource !== "env";
 
   return (
     <main className="min-h-screen">
@@ -403,7 +267,7 @@ function DashboardShell({ client }: { client: ThirdwebClient }) {
             onChainRows={onChainRows}
             walletAddress={walletAddress}
             onCreate={() => setActiveTab("create")}
-            hasContract={isValidAddress(contractAddress)}
+            hasContract={true}
           />
         )}
 
@@ -413,14 +277,9 @@ function DashboardShell({ client }: { client: ThirdwebClient }) {
             agentLabel={agentLabel}
             setAgentLabel={setAgentLabel}
             onSubmit={handleCreateAgent}
-            createState={createState}
-            hasContract={isValidAddress(contractAddress)}
+            createState={mintHook.state}
             createdAgents={createdAgents}
-            contractAddress={contractAddress}
-            showDeployBox={showDeployBox}
-            storedContractAddress={storedContractAddress}
-            onDeploy={handleDeployContract}
-            deployState={deployState}
+            contractAddress={mintHook.contractAddress}
           />
         )}
 
@@ -632,30 +491,26 @@ function CreateTab({
   setAgentLabel,
   onSubmit,
   createState,
-  hasContract,
   createdAgents,
-  contractAddress,
-  showDeployBox,
-  storedContractAddress,
-  onDeploy,
-  deployState
+  contractAddress
 }: {
   walletAddress: string;
   agentLabel: string;
   setAgentLabel: (v: string) => void;
   onSubmit: (e: FormEvent<HTMLFormElement>) => void;
-  createState: { loading: boolean; message: string | null; ok: boolean; lastCreated?: AgentRecord };
-  hasContract: boolean;
+  createState: MintState;
   createdAgents: AgentRecord[];
   contractAddress: string;
-  showDeployBox: boolean;
-  storedContractAddress: string | null;
-  onDeploy: () => void;
-  deployState: { loading: boolean; message: string | null; ok: boolean };
 }) {
+  const isWorking =
+    createState.phase !== "idle" &&
+    createState.phase !== "done" &&
+    createState.phase !== "error";
+  const showError = createState.phase === "error";
+
   return (
-    <div className="mt-8 grid gap-6 md:grid-cols-5">
-      <div className={["card p-6", showDeployBox ? "md:col-span-3" : "md:col-span-5"].join(" ")}>
+    <div className="mt-8 grid gap-6">
+      <div className="card p-6">
         <div className="eyebrow">Mint</div>
         <h2 className="mt-2 text-[18px] font-semibold tracking-tight">Create agent passport</h2>
         <p className="mt-1.5 text-[13px] text-muted">
@@ -682,26 +537,20 @@ function CreateTab({
           <div className="flex items-center gap-3">
             <button
               type="submit"
-              disabled={createState.loading || !hasContract}
+              disabled={isWorking}
               className="btn btn-primary focus-ring"
             >
-              {createState.loading ? <Spinner /> : null}
-              {createState.loading ? "Working…" : "Create & mint"}
+              {isWorking ? <Spinner /> : null}
+              {isWorking ? "Working…" : "Create & mint"}
             </button>
             <span className="text-[11.5px] text-faint font-mono">
               owner · {shortenAddress(walletAddress)}
             </span>
           </div>
-
-          {!hasContract && (
-            <div className="text-[12px] text-amber-300">
-              Deploy the AgentPassport contract first (panel on the right).
-            </div>
-          )}
         </form>
 
         {createState.message && (
-          <Notice tone={createState.ok ? "success" : "error"} className="mt-5">
+          <Notice tone={showError ? "error" : "success"} className="mt-5">
             {createState.message}
           </Notice>
         )}
@@ -711,51 +560,8 @@ function CreateTab({
         )}
       </div>
 
-      {showDeployBox && (
-        <div className="card p-6 md:col-span-2">
-          <div className="eyebrow">Setup</div>
-          <h2 className="mt-2 text-[18px] font-semibold tracking-tight">AgentPassport contract</h2>
-          <p className="mt-1.5 text-[13px] text-muted">
-            {storedContractAddress
-              ? "Deployed locally. Redeploy if you want a fresh contract."
-              : "One-time deploy. Your wallet pays a fraction of a cent in test AVAX."}
-          </p>
-
-          <dl className="mt-5 space-y-2 text-[12px]">
-            <KV k="Network" v={<span className="font-mono">Avalanche Fuji · 43113</span>} />
-            <KV k="Bytecode" v={<span className="font-mono">{((AGENT_PASSPORT_BYTECODE.length - 2) / 2).toLocaleString()} bytes</span>} />
-            {storedContractAddress && (
-              <KV k="Address" v={<span className="font-mono">{shortenAddress(storedContractAddress)}</span>} />
-            )}
-          </dl>
-
-          <button
-            onClick={onDeploy}
-            disabled={deployState.loading}
-            className={["btn focus-ring mt-5", storedContractAddress ? "btn-secondary" : "btn-primary"].join(" ")}
-          >
-            {deployState.loading ? <Spinner /> : null}
-            {deployState.loading ? "Deploying…" : storedContractAddress ? "Redeploy" : "Deploy contract"}
-          </button>
-
-          {deployState.message && (
-            <Notice tone={deployState.ok ? "success" : "error"} className="mt-4">
-              {deployState.message}
-            </Notice>
-          )}
-
-          <p className="mt-4 text-[11.5px] text-faint">
-            Need test AVAX?{" "}
-            <a className="underline decoration-dotted underline-offset-2 hover:text-muted" href={FUJI_FAUCET_URL} target="_blank" rel="noreferrer">
-              Avalanche Fuji faucet
-            </a>
-            .
-          </p>
-        </div>
-      )}
-
       {createdAgents.length > 0 && (
-        <div className="card p-6 md:col-span-5">
+        <div className="card p-6">
           <div className="flex items-center justify-between">
             <div>
               <div className="eyebrow">Local</div>
