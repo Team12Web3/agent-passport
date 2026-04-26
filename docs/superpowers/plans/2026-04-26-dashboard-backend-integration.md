@@ -843,7 +843,7 @@ function CreateTab({ onCreated }: { onCreated: () => Promise<void> | void }) {
         <div className="eyebrow">Mint</div>
         <h2 className="mt-2 text-[18px] font-semibold tracking-tight">Create agent passport</h2>
         <p className="mt-1.5 text-[13px] text-muted">
-          The platform provisions a fresh agent wallet, funds it with test AVAX + USDC on Fuji, and mints an on-chain passport bound to your account.
+          The platform provisions a fresh agent wallet, funds it with test AVAX on Fuji, and mints an on-chain passport bound to your account.
         </p>
 
         <form className="mt-6 space-y-5" onSubmit={onSubmit}>

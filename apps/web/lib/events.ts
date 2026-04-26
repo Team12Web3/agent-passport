@@ -41,7 +41,7 @@ export const FIXTURE_EVENTS: AgentEvent[] = [
         "The page covers internet bots: their history, types (web crawlers, chatbots, malicious bots), and countermeasures. Modern bots account for roughly 40% of all web traffic.",
       actionsCount: 3,
       txHash: "0xab12cd34ef56789000000000000000000000000000000000000000000000000",
-      feeUsd: 0.1,
+      feeUsd: 0,
     },
   },
 ];

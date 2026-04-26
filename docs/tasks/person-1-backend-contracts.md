@@ -206,7 +206,7 @@ Steps:
     beneficiary=PLATFORM_ADDRESS). emit("logging", txHash). Wait 1 confirmation.
     emit("logged", txHash, blockNumber).
  9. Update action_runs row: status="done", result, actions, log_tx_hash.
-10. emit("done", { summary, actionsCount, txHash, feeUsd: 0.10 }).
+10. emit("done", { summary, actionsCount, txHash, feeUsd: 0 }).
 
 If withPassport === false (trust-protocol demo path), step 3's request will
 be blocked by the demo-site (since headers are absent). Catch the 403 response

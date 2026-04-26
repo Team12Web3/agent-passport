@@ -242,7 +242,7 @@ CONSTRAINTS:
 - Keep approval logic explicit so Person 1 can rely on it before `ActionLog.logAction()`.
 
 ACCEPTANCE:
-- The flow covers AVAX funding, USDC funding, and allowance setup.
+- The flow covers AVAX funding for gas.
 - Errors are clear when the faucet wallet lacks funds.
 - The code stays server-only.
 ```
@@ -482,4 +482,3 @@ If you want one combined test run:
 ```powershell
 corepack pnpm --filter web exec vitest run lib/crypto/kms.test.ts lib/agent/sign.verify.test.ts lib/agent/wallet.test.ts app/api/log/submit/route.test.ts
 ```
-

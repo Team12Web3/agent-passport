@@ -19,6 +19,18 @@ export async function getSessionUser(): Promise<Session | null> {
     .maybeSingle();
 
   if (existing) {
+    if (
+      session.address &&
+      existing.wallet_address?.toLowerCase() !== session.address.toLowerCase()
+    ) {
+      const { data: updated } = await supabase
+        .from("users")
+        .update({ wallet_address: session.address })
+        .eq("id", existing.id)
+        .select("*")
+        .single();
+      if (updated) return { user: updated as UserRow };
+    }
     return { user: existing as UserRow };
   }
 

@@ -92,7 +92,9 @@ function eventToLine(ev: AgentEvent, ts: string, key: string): TerminalLine | nu
       return {
         key, ts,
         color: "text-green-400", bold: true, prefix: "✓",
-        text: `Done · ${ev.result.actionsCount} actions · $${ev.result.feeUsd.toFixed(2)} fee`,
+        text: ev.result.feeUsd > 0
+          ? `Done · ${ev.result.actionsCount} actions · $${ev.result.feeUsd.toFixed(2)} fee`
+          : `Done · ${ev.result.actionsCount} actions · no fee`,
       };
     case "error":
       return {

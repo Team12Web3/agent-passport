@@ -14,7 +14,7 @@ Two parallel passport-mint flows exist in the app:
 Result: agents created on the dashboard cannot be opened in the run page. The run page has no entry point. Cards on the dashboard show meaningless data (`deterministicPercent`) because the client has no concept of `actionCount`, `purpose`, or `tools`.
 
 The backend (Person 1) is complete and works:
-- `POST /api/agents/create` — provisions wallet, funds (AVAX + USDC), platform-signs `mintPassport`, persists Supabase row.
+- `POST /api/agents/create` — provisions wallet, funds AVAX for gas, platform-signs `mintPassport`, persists Supabase row.
 - `GET /api/agents/list` — list user's agents with `actionCount`.
 - `GET /api/agents/[id]` — agent + recent runs.
 - `POST /api/run` — SSE stream of agent execution.

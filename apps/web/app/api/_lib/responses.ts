@@ -15,9 +15,12 @@ export function validationError(z: ZodError) {
   );
 }
 
-export function provisioningFailed(step: "wallet" | "funding" | "mint") {
+export function provisioningFailed(
+  step: "wallet" | "funding" | "mint",
+  details?: Record<string, unknown>,
+) {
   return NextResponse.json(
-    { error: "provisioning_failed", step },
+    { error: "provisioning_failed", step, ...details },
     { status: 502 },
   );
 }

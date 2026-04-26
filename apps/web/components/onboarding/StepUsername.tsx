@@ -5,9 +5,17 @@ import { useEffect, useRef, useState } from "react";
 const USERNAME_RE = /^[a-z0-9_]{3,20}$/;
 type Status = "idle" | "checking" | "available" | "taken" | "invalid";
 
-export function StepUsername({ onNext }: { onNext: (username: string) => void }) {
-  const [value, setValue] = useState("");
-  const [status, setStatus] = useState<Status>("idle");
+export function StepUsername({
+  initialValue = "",
+  onNext,
+}: {
+  initialValue?: string;
+  onNext: (username: string) => void;
+}) {
+  const [value, setValue] = useState(initialValue);
+  const [status, setStatus] = useState<Status>(initialValue ? "available" : "idle");
+  const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
@@ -19,6 +27,12 @@ export function StepUsername({ onNext }: { onNext: (username: string) => void })
     }
     if (!USERNAME_RE.test(u)) {
       setStatus("invalid");
+      return;
+    }
+    // Skip the availability check if the value matches the persisted username
+    // we were initialized with — it's already ours.
+    if (u === initialValue.trim().toLowerCase()) {
+      setStatus("available");
       return;
     }
     setStatus("checking");
@@ -42,18 +56,50 @@ export function StepUsername({ onNext }: { onNext: (username: string) => void })
     return () => {
       if (debounceRef.current) clearTimeout(debounceRef.current);
     };
-  }, [value]);
+  }, [value, initialValue]);
 
-  const canContinue = status === "available";
+  const canContinue = status === "available" && !submitting;
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    if (!canContinue) return;
+    const u = value.trim().toLowerCase();
+    setSubmitError(null);
+
+    // No-op POST if it matches what we already persisted — just advance.
+    if (u === initialValue.trim().toLowerCase()) {
+      onNext(u);
+      return;
+    }
+
+    setSubmitting(true);
+    try {
+      const res = await fetch("/api/onboarding/username", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username: u }),
+      });
+      if (!res.ok) {
+        const data = (await res.json().catch(() => ({}))) as { error?: string };
+        if (data.error === "username_taken") {
+          setStatus("taken");
+        } else if (data.error === "invalid_username") {
+          setStatus("invalid");
+        } else {
+          setSubmitError("Couldn't save username. Please try again.");
+        }
+        return;
+      }
+      onNext(u);
+    } catch {
+      setSubmitError("Couldn't save username. Please try again.");
+    } finally {
+      setSubmitting(false);
+    }
+  }
 
   return (
-    <form
-      className="p-6"
-      onSubmit={(e) => {
-        e.preventDefault();
-        if (canContinue) onNext(value.trim().toLowerCase());
-      }}
-    >
+    <form className="p-6" onSubmit={handleSubmit}>
       <h2 className="text-[18px] font-semibold tracking-tight">Pick a username</h2>
       <p className="mt-1 text-[12.5px] text-muted">
         3–20 characters · lowercase, numbers, underscore. Public-facing.
@@ -82,9 +128,15 @@ export function StepUsername({ onNext }: { onNext: (username: string) => void })
         {status === "available" && <span className="text-emerald-300">Available</span>}
       </div>
 
+      {submitError && (
+        <div className="mt-3 rounded-md border border-rose-400/30 bg-rose-400/[0.06] px-3 py-2 text-[12px] text-rose-200">
+          {submitError}
+        </div>
+      )}
+
       <div className="mt-6 flex justify-end">
         <button type="submit" disabled={!canContinue} className="btn btn-primary focus-ring">
-          Continue
+          {submitting ? "Saving…" : "Continue"}
         </button>
       </div>
     </form>

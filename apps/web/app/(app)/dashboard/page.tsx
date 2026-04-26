@@ -31,6 +31,7 @@ import { AgentCard } from "@/components/agents/AgentCard";
 import { deterministicPercent, shortenAddress } from "@/lib/utils";
 import { avatarInitials, avatarStyle } from "@/lib/avatar";
 import { getThirdwebClient } from "@/lib/thirdwebClient";
+import { DEPLOYED_AGENT_PASSPORT_ADDRESS } from "@/lib/chain/deployedAddresses";
 
 type AgentRow = {
   agentId: string;
@@ -40,10 +41,23 @@ type AgentRow = {
   sourceLabel: string;
 };
 
+type ContractAddressSource = "env" | "deployment" | "local" | "none";
+
+type BackendAgent = {
+  agentId: string;
+  name: string;
+  passportId: string;
+  walletAddress: string;
+};
+
 const MIN_TRUST_SCORE = 50;
 
 function isValidAddress(addr: string | null | undefined): addr is string {
   return !!addr && addr.startsWith("0x") && addr.length === 42;
+}
+
+function snowtraceAddressUrl(address: string) {
+  return `https://testnet.snowtrace.io/address/${address}`;
 }
 
 export default function DashboardPage() {
@@ -84,16 +98,18 @@ function DashboardShell({ client }: { client: ThirdwebClient }) {
   const mintHook = useMintPassport(client);
   const { contractAddress } = mintHook;
 
-  // Derive contract address source for display purposes (env vs locally stored vs none).
+  // Derive contract address source for display purposes.
   const envContractAddress = process.env.NEXT_PUBLIC_AGENT_PASSPORT_ADDRESS || "";
-  const contractAddressSource: "env" | "local" | "none" = isValidAddress(envContractAddress)
+  const contractAddressSource: ContractAddressSource = isValidAddress(envContractAddress)
     ? "env"
+    : isValidAddress(DEPLOYED_AGENT_PASSPORT_ADDRESS)
+      ? "deployment"
     : isValidAddress(contractAddress)
       ? "local"
       : "none";
 
-  const [createdAgents, setCreatedAgents] = useState<AgentRecord[]>([]);
   const [onChainRows, setOnChainRows] = useState<AgentRow[]>([]);
+  const [isHydratingAgents, setIsHydratingAgents] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<"monitor" | "create" | "profile">("monitor");
   const [agentLabel, setAgentLabel] = useState("");
@@ -125,30 +141,54 @@ function DashboardShell({ client }: { client: ThirdwebClient }) {
     }
   }, [account?.address, router, walletStatus]);
 
-  // Hydrate on-chain agents for the current owner.
+  // Hydrate backend-created agents first, then merge any extra on-chain rows.
   const hydrateOnChainAgents = useCallback(async () => {
-    if (!account?.address) {
-      setCreatedAgents([]);
-      setOnChainRows([]);
-      return;
-    }
-    const localRecords = listAgents(account.address);
-    setCreatedAgents(localRecords);
-
-    if (!isValidAddress(contractAddress)) {
-      setOnChainRows([]);
-      return;
-    }
-
+    setIsHydratingAgents(true);
     try {
-      const onchainIds = await fetchPassportsOf(contractAddress, account.address);
-      const idStrings = new Set(onchainIds.map((x) => x.toString()));
+      if (!account?.address) {
+        setOnChainRows([]);
+        return;
+      }
+      const localRecords = listAgents(account.address);
+      const backendAgents = await fetchBackendAgents();
+      if (!isValidAddress(contractAddress)) {
+        setOnChainRows([]);
+        return;
+      }
 
-      const knownLocal = localRecords.filter((r) => idStrings.has(r.passportId));
-      const orphanIds = onchainIds.filter((id) => !localRecords.some((r) => r.passportId === id.toString()));
+      const onchainIds = await fetchPassportsOf(contractAddress, account.address);
+      const backendIdStrings = new Set(backendAgents.map((x) => x.passportId).filter(Boolean));
+      const localIdStrings = new Set(localRecords.map((x) => x.passportId));
+
+      const orphanIds = onchainIds.filter((id) => {
+        const idString = id.toString();
+        return !backendIdStrings.has(idString) && !localIdStrings.has(idString);
+      });
 
       const fetched = await Promise.all([
-        ...knownLocal.map(async (rec) => {
+        ...backendAgents
+          .filter((agent) => agent.passportId)
+          .map(async (agent) => {
+            const raw = await fetchPassportById(contractAddress, BigInt(agent.passportId));
+            const passport = raw
+              ? toDisplayPassport(raw)
+              : {
+                  owner: account.address,
+                  agentId: agent.passportId,
+                  score: BigInt(MIN_TRUST_SCORE),
+                  active: true,
+                  agentWallet: agent.walletAddress,
+                };
+            return {
+              agentId: agent.agentId,
+              passport: { ...passport, agentId: agent.name || passport.agentId },
+              trusted: passport.active && Number(passport.score) >= MIN_TRUST_SCORE,
+              progressPercent: deterministicPercent(agent.passportId),
+              sourceLabel: `fuji · #${agent.passportId}`,
+            } satisfies AgentRow;
+          }),
+        ...localRecords.map(async (rec) => {
+          if (backendIdStrings.has(rec.passportId)) return null;
           const raw = await fetchPassportById(contractAddress, BigInt(rec.passportId));
           if (!raw) return null;
           const passport = toDisplayPassport(raw);
@@ -176,7 +216,26 @@ function DashboardShell({ client }: { client: ThirdwebClient }) {
 
       setOnChainRows(fetched.filter((x): x is AgentRow => x !== null));
     } catch {
-      setOnChainRows([]);
+      const backendAgents = await fetchBackendAgents();
+      setOnChainRows(
+        backendAgents
+          .filter((agent) => agent.passportId)
+          .map((agent) => ({
+            agentId: agent.agentId,
+            passport: {
+              owner: account.address,
+              agentId: agent.name,
+              score: BigInt(MIN_TRUST_SCORE),
+              active: true,
+              agentWallet: agent.walletAddress,
+            },
+            trusted: true,
+            progressPercent: deterministicPercent(agent.passportId),
+            sourceLabel: `fuji · #${agent.passportId}`,
+          })),
+      );
+    } finally {
+      setIsHydratingAgents(false);
     }
   }, [account?.address, contractAddress]);
 
@@ -244,7 +303,7 @@ function DashboardShell({ client }: { client: ThirdwebClient }) {
           <div className="eyebrow">Overview</div>
           <h1 className="mt-2 text-[26px] md:text-[30px] font-semibold tracking-[-0.02em]">Agent Passport</h1>
           <p className="mt-2 text-[14px] text-muted">
-            Mint on-chain identities for AI agents and watch their reputation evolve on Avalanche Fuji.
+            Create on-chain passports for AI agents and watch their reputation evolve on Avalanche Fuji.
           </p>
         </div>
 
@@ -279,6 +338,7 @@ function DashboardShell({ client }: { client: ThirdwebClient }) {
                 walletAddress={walletAddress}
                 onCreate={() => setActiveTab("create")}
                 hasContract={true}
+                isLoading={isHydratingAgents}
               />
             )}
 
@@ -289,7 +349,6 @@ function DashboardShell({ client }: { client: ThirdwebClient }) {
                 setAgentLabel={setAgentLabel}
                 onSubmit={handleCreateAgent}
                 createState={mintHook.state}
-                createdAgents={createdAgents}
                 contractAddress={mintHook.contractAddress}
               />
             )}
@@ -338,12 +397,13 @@ function Header({
   onFuji: boolean;
   chainName: string | undefined;
   contractAddress: string;
-  contractSource: "env" | "local" | "none";
+  contractSource: ContractAddressSource;
   onProfile: () => void;
   onLogout: () => void;
 }) {
   const networkLabel = onFuji ? "Avalanche Fuji" : chainName || "Wrong network";
   const networkDot = onFuji ? "#34d399" : "#fbbf24";
+  const contractUrl = contractAddress ? snowtraceAddressUrl(contractAddress) : null;
   return (
     <header className="sticky top-0 z-40 border-b border-white/[0.06] bg-[rgba(7,8,10,0.72)] backdrop-blur-md">
       <div className="mx-auto flex h-14 w-full max-w-6xl items-center gap-3 px-5 md:px-8">
@@ -365,16 +425,28 @@ function Header({
             <span className="chip-dot" style={{ backgroundColor: networkDot }} />
             {networkLabel}
           </span>
-          <span className="chip">
-            <span className="chip-dot" style={{ backgroundColor: contractAddress ? "#34d399" : "#52525b" }} />
-            {contractAddress
-              ? `Contract ${shortenAddress(contractAddress)}${contractSource === "local" ? " · local" : ""}`
-              : "Contract not deployed"}
-          </span>
+          {contractUrl ? (
+            <a
+              className="chip hover:border-white/20 hover:text-fg transition-colors"
+              href={contractUrl}
+              target="_blank"
+              rel="noreferrer"
+              title="View contract on Snowtrace"
+            >
+              <span className="chip-dot" style={{ backgroundColor: "#34d399" }} />
+              {`Contract ${shortenAddress(contractAddress)}${contractSource === "local" ? " · local" : ""}`}
+            </a>
+          ) : (
+            <span className="chip">
+              <span className="chip-dot" style={{ backgroundColor: "#52525b" }} />
+              Contract not deployed
+            </span>
+          )}
         </div>
 
         <div className="ml-auto flex items-center gap-2">
           <button onClick={onProfile} className="btn btn-ghost focus-ring">
+            <AvalancheIcon />
             <span className="h-5 w-5 rounded-md flex items-center justify-center text-[10px] font-semibold text-white/95 font-mono" style={ownerAvatarStyle}>
               {ownerInitials}
             </span>
@@ -386,6 +458,23 @@ function Header({
         </div>
       </div>
     </header>
+  );
+}
+
+function AvalancheIcon() {
+  return (
+    <span
+      className="flex h-5 w-5 items-center justify-center rounded-md bg-[#E84142] shadow-[inset_0_0_0_1px_rgba(255,255,255,0.16)]"
+      aria-label="Avalanche"
+      title="Avalanche"
+    >
+      <svg viewBox="0 0 64 64" className="h-3.5 w-3.5" aria-hidden>
+        <path
+          fill="#fff"
+          d="M30.1 14.4c.8-1.4 2.9-1.4 3.7 0l16.4 28.4c.8 1.4-.2 3.2-1.9 3.2H15.7c-1.7 0-2.7-1.8-1.9-3.2l16.3-28.4Zm1.9 7.5L21.2 40.7h21.6L32 21.9Zm10.5 9.8c.8-1.4 2.9-1.4 3.7 0l6.4 11.1c.8 1.4-.2 3.2-1.9 3.2H37.9c-1.7 0-2.7-1.8-1.9-3.2l6.5-11.1Z"
+        />
+      </svg>
+    </span>
   );
 }
 
@@ -411,7 +500,7 @@ function Tabs({
             <button
               key={t.id}
               onClick={() => onSelect(t.id)}
-              className="relative pb-3 text-[13px] focus-ring rounded-sm"
+              className="relative rounded-sm pb-3 text-[13px] outline-none transition-colors focus-visible:ring-2 focus-visible:ring-[var(--accent-ring)]"
             >
               <span className={isActive ? "text-fg" : "text-muted hover:text-fg transition-colors"}>{t.label}</span>
               {isActive && (
@@ -432,30 +521,43 @@ function MonitorTab({
   onChainRows,
   walletAddress,
   onCreate,
-  hasContract
+  hasContract,
+  isLoading
 }: {
   onChainRows: AgentRow[];
   walletAddress: string;
   onCreate: () => void;
   hasContract: boolean;
+  isLoading: boolean;
 }) {
+  const hasRows = onChainRows.length > 0;
   return (
     <div className="mt-8">
       <Section
         eyebrow="Your agents"
-        title={onChainRows.length === 0 ? "No agents yet" : `${onChainRows.length} on-chain passport${onChainRows.length === 1 ? "" : "s"}`}
+        title={
+          isLoading
+            ? "Loading agents…"
+            : hasRows
+              ? `${onChainRows.length} on-chain passport${onChainRows.length === 1 ? "" : "s"}`
+              : "No agents yet"
+        }
         subtitle={
-          onChainRows.length === 0
-            ? "Mint a passport to bind your wallet to a fresh agent EOA on Avalanche Fuji."
+          isLoading
+            ? "Fetching on-chain passports from Avalanche Fuji."
+            : onChainRows.length === 0
+            ? "Create a passport for your first agent on Avalanche Fuji."
             : `Owned by ${shortenAddress(walletAddress)}`
         }
-        action={
+        action={hasRows ?
           <button onClick={onCreate} className="btn btn-primary focus-ring">
-            {onChainRows.length === 0 ? "Create your first agent" : "New agent"}
-          </button>
+            New agent
+          </button> : null
         }
       >
-        {onChainRows.length > 0 ? (
+        {isLoading ? (
+          <AgentCardSkeletonGrid />
+        ) : onChainRows.length > 0 ? (
           <motion.div
             initial="initial"
             animate="animate"
@@ -474,30 +576,90 @@ function MonitorTab({
             ))}
           </motion.div>
         ) : (
-          <EmptyState hasContract={hasContract} />
+          <EmptyState hasContract={hasContract} onCreate={onCreate} />
         )}
       </Section>
     </div>
   );
 }
 
-function EmptyState({ hasContract }: { hasContract: boolean }) {
+function AgentCardSkeletonGrid() {
   return (
-    <div className="card p-8 text-center">
+    <div className="grid gap-3.5 [grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr))]">
+      {Array.from({ length: 3 }).map((_, idx) => (
+        <div key={`agent-card-skeleton-${idx}`} className="card p-4 animate-pulse">
+          <div className="flex items-center gap-3">
+            <div className="h-9 w-9 rounded-lg bg-white/[0.10]" />
+            <div className="min-w-0 flex-1">
+              <div className="h-3.5 w-3/4 rounded bg-white/[0.10]" />
+              <div className="mt-2 h-2.5 w-1/2 rounded bg-white/[0.08]" />
+            </div>
+            <div className="w-12">
+              <div className="h-5 w-10 rounded bg-white/[0.10] ml-auto" />
+              <div className="mt-2 h-2 w-8 rounded bg-white/[0.08] ml-auto" />
+            </div>
+          </div>
+
+          <div className="mt-4">
+            <div className="flex items-center justify-between">
+              <div className="h-2.5 w-14 rounded bg-white/[0.08]" />
+              <div className="h-2.5 w-8 rounded bg-white/[0.08]" />
+            </div>
+            <div className="mt-2 h-[3px] w-full rounded-full bg-white/[0.08]" />
+          </div>
+
+          <div className="mt-4 space-y-2">
+            <div className="flex items-center justify-between gap-3">
+              <div className="h-2.5 w-10 rounded bg-white/[0.08]" />
+              <div className="h-2.5 w-28 rounded bg-white/[0.08]" />
+            </div>
+            <div className="flex items-center justify-between gap-3">
+              <div className="h-2.5 w-10 rounded bg-white/[0.08]" />
+              <div className="h-2.5 w-24 rounded bg-white/[0.08]" />
+            </div>
+          </div>
+
+          <div className="mt-3 flex justify-end">
+            <div className="h-7 w-24 rounded-md bg-white/[0.08]" />
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+async function fetchBackendAgents(): Promise<BackendAgent[]> {
+  try {
+    const res = await fetch("/api/agents/list", { cache: "no-store" });
+    if (!res.ok) return [];
+    const data = (await res.json()) as { agents?: BackendAgent[] };
+    return Array.isArray(data.agents) ? data.agents : [];
+  } catch {
+    return [];
+  }
+}
+
+function EmptyState({ hasContract, onCreate }: { hasContract: boolean; onCreate: () => void }) {
+  return (
+    <button
+      type="button"
+      onClick={onCreate}
+      className="card block w-full p-8 text-center transition-colors hover:border-white/15 hover:bg-white/[0.035] focus-ring"
+    >
       <div className="mx-auto h-10 w-10 rounded-xl bg-white/[0.04] border border-white/[0.06] flex items-center justify-center text-muted">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
           <path d="M12 5v14M5 12h14" strokeLinecap="round" />
         </svg>
       </div>
       <div className="mt-4 text-[14px] text-fg font-medium">
-        {hasContract ? "Mint your first passport" : "Deploy the contract to begin"}
+        {hasContract ? "Create your first passport" : "Deploy passport contract"}
       </div>
       <div className="mt-1 text-[12.5px] text-muted">
         {hasContract
-          ? "A fresh agent wallet is generated in your browser and bound to your owner address on chain."
-          : "One-click deploy to Avalanche Fuji — costs a fraction of a cent in test AVAX."}
+          ? "Set up your first agent with a verifiable on-chain passport."
+          : "Deploy the Agent Passport contract to Avalanche Fuji using test AVAX."}
       </div>
-    </div>
+    </button>
   );
 }
 
@@ -509,7 +671,6 @@ function CreateTab({
   setAgentLabel,
   onSubmit,
   createState,
-  createdAgents,
   contractAddress
 }: {
   walletAddress: string;
@@ -517,7 +678,6 @@ function CreateTab({
   setAgentLabel: (v: string) => void;
   onSubmit: (e: FormEvent<HTMLFormElement>) => void;
   createState: MintState;
-  createdAgents: AgentRecord[];
   contractAddress: string;
 }) {
   const noticeVariant = useMotionVariant(fadeUp);
@@ -530,10 +690,10 @@ function CreateTab({
   return (
     <div className="mt-8 grid gap-6">
       <div className="card p-6">
-        <div className="eyebrow">Mint</div>
+        <div className="eyebrow">Create passport</div>
         <h2 className="mt-2 text-[18px] font-semibold tracking-tight">Create agent passport</h2>
         <p className="mt-1.5 text-[13px] text-muted">
-          Generates a fresh EOA in your browser, then mints an on-chain passport that binds your wallet to the new agent.
+          Set up a named agent with a verifiable on-chain passport on Avalanche Fuji.
         </p>
 
         <form className="mt-6 space-y-5" onSubmit={onSubmit}>
@@ -560,7 +720,7 @@ function CreateTab({
               className="btn btn-primary focus-ring"
             >
               {isWorking ? <Spinner /> : null}
-              {isWorking ? "Working…" : "Create & mint"}
+              {isWorking ? "Creating…" : "Create passport"}
             </button>
             <span className="text-[11.5px] text-faint font-mono">
               owner · {shortenAddress(walletAddress)}
@@ -587,44 +747,6 @@ function CreateTab({
           <LatestPassport record={createState.lastCreated} contractAddress={contractAddress} />
         )}
       </div>
-
-      {createdAgents.length > 0 && (
-        <div className="card p-6">
-          <div className="flex items-center justify-between">
-            <div>
-              <div className="eyebrow">Local</div>
-              <h3 className="mt-2 text-[16px] font-semibold tracking-tight">Agent keys in this browser</h3>
-              <p className="mt-1 text-[12.5px] text-muted">Private keys never leave your browser. Download a backup if you want to keep one.</p>
-            </div>
-          </div>
-          <div className="mt-5 divider" />
-          <ul className="divide-y divide-white/[0.05]">
-            {createdAgents.map((rec) => (
-              <li key={rec.passportId} className="flex items-center gap-3 py-3 text-[13px]">
-                <div
-                  className="h-8 w-8 rounded-lg flex items-center justify-center text-[11px] font-semibold text-white/95 font-mono"
-                  style={avatarStyle(rec.agentAddress)}
-                >
-                  {avatarInitials(rec.agentAddress)}
-                </div>
-                <div className="min-w-0 flex-1">
-                  <div className="truncate text-fg">
-                    <span className="font-mono text-faint">#{rec.passportId}</span>{" "}
-                    <span>{rec.label}</span>
-                  </div>
-                  <div className="font-mono text-[11.5px] text-faint">{shortenAddress(rec.agentAddress)}</div>
-                </div>
-                <button
-                  onClick={() => downloadAgentBackup(rec, contractAddress)}
-                  className="btn btn-secondary focus-ring text-[11.5px] py-1.5 px-2.5"
-                >
-                  Backup
-                </button>
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
     </div>
   );
 }
@@ -645,12 +767,14 @@ function LatestPassport({ record, contractAddress }: { record: AgentRecord; cont
           </div>
           <div className="font-mono text-[11.5px] text-faint">{shortenAddress(record.agentAddress)}</div>
         </div>
-        <button
-          onClick={() => downloadAgentBackup(record, contractAddress)}
-          className="btn btn-secondary focus-ring text-[11.5px] py-1.5 px-2.5"
-        >
-          Download backup
-        </button>
+        {record.privateKey && (
+          <button
+            onClick={() => downloadAgentBackup(record, contractAddress)}
+            className="btn btn-secondary focus-ring text-[11.5px] py-1.5 px-2.5"
+          >
+            Download backup
+          </button>
+        )}
       </div>
       {record.mintTxHash && (
         <div className="mt-3 text-[11.5px] text-faint font-mono">
@@ -682,10 +806,11 @@ function ProfileTab({
   balanceLoading: boolean;
   balanceText: string | null;
   contractAddress: string;
-  contractSource: "env" | "local" | "none";
+  contractSource: ContractAddressSource;
   ownerAvatarStyle: ReturnType<typeof avatarStyle>;
   ownerInitials: string;
 }) {
+  const contractUrl = contractAddress ? snowtraceAddressUrl(contractAddress) : null;
   return (
     <div className="mt-8 grid gap-6 md:grid-cols-3">
       <div className="card p-6 md:col-span-1">
@@ -709,10 +834,13 @@ function ProfileTab({
         <Field
           label="Passport contract"
           value={contractAddress || "Not deployed"}
+          href={contractUrl ?? undefined}
           mono
           subtitle={
             contractSource === "env"
               ? "from NEXT_PUBLIC_AGENT_PASSPORT_ADDRESS"
+              : contractSource === "deployment"
+                ? "from packages/contracts/deployments.json"
               : contractSource === "local"
                 ? "deployed from this browser"
                 : ""
@@ -726,18 +854,31 @@ function ProfileTab({
 function Field({
   label,
   value,
+  href,
   mono,
   subtitle
 }: {
   label: string;
   value: string;
+  href?: string;
   mono?: boolean;
   subtitle?: string;
 }) {
   return (
     <div>
       <div className="text-[11px] uppercase tracking-[0.14em] text-faint">{label}</div>
-      <div className={["mt-1 text-[13px] text-fg break-all", mono ? "font-mono" : ""].join(" ")}>{value}</div>
+      {href ? (
+        <a
+          className={["mt-1 block text-[13px] text-fg break-all underline decoration-white/20 underline-offset-4 hover:decoration-white/60", mono ? "font-mono" : ""].join(" ")}
+          href={href}
+          target="_blank"
+          rel="noreferrer"
+        >
+          {value}
+        </a>
+      ) : (
+        <div className={["mt-1 text-[13px] text-fg break-all", mono ? "font-mono" : ""].join(" ")}>{value}</div>
+      )}
       {subtitle && <div className="mt-0.5 text-[11.5px] text-faint">{subtitle}</div>}
     </div>
   );

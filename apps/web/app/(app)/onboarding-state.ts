@@ -3,12 +3,14 @@ import { cache } from "react";
 
 import { getSupabase } from "@/lib/db/supabase";
 import { getCurrentThirdwebSession } from "@/lib/thirdweb/auth";
+import {
+  initialOnboardingStep,
+  type OnboardingState,
+  type OnboardingUserRow,
+} from "./onboarding-gate";
 
-export type OnboardingState =
-  | { signedIn: false }
-  | { signedIn: true; needsOnboarding: boolean; username: string | null };
+export type { OnboardingState } from "./onboarding-gate";
 
-// Cached per request so layout + page reads share one query.
 export const getOnboardingState = cache(async (): Promise<OnboardingState> => {
   const session = await getCurrentThirdwebSession();
   if (!session) return { signedIn: false };
@@ -20,12 +22,10 @@ export const getOnboardingState = cache(async (): Promise<OnboardingState> => {
     .eq("thirdweb_id", session.thirdwebId)
     .maybeSingle();
 
-  // No row yet (first visit between login and sync) — treat as needing onboarding.
-  if (!data) return { signedIn: true, needsOnboarding: true, username: null };
-
+  const row = (data as OnboardingUserRow | null) ?? null;
   return {
     signedIn: true,
-    needsOnboarding: !data.onboarded_at,
-    username: data.username,
+    step: initialOnboardingStep(row),
+    username: row?.username ?? null,
   };
 });

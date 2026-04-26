@@ -15,36 +15,51 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "unauthorized" }, { status: 401 });
   }
 
-  const { username } = (await req.json()) as Body;
-  const u = (username ?? "").trim().toLowerCase();
-  if (!USERNAME_RE.test(u)) {
-    return NextResponse.json({ error: "invalid_username" }, { status: 400 });
-  }
-
+  const body = (await req.json().catch(() => ({}))) as Body;
+  const supplied = (body.username ?? "").trim().toLowerCase();
   const supabase = getSupabase();
 
-  // Pre-check uniqueness so we can return a clean 409 (the unique index
-  // would otherwise surface a generic 23505).
-  const { data: existing } = await supabase
-    .from("users")
-    .select("id, thirdweb_id")
-    .ilike("username", u)
-    .maybeSingle();
-
-  if (existing && existing.thirdweb_id !== session.thirdwebId) {
-    return NextResponse.json({ error: "username_taken" }, { status: 409 });
+  // Username may already be persisted by `/api/onboarding/username` from step 1.
+  // If a value is supplied we treat it as authoritative; otherwise we fall back
+  // to whatever is already on the row.
+  let usernameToWrite: string | null = null;
+  if (supplied) {
+    if (!USERNAME_RE.test(supplied)) {
+      return NextResponse.json({ error: "invalid_username" }, { status: 400 });
+    }
+    const { data: existing } = await supabase
+      .from("users")
+      .select("id, thirdweb_id")
+      .ilike("username", supplied)
+      .maybeSingle();
+    if (existing && existing.thirdweb_id !== session.thirdwebId) {
+      return NextResponse.json({ error: "username_taken" }, { status: 409 });
+    }
+    usernameToWrite = supplied;
+  } else {
+    const { data: row } = await supabase
+      .from("users")
+      .select("username")
+      .eq("thirdweb_id", session.thirdwebId)
+      .maybeSingle();
+    if (!row?.username) {
+      return NextResponse.json({ error: "invalid_username" }, { status: 400 });
+    }
   }
+
+  const update: { onboarded_at: string; username?: string } = {
+    onboarded_at: new Date().toISOString(),
+  };
+  if (usernameToWrite) update.username = usernameToWrite;
 
   const { data, error } = await supabase
     .from("users")
-    .update({ username: u, onboarded_at: new Date().toISOString() })
+    .update(update)
     .eq("thirdweb_id", session.thirdwebId)
     .select("id, thirdweb_id, username, onboarded_at")
     .single();
 
   if (error) {
-    // Race: another concurrent insert took the username between our pre-check
-    // and the update — surface the conflict cleanly.
     if (error.code === "23505") {
       return NextResponse.json({ error: "username_taken" }, { status: 409 });
     }

@@ -175,7 +175,7 @@ On submit, call POST /api/agents/create with the body. Use a transition:
 Progress display (Steps "creating-wallet" | "funding" | "minting"):
   Three rows, each with: spinner | check | (greyed) status icon
   Row 1: "Generating wallet"        (always 500ms)
-  Row 2: "Funding with AVAX + USDC"   (show fundingTxHash truncated when done)
+  Row 2: "Funding with AVAX"   (show fundingTxHash truncated when done)
   Row 3: "Minting passport on Avalanche" (show mintTxHash when done)
 
   Use framer-motion AnimatePresence. Each step takes 1-2s of artificial delay

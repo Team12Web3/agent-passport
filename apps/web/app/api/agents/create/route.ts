@@ -14,7 +14,12 @@ import {
   getPublicClient,
 } from "@/lib/chain/client";
 import { AgentPassport, assertContractsDeployed } from "@/lib/chain/contracts";
-import { createAgentWallet, fundAgentWallet } from "@/lib/agent/wallet";
+import { mintApprovalData } from "@/lib/mintApproval";
+import {
+  AgentFundingError,
+  createAgentWallet,
+  fundAgentWallet,
+} from "@/lib/agent/wallet";
 
 export const runtime = "nodejs";
 
@@ -22,6 +27,7 @@ const Body = z.object({
   name:    z.string().min(1).max(40),
   purpose: z.string().min(1).max(200),
   tools:   z.array(z.enum(["scraper", "summarizer", "logger"])).min(1),
+  mintApprovalTxHash: z.string().regex(/^0x[a-fA-F0-9]{64}$/),
 });
 
 export async function POST(req: Request) {
@@ -36,6 +42,22 @@ export async function POST(req: Request) {
   } catch (err) {
     if (err instanceof z.ZodError) return validationError(err);
     return json({ error: "invalid_json" }, { status: 400 });
+  }
+
+  const ownerAddress = (session.user.wallet_address as Hex | null);
+  if (!ownerAddress) {
+    return json({ error: "missing_wallet" }, { status: 400 });
+  }
+
+  try {
+    await verifyMintApprovalTx({
+      hash: body.mintApprovalTxHash as Hex,
+      ownerAddress,
+      name: body.name,
+    });
+  } catch (err) {
+    console.error("[agents/create] mint approval", err);
+    return json({ error: "invalid_mint_approval" }, { status: 400 });
   }
 
   // 1. Provision wallet
@@ -77,6 +99,13 @@ export async function POST(req: Request) {
   } catch (err) {
     console.error("[agents/create] funding step", err);
     await supabase.from("agents").delete().eq("id", draftAgent.id);
+    if (err instanceof AgentFundingError) {
+      return provisioningFailed("funding", {
+        reason: err.code,
+        available: err.available,
+        required: err.required,
+      });
+    }
     return provisioningFailed("funding");
   }
 
@@ -87,8 +116,6 @@ export async function POST(req: Request) {
     const wallet = getPlatformWalletClient();
     const pub    = getPublicClient();
 
-    const ownerAddress =
-      (session.user.wallet_address as Hex | null) ?? walletAddress;
     const metadataURI =
       `data:application/json,${encodeURIComponent(
         JSON.stringify({ name: body.name, purpose: body.purpose, tools: body.tools }),
@@ -144,4 +171,32 @@ export async function POST(req: Request) {
     },
     { status: 201 },
   );
+}
+
+async function verifyMintApprovalTx({
+  hash,
+  ownerAddress,
+  name,
+}: {
+  hash: Hex;
+  ownerAddress: Hex;
+  name: string;
+}) {
+  const pub = getPublicClient();
+  const platformAddress = getPlatformWalletClient().account!.address;
+  const receipt = await pub.waitForTransactionReceipt({ hash, confirmations: 1 });
+  const tx = await pub.getTransaction({ hash });
+
+  if (receipt.status !== "success") throw new Error("approval tx failed");
+  if (tx.chainId !== 43113) throw new Error(`wrong chain ${tx.chainId}`);
+  if (tx.from.toLowerCase() !== ownerAddress.toLowerCase()) {
+    throw new Error("approval tx sender mismatch");
+  }
+  if (!tx.to || tx.to.toLowerCase() !== platformAddress.toLowerCase()) {
+    throw new Error("approval tx recipient mismatch");
+  }
+  if (tx.value !== 0n) throw new Error("approval tx must be zero-value");
+  if (tx.input.toLowerCase() !== mintApprovalData(ownerAddress, name).toLowerCase()) {
+    throw new Error("approval tx data mismatch");
+  }
 }

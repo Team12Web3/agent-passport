@@ -13,7 +13,7 @@ const CLEAN_ITEMS = [
   { name: "Web Crawlers & Scrapers",        desc: "— 40% of all web traffic" },
   { name: "Malicious Bots",                 desc: "— DDoS, spam, credential stuffing" },
   { name: "Countermeasures",                desc: "— CAPTCHAs, rate limiting, passports" },
-  { name: "Trusted Agent Protocols",        desc: "— verified identity layer" },
+  { name: "Trusted Agent Protocols",        desc: "— verified passport layer" },
 ];
 
 // ─── Fake 3×3 CAPTCHA grid ───────────────────────────────────────────────────

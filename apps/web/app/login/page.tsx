@@ -2,35 +2,46 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useMemo } from "react";
-import { ConnectEmbed, useActiveAccount, useActiveWalletConnectionStatus } from "thirdweb/react";
+import { useEffect, useMemo, useState } from "react";
+import { ConnectEmbed } from "thirdweb/react";
 import { avalancheFuji } from "thirdweb/chains";
 import { getThirdwebClient } from "@/lib/thirdwebClient";
 import { supportedWallets } from "@/lib/thirdweb/wallets";
 
 export default function LoginPage() {
   const router = useRouter();
-  const account = useActiveAccount();
-  const walletStatus = useActiveWalletConnectionStatus();
   const client = getThirdwebClient();
+  const [isCheckingSession, setIsCheckingSession] = useState(true);
+  const [isLoggingIn, setIsLoggingIn] = useState(false);
 
-  // Gate the auto-redirect on backend session status, not just wallet status.
-  // AutoConnect can restore the wallet from localStorage without a JWT cookie;
-  // redirecting on wallet-connected alone sends users to /dashboard with no
-  // session, which then 401s on every authenticated API call.
   useEffect(() => {
-    if (walletStatus !== "connected" || !account?.address) return;
     let cancelled = false;
-    fetch("/api/auth/status", { cache: "no-store" })
-      .then((r) => (r.ok ? r.json() : { loggedIn: false }))
-      .then((d: { loggedIn?: boolean }) => {
-        if (!cancelled && d.loggedIn) router.replace("/dashboard");
-      })
-      .catch(() => {});
+
+    async function redirectIfAuthenticated() {
+      try {
+        const res = await fetch("/api/auth/status", { cache: "no-store" });
+        if (res.ok) {
+          const data = (await res.json()) as { loggedIn?: boolean };
+          if (!cancelled && data.loggedIn) {
+            router.replace("/dashboard");
+            return;
+          }
+        }
+      } catch {
+        // Show the login form if the status check cannot complete.
+      }
+
+      if (!cancelled) {
+        setIsCheckingSession(false);
+      }
+    }
+
+    redirectIfAuthenticated();
+
     return () => {
       cancelled = true;
     };
-  }, [account?.address, router, walletStatus]);
+  }, [router]);
 
   const auth = useMemo(
     () => ({
@@ -40,21 +51,28 @@ export default function LoginPage() {
         return res.json();
       },
       doLogin: async (params: unknown) => {
-        const loginRes = await fetch("/api/auth/login", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(params),
-        });
-        if (!loginRes.ok) throw new Error("Failed to login");
+        setIsLoggingIn(true);
 
-        const syncRes = await fetch("/api/auth/sync", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email: null }),
-        });
-        if (!syncRes.ok) throw new Error("Failed to sync user profile");
+        try {
+          const loginRes = await fetch("/api/auth/login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(params),
+          });
+          if (!loginRes.ok) throw new Error("Failed to login");
 
-        router.replace("/dashboard");
+          const syncRes = await fetch("/api/auth/sync", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email: null }),
+          });
+          if (!syncRes.ok) throw new Error("Failed to sync user profile");
+
+          router.replace("/dashboard");
+        } catch (error) {
+          setIsLoggingIn(false);
+          throw error;
+        }
       },
       isLoggedIn: async () => {
         const res = await fetch("/api/auth/status", { cache: "no-store" });
@@ -105,12 +123,25 @@ export default function LoginPage() {
               <span className="font-mono">.env.local</span> from your thirdweb dashboard, then restart{" "}
               <span className="font-mono">pnpm dev</span>.
             </div>
+          ) : isCheckingSession || isLoggingIn ? (
+            <div className="card flex min-h-[360px] flex-col items-center justify-center p-6 text-center">
+              <div className="h-9 w-9 animate-spin rounded-full border-2 border-white/15 border-t-[var(--accent)]" />
+              <p className="mt-5 text-[14px] font-medium text-fg">
+                {isLoggingIn ? "Signing you in..." : "Checking your session..."}
+              </p>
+              <p className="mt-2 max-w-xs text-[12.5px] leading-5 text-muted">
+                {isLoggingIn
+                  ? "We are syncing your wallet profile before opening the dashboard."
+                  : "We are checking whether you already have an active session."}
+              </p>
+            </div>
           ) : (
             <div className="card p-1.5">
               <ConnectEmbed
                 client={client}
                 wallets={supportedWallets}
                 chains={[avalancheFuji]}
+                autoConnect={false}
                 auth={auth}
                 appMetadata={{
                   name: "Agent Passport",

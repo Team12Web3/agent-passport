@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import type { Passport } from "@/lib/agentPassport";
 import { shortenAddress, clamp } from "@/lib/utils";
@@ -17,6 +18,7 @@ type Props = {
 };
 
 export function AgentCard({ agentId, passport, trusted, progressPercent, sourceLabel }: Props) {
+  const router = useRouter();
   const [open, setOpen] = useState(false);
 
   const scoreNumber = useMemo(() => {
@@ -39,6 +41,7 @@ export function AgentCard({ agentId, passport, trusted, progressPercent, sourceL
 
   const ownerShort = shortenAddress(passport.owner || "0x0", 5, 4);
   const agentShort = passport.agentWallet ? shortenAddress(passport.agentWallet, 5, 4) : "—";
+  const runHref = `/agents/${encodeURIComponent(agentId)}/run`;
 
   const cardVariant = useMotionVariant(fadeUp);
   return (
@@ -52,7 +55,7 @@ export function AgentCard({ agentId, passport, trusted, progressPercent, sourceL
         type="button"
         onClick={() => setOpen((v) => !v)}
         aria-expanded={open}
-        className="block w-full min-w-0 text-left focus-ring rounded-md"
+        className="block w-full min-w-0 rounded-md text-left outline-none focus-visible:ring-1 focus-visible:ring-[var(--accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--surface)]"
       >
         {/* Header: avatar + name (truncates) + compact score */}
         <div className="flex items-center gap-3">
@@ -100,7 +103,7 @@ export function AgentCard({ agentId, passport, trusted, progressPercent, sourceL
         </dl>
 
         {open && (
-          <div className="mt-3 min-w-0 overflow-hidden rounded-lg border border-white/[0.06] bg-black/30 p-3 text-[11.5px]">
+          <div className="mt-3 min-w-0 overflow-hidden rounded-lg bg-black/30 p-3 text-[11.5px]">
             <dl className="space-y-1.5">
               <DetailRow label="passport.id" value={passport.agentId} />
               <DetailRow label="owner" value={passport.owner || "—"} />
@@ -115,7 +118,10 @@ export function AgentCard({ agentId, passport, trusted, progressPercent, sourceL
 
       <div className="mt-3 flex items-center justify-end">
         <Link
-          href={`/agents/${encodeURIComponent(agentId)}/run`}
+          href={runHref}
+          prefetch
+          onMouseEnter={() => router.prefetch(runHref)}
+          onFocus={() => router.prefetch(runHref)}
           className="inline-flex items-center gap-1.5 rounded-md border border-white/[0.08] bg-white/[0.03] px-2.5 py-1 text-[11.5px] font-medium text-muted transition hover:border-white/15 hover:bg-white/[0.06] hover:text-fg"
         >
           Run task

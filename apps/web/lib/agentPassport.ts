@@ -42,6 +42,15 @@ function readContract(address: string) {
   return new ethers.Contract(address, AGENT_PASSPORT_ABI, new ethers.JsonRpcProvider(FUJI_RPC));
 }
 
+export type PlatformAddressErrorCode =
+  | "invalid_contract_address"
+  | "platform_read_failed"
+  | "invalid_platform_address";
+
+export type PlatformAddressResult =
+  | { ok: true; platformAddress: string }
+  | { ok: false; code: PlatformAddressErrorCode; message: string };
+
 /// Read a passport by its uint256 id.
 export async function fetchPassportById(
   contractAddress: string,
@@ -72,6 +81,36 @@ export async function fetchPassportsOf(contractAddress: string, owner: string): 
     return ids.map((x) => BigInt(x));
   } catch {
     return [];
+  }
+}
+
+export async function fetchPlatformAddress(contractAddress: string): Promise<PlatformAddressResult> {
+  if (!isValidAddress(contractAddress)) {
+    return {
+      ok: false,
+      code: "invalid_contract_address",
+      message:
+        "Passport contract is not configured. Set NEXT_PUBLIC_AGENT_PASSPORT_ADDRESS or sync packages/contracts/deployments.json.",
+    };
+  }
+  try {
+    const platformAddress = String(await readContract(contractAddress).platform());
+    if (!isValidAddress(platformAddress)) {
+      return {
+        ok: false,
+        code: "invalid_platform_address",
+        message:
+          "The configured passport contract returned an invalid platform address. Re-deploy or sync deployments.",
+      };
+    }
+    return { ok: true, platformAddress };
+  } catch {
+    return {
+      ok: false,
+      code: "platform_read_failed",
+      message:
+        "Couldn't read the passport platform address from Avalanche Fuji RPC. Check NEXT_PUBLIC_FUJI_RPC and contract deployment.",
+    };
   }
 }
 

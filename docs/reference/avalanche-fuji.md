@@ -53,7 +53,7 @@ forge verify-contract <address> AgentPassport \
 
 ## Snowtrace links
 
-The links you'll be sharing with judges:
+Useful Snowtrace links:
 
 ```
 Contract: https://testnet.snowtrace.io/address/<address>
