@@ -1,7 +1,9 @@
 "use client";
 import { useEffect, useRef, useMemo } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import type { AgentEvent } from "@/lib/events";
 import type { RunStatus } from "@/hooks/useAgentRun";
+import { fadeUp, stagger, useMotionVariant } from "@/lib/motion";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 type TerminalLine = {
@@ -113,6 +115,7 @@ type Props = {
 export function AgentTerminal({ events, status, compact = false }: Props) {
   const containerRef    = useRef<HTMLDivElement>(null);
   const userScrolledRef = useRef(false);
+  const itemVariant = useMotionVariant(fadeUp);
 
   // ── Per-event timestamp tracking ──────────────────────────────────────────
   // FIX: previously all events got `Date.now()` at memo recalculation time,
@@ -220,19 +223,27 @@ export function AgentTerminal({ events, status, compact = false }: Props) {
         </span>
       )}
 
-      {lines.map((line) => (
-        <div key={line.key} className="mb-1 flex gap-2 leading-5">
-          <span className="shrink-0 text-zinc-600">{line.ts}</span>
-          <span className={`shrink-0 ${line.color}`}>{line.prefix}</span>
-          <span
-            className={`min-w-0 break-all ${line.color} ${
-              line.bold ? "font-bold" : ""
-            }`}
-          >
-            {line.text}
-          </span>
-        </div>
-      ))}
+      <motion.div
+        initial="initial"
+        animate="animate"
+        variants={stagger}
+      >
+        <AnimatePresence initial={false}>
+          {lines.map((line) => (
+            <motion.div key={line.key} variants={itemVariant} className="mb-1 flex gap-2 leading-5">
+              <span className="shrink-0 text-zinc-600">{line.ts}</span>
+              <span className={`shrink-0 ${line.color}`}>{line.prefix}</span>
+              <span
+                className={`min-w-0 break-all ${line.color} ${
+                  line.bold ? "font-bold" : ""
+                }`}
+              >
+                {line.text}
+              </span>
+            </motion.div>
+          ))}
+        </AnimatePresence>
+      </motion.div>
 
       {/* Blinking cursor while running */}
       {status === "running" && lines.length > 0 && (

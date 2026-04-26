@@ -2,9 +2,11 @@
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
+import { motion } from "framer-motion";
 import type { Passport } from "@/lib/agentPassport";
 import { shortenAddress, clamp } from "@/lib/utils";
 import { avatarInitials, avatarStyle } from "@/lib/avatar";
+import { fadeUp, useMotionVariant } from "@/lib/motion";
 
 type Props = {
   agentId: string;
@@ -38,8 +40,14 @@ export function AgentCard({ agentId, passport, trusted, progressPercent, sourceL
   const ownerShort = shortenAddress(passport.owner || "0x0", 5, 4);
   const agentShort = passport.agentWallet ? shortenAddress(passport.agentWallet, 5, 4) : "—";
 
+  const cardVariant = useMotionVariant(fadeUp);
   return (
-    <div className="card card-hover group w-full min-w-0 max-w-full overflow-hidden p-4">
+    <motion.div
+      variants={cardVariant}
+      whileHover={{ y: -2, scale: 1.01 }}
+      transition={{ type: "spring", stiffness: 280, damping: 24 }}
+      className="card card-hover group w-full min-w-0 max-w-full overflow-hidden p-4"
+    >
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}
@@ -114,7 +122,7 @@ export function AgentCard({ agentId, passport, trusted, progressPercent, sourceL
           <span aria-hidden>→</span>
         </Link>
       </div>
-    </div>
+    </motion.div>
   );
 }
 
