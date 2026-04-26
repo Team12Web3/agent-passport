@@ -765,15 +765,6 @@ function Notice({
   );
 }
 
-function KV({ k, v }: { k: string; v: ReactNode }) {
-  return (
-    <div className="flex items-center justify-between gap-4">
-      <dt className="text-faint">{k}</dt>
-      <dd className="text-muted text-right">{v}</dd>
-    </div>
-  );
-}
-
 function Spinner() {
   return (
     <span
